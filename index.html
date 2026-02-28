@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Single Page Web App</title>
+    <style>
+      :root {
+        --bg-top: #b8e7ff;
+        --bg-bottom: #edf2f8;
+        --brand-blue: #2f6ddb;
+        --brand-teal: #38b7ab;
+        --brand-green: #60c77f;
+        --text-main: #111111;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
+        color: var(--text-main);
+        background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      }
+
+      main {
+        min-height: 100vh;
+      }
+
+      #welcomeScreen {
+        min-height: 100vh;
+        padding: 20px 18px 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .brand {
+        margin: 0;
+        font-size: clamp(1.9rem, 5.4vw, 3.1rem);
+        line-height: 1;
+        letter-spacing: 0.02em;
+        font-weight: 800;
+        background: linear-gradient(90deg, var(--brand-blue), var(--brand-teal), var(--brand-green));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .headline {
+        margin: 8px 0 0;
+        max-width: 760px;
+        font-size: clamp(1.45rem, 4.4vw, 2.85rem);
+        line-height: 1.12;
+        font-weight: 600;
+      }
+
+      .headline .accent {
+        color: var(--brand-blue);
+      }
+
+      .swoosh {
+        margin: 2px auto 0;
+        width: 120px;
+        height: 12px;
+        display: block;
+      }
+
+      .bot-wrap {
+        margin-top: 2px;
+      }
+
+      .bot-image {
+        display: block;
+        width: min(54vw, 230px);
+        height: auto;
+      }
+
+      .start-btn {
+        margin-top: 6px;
+        width: min(84vw, 380px);
+        height: 96px;
+        border: 2px solid #3d72cc;
+        border-radius: 20px;
+        background: linear-gradient(180deg, #5188e8 0%, #417ce2 100%);
+        color: #f9fbff;
+        font-size: clamp(1.6rem, 4.2vw, 2.9rem);
+        font-weight: 800;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+      }
+
+      @media (max-width: 640px) {
+        #welcomeScreen {
+          padding: 16px 14px 18px;
+          gap: 8px;
+        }
+
+        .start-btn {
+          width: min(90vw, 330px);
+          height: 84px;
+          border-radius: 18px;
+        }
+
+        .bot-image {
+          width: min(58vw, 190px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section id="welcomeScreen">
+        <h1 class="brand">WiseSpend AI</h1>
+        <h2 class="headline">
+          Can <span class="accent">YOU</span> train an AI to
+          <br />
+          be smart with money?
+        </h2>
+        <svg class="swoosh" viewBox="0 0 160 20" aria-hidden="true">
+          <path
+            d="M4 15C28 4 58 4 82 11C102 16 130 17 156 10"
+            fill="none"
+            stroke="#3a76df"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+        </svg>
+        <div class="bot-wrap">
+          <img
+            class="bot-image"
+            src="/Users/josegranados/wise-spend-ai/assets/robot-money.png"
+            alt="Sad robot holding money"
+          />
+        </div>
+        <button class="start-btn" type="button">Start</button>
+      </section>
+
+      <section id="trainScreen" hidden>
+        <h2>Train AI</h2>
+        <p>Train AI screen placeholder content.</p>
+        <button type="button">Run Simulation</button>
+      </section>
+
+      <section id="resultsScreen" hidden>
+        <h2>Results</h2>
+        <p>Results screen placeholder content.</p>
+      </section>
+    </main>
+  </body>
+</html>
