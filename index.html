@@ -18,6 +18,10 @@
         box-sizing: border-box;
       }
 
+      [hidden] {
+        display: none !important;
+      }
+
       body {
         margin: 0;
         min-height: 100vh;
@@ -112,6 +116,173 @@
         outline-offset: 3px;
       }
 
+      #trainScreen {
+        min-height: 100vh;
+        padding: 24px 22px 32px;
+      }
+
+      .tutorial-wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      .tutorial-title {
+        margin: 0;
+        text-align: center;
+        font-size: clamp(2rem, 5.3vw, 4rem);
+        line-height: 1.04;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      .tutorial-title .calendar {
+        font-size: 0.88em;
+        margin-right: 0.15em;
+      }
+
+      .tutorial-title .highlight {
+        color: #467ee0;
+      }
+
+      .tutorial-title .underline {
+        position: relative;
+        display: inline-block;
+      }
+
+      .tutorial-title .underline::after {
+        content: "";
+        position: absolute;
+        left: 5%;
+        bottom: -0.08em;
+        width: 90%;
+        height: 0.08em;
+        background: #5a91ea;
+        border-radius: 999px;
+      }
+
+      .tutorial-grid {
+        margin-top: 28px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .step-card {
+        border-radius: 24px;
+        overflow: hidden;
+        border: 4px solid #9bcff4;
+        background: #ffffff;
+        box-shadow: 0 6px 0 rgba(121, 178, 219, 0.5);
+      }
+
+      .step-head {
+        padding: 14px 16px;
+        background: #6ab2e9;
+        color: #f5fbff;
+        text-align: center;
+        font-size: clamp(1rem, 1.3vw, 1.55rem);
+        font-weight: 800;
+      }
+
+      .step-visual {
+        height: 180px;
+        display: grid;
+        place-items: center;
+        background: #d9eefb;
+      }
+
+      .step-visual img {
+        max-width: 120px;
+        width: 46%;
+        height: auto;
+      }
+
+      .step-visual.sim {
+        background: linear-gradient(135deg, #dff3ff 0%, #bedfff 100%);
+      }
+
+      .step-visual.result {
+        background: #e0f0ff;
+      }
+
+      .market-strip {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+        background-image: linear-gradient(
+            to right,
+            rgba(88, 153, 221, 0.35) 1px,
+            transparent 1px
+          ),
+          linear-gradient(to bottom, rgba(88, 153, 221, 0.3) 1px, transparent 1px);
+        background-size: 36px 36px;
+      }
+
+      .market-robot {
+        font-size: clamp(3rem, 7vw, 5.1rem);
+      }
+
+      .trophy {
+        font-size: clamp(3rem, 7vw, 5rem);
+      }
+
+      .step-copy {
+        margin: 0;
+        padding: 14px 16px 18px;
+        text-align: center;
+        font-size: clamp(1rem, 2vw, 1.35rem);
+        line-height: 1.25;
+        font-weight: 700;
+      }
+
+      .progress-track {
+        margin: 0 18px 16px;
+        height: 22px;
+        border-radius: 999px;
+        background: #cde4f8;
+        display: flex;
+        align-items: center;
+        padding: 4px;
+      }
+
+      .progress-fill {
+        width: 48%;
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #4f82e0 0%, #3972d5 100%);
+      }
+
+      .challenge-btn {
+        margin: 42px auto 0;
+        display: block;
+        width: min(90vw, 640px);
+        height: 112px;
+        border-radius: 34px;
+        border: 2px solid #4f84de;
+        background: linear-gradient(90deg, #4f84de 0%, #3a72d8 100%);
+        color: #f6fbff;
+        font-size: clamp(1.6rem, 4vw, 3rem);
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: filter 180ms ease, transform 120ms ease;
+      }
+
+      .challenge-btn:hover {
+        filter: brightness(1.08);
+      }
+
+      .challenge-btn:active {
+        transform: translateY(1px);
+      }
+
+      .challenge-btn:focus-visible {
+        outline: 3px solid #90b7ff;
+        outline-offset: 3px;
+      }
+
       @media (max-width: 640px) {
         #welcomeScreen {
           padding: 16px 14px 18px;
@@ -126,6 +297,26 @@
 
         .bot-image {
           width: min(58vw, 190px);
+        }
+
+        #trainScreen {
+          padding: 18px 12px 24px;
+        }
+
+        .tutorial-grid {
+          grid-template-columns: 1fr;
+          gap: 14px;
+          margin-top: 20px;
+        }
+
+        .step-visual {
+          height: 145px;
+        }
+
+        .challenge-btn {
+          margin-top: 24px;
+          height: 86px;
+          border-radius: 24px;
         }
       }
     </style>
@@ -159,9 +350,46 @@
       </section>
 
       <section id="trainScreen" hidden>
-        <h2>Train AI</h2>
-        <p>Train AI screen placeholder content.</p>
-        <button type="button">Run Simulation</button>
+        <div class="tutorial-wrap">
+          <h2 class="tutorial-title">
+            <span class="calendar">📅🪙</span>Can <span class="highlight">YOUR AI</span> survive
+            30 Days<br />
+            without going <span class="highlight underline">BROKE?</span>
+          </h2>
+
+          <div class="tutorial-grid">
+            <article class="step-card">
+              <header class="step-head">1. TRAINING MONTH</header>
+              <div class="step-visual">
+                <img src="assets/robot-money.png" alt="Robot for training step" />
+              </div>
+              <p class="step-copy">Teach it Wants vs. Needs</p>
+              <div class="progress-track" aria-hidden="true">
+                <div class="progress-fill"></div>
+              </div>
+            </article>
+
+            <article class="step-card">
+              <header class="step-head">2. AI SURVIVAL CHALLENGE</header>
+              <div class="step-visual sim">
+                <div class="market-strip">
+                  <span class="market-robot">🤖</span>
+                </div>
+              </div>
+              <p class="step-copy">Let it run for 30 days.<br />See its choices!</p>
+            </article>
+
+            <article class="step-card">
+              <header class="step-head">3. RESULTS + LEADERBOARD</header>
+              <div class="step-visual result">
+                <span class="trophy">🏆</span>
+              </div>
+              <p class="step-copy">Did it go broke? Is it rich?<br />Compare with classmates!</p>
+            </article>
+          </div>
+
+          <button class="challenge-btn" type="button">Start the Challenge</button>
+        </div>
       </section>
 
       <section id="resultsScreen" hidden>
@@ -170,10 +398,19 @@
       </section>
     </main>
     <script>
+      const welcomeScreen = document.querySelector("#welcomeScreen");
+      const tutorialScreen = document.querySelector("#trainScreen");
       const startButton = document.querySelector(".start-btn");
+      const challengeButton = document.querySelector(".challenge-btn");
 
       startButton?.addEventListener("click", () => {
-        console.log("Start button clicked. Navigation not wired yet.");
+        welcomeScreen.hidden = true;
+        tutorialScreen.hidden = false;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      challengeButton?.addEventListener("click", () => {
+        console.log("Challenge start clicked. Next screen not wired yet.");
       });
     </script>
   </body>
