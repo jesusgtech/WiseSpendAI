@@ -94,6 +94,22 @@
         font-weight: 800;
         letter-spacing: 0.03em;
         text-transform: uppercase;
+        cursor: pointer;
+        transition: background 220ms ease, border-color 220ms ease, transform 140ms ease;
+      }
+
+      .start-btn:hover {
+        border-color: #4b84e5;
+        background: linear-gradient(180deg, #6a9bf0 0%, #4f87e8 100%);
+      }
+
+      .start-btn:active {
+        transform: translateY(1px);
+      }
+
+      .start-btn:focus-visible {
+        outline: 3px solid #9bc0ff;
+        outline-offset: 3px;
       }
 
       @media (max-width: 640px) {
@@ -153,5 +169,12 @@
         <p>Results screen placeholder content.</p>
       </section>
     </main>
+    <script>
+      const startButton = document.querySelector(".start-btn");
+
+      startButton?.addEventListener("click", () => {
+        console.log("Start button clicked. Navigation not wired yet.");
+      });
+    </script>
   </body>
 </html>
