@@ -186,31 +186,31 @@
         text-transform: uppercase;
       }
 
-      .name-input-wrap {
-        position: relative;
+      .profile-fields {
+        display: grid;
+        gap: 14px;
       }
 
-      .name-icon {
-        position: absolute;
-        left: 18px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 1.7rem;
-        opacity: 0.55;
+      .field-label {
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        color: #3c3c3c;
       }
 
-      .name-input {
+      .field-input {
         width: 100%;
         height: 90px;
         border-radius: 999px;
         border: 3px solid #d5d9e6;
-        padding: 0 24px 0 64px;
+        padding: 0 24px;
         font-size: clamp(1.2rem, 2vw, 1.8rem);
         color: #202020;
         background: #ffffff;
       }
 
-      .name-input:focus-visible {
+      .field-input:focus-visible {
         outline: 3px solid #9fc0ff;
         outline-offset: 2px;
       }
@@ -229,9 +229,11 @@
         border-radius: 20px;
         border: 3px solid transparent;
         background: rgba(255, 255, 255, 0.78);
-        font-size: 2.7rem;
         cursor: pointer;
         transition: transform 120ms ease, border-color 180ms ease, background 180ms ease;
+        padding: 0;
+        display: grid;
+        place-items: center;
       }
 
       .avatar-btn:hover {
@@ -243,6 +245,14 @@
         border-color: #f5b800;
         box-shadow: 0 0 0 3px rgba(245, 184, 0, 0.23);
         background: #fff9df;
+      }
+
+      .avatar-img {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #ffffff;
       }
 
       .setup-next-btn {
@@ -448,11 +458,59 @@
         outline-offset: 3px;
       }
 
+      .definition-box {
+        margin: 26px auto 0;
+        max-width: 920px;
+        border-radius: 20px;
+        background: #eef6ff;
+        border: 2px solid #a6c7f4;
+        padding: 18px 20px;
+      }
+
+      .definition-title {
+        margin: 0 0 10px;
+        text-align: center;
+        font-size: clamp(1.2rem, 2.6vw, 2rem);
+        text-transform: uppercase;
+        color: #2d5aa8;
+      }
+
+      .definition-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .definition-card {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #c8dcf6;
+        padding: 12px 14px;
+        font-size: 0.98rem;
+        line-height: 1.35;
+      }
+
+      .definition-card strong {
+        display: block;
+        margin-bottom: 6px;
+        color: #1f4480;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+      }
+
       #trainingScreen,
       #testScreen,
       #resultsScreen {
         min-height: 100vh;
         padding: 24px 16px 32px;
+      }
+
+      #trainingScreen {
+        background: linear-gradient(180deg, #e6f5ff 0%, #f7fbff 100%);
+      }
+
+      #testScreen {
+        background: linear-gradient(180deg, #fff3e2 0%, #ffffff 100%);
       }
 
       .phase-wrap {
@@ -471,6 +529,29 @@
 
       .phase-title .blue {
         color: #3f72d1;
+      }
+
+      .mode-banner {
+        margin: 14px auto 0;
+        width: min(90vw, 520px);
+        padding: 10px 16px;
+        border-radius: 999px;
+        text-align: center;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .mode-banner.training {
+        background: #d6f0ff;
+        border: 2px solid #78b8e8;
+        color: #2a5c91;
+      }
+
+      .mode-banner.test {
+        background: #ffe7c3;
+        border: 2px solid #e3a552;
+        color: #874c06;
       }
 
       .phase-card {
@@ -516,6 +597,13 @@
         font-size: clamp(2rem, 4.5vw, 5rem);
         line-height: 1;
         font-weight: 900;
+      }
+
+      .item-name {
+        margin: 6px 0 0;
+        font-size: clamp(1.1rem, 2.5vw, 2rem);
+        font-weight: 700;
+        color: #2a4b74;
       }
 
       .pill-label {
@@ -752,6 +840,22 @@
         font-weight: 700;
       }
 
+      .leaderboard-name {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .leaderboard-avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ffffff;
+        box-shadow: 0 2px 6px rgba(20, 50, 90, 0.25);
+      }
+
       .results-actions {
         margin-top: 24px;
         display: flex;
@@ -796,9 +900,8 @@
           min-height: 0;
         }
 
-        .name-input {
+        .field-input {
           height: 72px;
-          padding-left: 54px;
         }
 
         .avatar-btn {
@@ -831,6 +934,10 @@
           margin-top: 24px;
           height: 86px;
           border-radius: 24px;
+        }
+
+        .definition-grid {
+          grid-template-columns: 1fr;
         }
 
         #trainingScreen,
@@ -892,17 +999,35 @@
             <article class="setup-panel profile">
               <h3 class="setup-panel-title">Your Profile</h3>
               <div class="setup-panel-body">
-                <label class="setup-label" for="nicknameInput">Enter your nickname:</label>
-                <div class="name-input-wrap">
-                  <span class="name-icon" aria-hidden="true">✏️</span>
+                <label class="setup-label">Enter your info:</label>
+                <div class="profile-fields">
+                  <label class="field-label" for="firstNameInput">First name</label>
                   <input
-                    id="nicknameInput"
-                    class="name-input"
+                    id="firstNameInput"
+                    class="field-input"
                     type="text"
-                    placeholder="Type nickname"
-                    maxlength="24"
-                    autocomplete="nickname"
+                    placeholder="First name"
+                    maxlength="20"
+                    autocomplete="given-name"
                   />
+
+                  <label class="field-label" for="lastInitialInput">Last initial</label>
+                  <input
+                    id="lastInitialInput"
+                    class="field-input"
+                    type="text"
+                    placeholder="Last initial"
+                    maxlength="1"
+                    autocomplete="family-name"
+                  />
+
+                  <label class="field-label" for="gradeSelect">Grade</label>
+                  <select id="gradeSelect" class="field-input" aria-label="Grade">
+                    <option value="">Select grade</option>
+                    <option value="6">6th Grade</option>
+                    <option value="7">7th Grade</option>
+                    <option value="8">8th Grade</option>
+                  </select>
                 </div>
               </div>
             </article>
@@ -912,11 +1037,21 @@
               <div class="setup-panel-body">
                 <p class="setup-label">Choose one:</p>
                 <div class="avatar-row" role="group" aria-label="Avatar choices">
-                  <button class="avatar-btn" type="button" data-avatar="a1">🤖</button>
-                  <button class="avatar-btn" type="button" data-avatar="a2">🤖</button>
-                  <button class="avatar-btn" type="button" data-avatar="a3">🦾</button>
-                  <button class="avatar-btn" type="button" data-avatar="a4">🤖</button>
-                  <button class="avatar-btn" type="button" data-avatar="a5">👩‍🚀</button>
+                  <button class="avatar-btn" type="button" data-avatar="assets/avatar1.png">
+                    <img class="avatar-img" src="assets/avatar1.png" alt="Avatar 1" />
+                  </button>
+                  <button class="avatar-btn" type="button" data-avatar="assets/avatar2.png">
+                    <img class="avatar-img" src="assets/avatar2.png" alt="Avatar 2" />
+                  </button>
+                  <button class="avatar-btn" type="button" data-avatar="assets/avatar3.png">
+                    <img class="avatar-img" src="assets/avatar3.png" alt="Avatar 3" />
+                  </button>
+                  <button class="avatar-btn" type="button" data-avatar="assets/avatar4.png">
+                    <img class="avatar-img" src="assets/avatar4.png" alt="Avatar 4" />
+                  </button>
+                  <button class="avatar-btn" type="button" data-avatar="assets/avatar5.png">
+                    <img class="avatar-img" src="assets/avatar5.png" alt="Avatar 5" />
+                  </button>
                 </div>
               </div>
             </article>
@@ -965,25 +1100,45 @@
             </article>
           </div>
 
+          <div class="definition-box" aria-label="Key definitions">
+            <h3 class="definition-title">Key Concepts</h3>
+            <div class="definition-grid">
+              <div class="definition-card">
+                <strong>Happiness</strong>
+                Tracks the AI's mental wellness. Low happiness increases risky choices.
+              </div>
+              <div class="definition-card">
+                <strong>Confidence</strong>
+                How sure the AI is about its choice based on training.
+              </div>
+              <div class="definition-card">
+                <strong>Balance Health</strong>
+                How safe the AI's money level is right now.
+              </div>
+            </div>
+          </div>
+
           <button id="startChallengeBtn" class="challenge-btn" type="button">Start the Challenge</button>
         </div>
       </section>
 
       <section id="trainingScreen" hidden>
         <div class="phase-wrap">
-          <h2 class="phase-title"><span class="blue">Training</span> Month</h2>
+          <h2 class="phase-title"><span class="blue">Training</span> Week</h2>
+          <div class="mode-banner training">Mode: You Train the AI</div>
 
           <div class="phase-card">
             <div id="trainingHead" class="phase-card-head">Round 1 · Day 3 · Item: School Backpack</div>
             <div class="phase-card-body">
               <div class="item-box">
                 <div id="trainingItemEmoji" class="item-emoji">🎒</div>
+                <p id="trainingItemName" class="item-name">School Backpack</p>
                 <p id="trainingItemPrice" class="item-price">$49.99</p>
               </div>
               <div class="brain-box">
                 <p class="brain-title">AI "Brain" View (Placeholder)</p>
                 <div class="metric">
-                  <div class="metric-label"><span>Trainer Label Confidence</span><span id="trainConf">60%</span></div>
+                  <div class="metric-label"><span>AI Label Confidence</span><span id="trainConf">60%</span></div>
                   <div class="meter"><span id="trainConfBar" style="width: 60%"></span></div>
                 </div>
                 <div class="metric">
@@ -1002,7 +1157,7 @@
             </div>
           </div>
 
-          <p class="sub-prompt">How should the student label this item?</p>
+          <p class="sub-prompt">How should you label this item?</p>
           <div class="choice-row">
             <button class="choice-btn need" type="button" data-label="Need">Need</button>
             <button class="choice-btn want" type="button" data-label="Want">Want</button>
@@ -1013,20 +1168,22 @@
 
       <section id="testScreen" hidden>
         <div class="phase-wrap">
-          <h2 class="phase-title"><span class="blue">Test</span> Month</h2>
+          <h2 class="phase-title"><span class="blue">Test</span> Week</h2>
+          <div class="mode-banner test">Mode: AI Decides</div>
 
           <div class="phase-card">
             <div id="testHead" class="phase-card-head">Round 1 · Day 8 · Item: Video Game Console</div>
             <div class="phase-card-body">
               <div class="item-box">
                 <div id="testItemEmoji" class="item-emoji">🎮</div>
+                <p id="testItemName" class="item-name">Video Game Console</p>
                 <p id="testItemPrice" class="item-price">$449.99</p>
                 <p id="aiChoicePill" class="pill-label need">AI Chose: Need</p>
               </div>
               <div class="brain-box">
                 <p class="brain-title">AI "Brain" View (Placeholder)</p>
                 <div class="metric">
-                  <div class="metric-label"><span>Trainer Label Match</span><span id="testMatchPct">60%</span></div>
+                  <div class="metric-label"><span>AI Label Match</span><span id="testMatchPct">60%</span></div>
                   <div class="meter"><span id="testMatchBar" style="width: 60%"></span></div>
                 </div>
                 <div class="metric">
@@ -1072,7 +1229,12 @@
               <tbody id="leaderboardBody">
                 <tr class="highlight">
                   <td>1</td>
-                  <td id="userRowName">You</td>
+                  <td>
+                    <span class="leaderboard-name">
+                      <img id="userRowAvatar" class="leaderboard-avatar" src="assets/avatar1.png" alt="Player avatar" />
+                      <span id="userRowName">You</span>
+                    </span>
+                  </td>
                   <td>98%</td>
                   <td>$850</td>
                 </tr>
@@ -1127,7 +1289,9 @@
       const startButton = document.querySelector(".start-btn");
       const setupNextButton = document.querySelector(".setup-next-btn");
       const startChallengeBtn = document.querySelector("#startChallengeBtn");
-      const nicknameInput = document.querySelector("#nicknameInput");
+      const firstNameInput = document.querySelector("#firstNameInput");
+      const lastInitialInput = document.querySelector("#lastInitialInput");
+      const gradeSelect = document.querySelector("#gradeSelect");
       const avatarButtons = document.querySelectorAll(".avatar-btn");
       const trainingChoiceButtons = document.querySelectorAll(
         "#trainingScreen .choice-btn[data-label]"
@@ -1138,28 +1302,92 @@
       const nextTestDayBtn = document.querySelector("#nextTestDayBtn");
       const restartBtn = document.querySelector("#restartBtn");
       const userRowName = document.querySelector("#userRowName");
+      const userRowAvatar = document.querySelector("#userRowAvatar");
       const aiChoicePill = document.querySelector("#aiChoicePill");
 
-      const trainingItemPool = [
-        { item: "School Backpack", emoji: "🎒", price: "$49.99" },
-        { item: "Notebook Set", emoji: "📚", price: "$19.99" },
-        { item: "Bus Pass", emoji: "🚌", price: "$35.00" },
-        { item: "Lunch Box", emoji: "🍱", price: "$24.00" },
-        { item: "Science Calculator", emoji: "🧮", price: "$69.00" },
+      const itemPool = [
+        { emoji: "🍩", name: "Donut" },
+        { emoji: "🥪", name: "Sandwich" },
+        { emoji: "🍎", name: "Apple" },
+        { emoji: "⚽️", name: "Soccer Ball" },
+        { emoji: "🛼", name: "Roller Skates" },
+        { emoji: "🛹", name: "Skateboard" },
+        { emoji: "🤿", name: "Snorkel Gear" },
+        { emoji: "🎤", name: "Microphone" },
+        { emoji: "🥁", name: "Drum" },
+        { emoji: "🎺", name: "Trumpet" },
+        { emoji: "🎸", name: "Guitar" },
+        { emoji: "🪕", name: "Banjo" },
+        { emoji: "🎷", name: "Saxophone" },
+        { emoji: "🎮", name: "Video Game Console" },
+        { emoji: "🚙", name: "SUV" },
+        { emoji: "🗺️", name: "Map" },
+        { emoji: "⌚️", name: "Watch" },
+        { emoji: "📱", name: "Smartphone" },
+        { emoji: "⌨️", name: "Keyboard" },
+        { emoji: "🖥️", name: "Desktop Monitor" },
+        { emoji: "🖨️", name: "Printer" },
+        { emoji: "🖱️", name: "Mouse" },
+        { emoji: "💻", name: "Laptop" },
+        { emoji: "📷", name: "Camera" },
+        { emoji: "🎥", name: "Video Camera" },
+        { emoji: "📞", name: "Phone" },
+        { emoji: "🔦", name: "Flashlight" },
+        { emoji: "🧯", name: "Fire Extinguisher" },
+        { emoji: "🔭", name: "Telescope" },
+        { emoji: "🧻", name: "Toilet Paper" },
+        { emoji: "🪒", name: "Razor" },
+        { emoji: "🪥", name: "Toothbrush" },
+        { emoji: "🧽", name: "Sponge" },
+        { emoji: "🩹", name: "Bandages" },
+        { emoji: "🪏", name: "Shovel" },
+        { emoji: "🔧", name: "Wrench" },
+        { emoji: "🔨", name: "Hammer" },
+        { emoji: "🪙", name: "Coin" },
+        { emoji: "💎", name: "Gemstone" },
+        { emoji: "🧴", name: "Lotion" },
+        { emoji: "🛌", name: "Bed" },
+        { emoji: "🧸", name: "Teddy Bear" },
+        { emoji: "🪑", name: "Chair" },
+        { emoji: "📓", name: "Notebook" },
+        { emoji: "✏️", name: "Pencil" },
+        { emoji: "✂️", name: "Scissors" },
+        { emoji: "🔒", name: "Padlock" },
+        { emoji: "📎", name: "Paperclip" },
+        { emoji: "🥨", name: "Pretzel" },
+        { emoji: "🧀", name: "Cheese" },
+        { emoji: "🧃", name: "Juice Box" },
+        { emoji: "🎧", name: "Headphones" },
+        { emoji: "🥁", name: "Drum Kit" },
+        { emoji: "🎲", name: "Dice" },
+        { emoji: "🎳", name: "Bowling Ball" },
+        { emoji: "🗡️", name: "Toy Sword" },
+        { emoji: "🍴", name: "Fork and Knife" },
+        { emoji: "🧁", name: "Cupcake" },
+        { emoji: "🔋", name: "Battery" },
+        { emoji: "🧹", name: "Broom" },
       ];
 
-      const testItemPool = [
-        { item: "Video Game Console", emoji: "🎮", price: "$449.99", aiLabel: "Need" },
-        { item: "VR Headset", emoji: "🥽", price: "$599.99", aiLabel: "Want" },
-        { item: "Pizza Party", emoji: "🍕", price: "$15.00", aiLabel: "Want" },
-        { item: "Phone Upgrade", emoji: "📱", price: "$799.00", aiLabel: "Need" },
-        { item: "Sneaker Drop", emoji: "👟", price: "$180.00", aiLabel: "Want" },
+      const pricePool = [
+        3.5, 6, 2, 18, 45, 65, 38, 25, 55, 90,
+        140, 95, 160, 449.99, 28000, 10, 60, 799, 39, 200,
+        130, 25, 899, 320, 640, 40, 20, 55, 220, 8,
+        6, 5, 4, 9, 28, 15, 18, 2, 90, 350,
+        25, 120, 5, 3, 12, 9, 2, 4, 7, 110,
+        20, 15, 45, 12, 14, 6,
       ];
 
       let selectedAvatar = "";
       let currentDay = 1;
       let selectedTrainingLabel = "";
       let selectedTestFeedback = "";
+
+      const startingValues = {
+        balance: 1500,
+        savings: 50,
+        happiness: 80,
+        confidence: 60,
+      };
 
       function showScreen(id) {
         screenIds.forEach((screenId) => {
@@ -1200,20 +1428,26 @@
         const phase = getPhase(day);
         const dayInBlock = ((day - 1) % 10) + 1;
 
-        const confidence = Math.min(95, 52 + day * 1.3);
-        const balancePct = Math.max(25, 68 - day);
-        const happinessPct = Math.max(18, 85 - Math.floor(day * 1.4) + (phase === "test" ? -5 : 4));
-        const balanceAmount = Math.max(220, 1600 - day * 38);
-        const savingsAmount = Math.min(280, 40 + day * 6);
+        const confidence = Math.min(95, startingValues.confidence + day * 0.9);
+        const balancePct = Math.max(18, 70 - day);
+        const happinessPct = Math.max(
+          15,
+          startingValues.happiness - Math.floor(day * 1.2) + (phase === "test" ? -6 : 3)
+        );
+        const balanceAmount = Math.max(120, startingValues.balance - day * 32);
+        const savingsAmount = Math.min(300, startingValues.savings + day * 5);
+        const itemIndex = (day - 1) % itemPool.length;
+        const item = itemPool[itemIndex];
+        const priceValue = pricePool[itemIndex % pricePool.length];
+        const price = `$${priceValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
         if (phase === "training") {
-          const item = trainingItemPool[(day - 1) % trainingItemPool.length];
           return {
             phase,
             round,
             day,
             dayInBlock,
-            item,
+            item: { ...item, price },
             confidence: Math.round(confidence),
             balancePct: Math.round(balancePct),
             happinessPct: Math.round(happinessPct),
@@ -1222,14 +1456,17 @@
           };
         }
 
-        const item = testItemPool[(day - 1) % testItemPool.length];
         const matchPct = Math.min(97, 55 + day * 1.1);
         return {
           phase,
           round,
           day,
           dayInBlock,
-          item,
+          item: {
+            ...item,
+            price,
+            aiLabel: itemIndex % 2 === 0 ? "Need" : "Want",
+          },
           matchPct: Math.round(matchPct),
           balancePct: Math.round(balancePct),
           happinessPct: Math.round(happinessPct),
@@ -1239,8 +1476,10 @@
       }
 
       function updateSetupNextState() {
-        const hasName = Boolean(nicknameInput?.value.trim());
-        const isReady = hasName && Boolean(selectedAvatar);
+        const firstName = firstNameInput?.value.trim();
+        const lastInitial = lastInitialInput?.value.trim();
+        const grade = gradeSelect?.value;
+        const isReady = Boolean(firstName && lastInitial && grade && selectedAvatar);
 
         setupNextButton.disabled = !isReady;
         setupNextButton.classList.toggle("is-enabled", isReady);
@@ -1249,9 +1488,10 @@
       function renderTrainingDay(data) {
         setText(
           "#trainingHead",
-          `Round ${data.round} · Day ${data.day} · Item: ${data.item.item}`
+          `Round ${data.round} · Day ${data.day} · Item: ${data.item.name}`
         );
         setText("#trainingItemEmoji", data.item.emoji);
+        setText("#trainingItemName", data.item.name);
         setText("#trainingItemPrice", data.item.price);
         setText("#trainConf", `${data.confidence}%`);
         setText("#trainBalancePct", `${data.balancePct}%`);
@@ -1268,8 +1508,9 @@
       }
 
       function renderTestDay(data) {
-        setText("#testHead", `Round ${data.round} · Day ${data.day} · Item: ${data.item.item}`);
+        setText("#testHead", `Round ${data.round} · Day ${data.day} · Item: ${data.item.name}`);
         setText("#testItemEmoji", data.item.emoji);
+        setText("#testItemName", data.item.name);
         setText("#testItemPrice", data.item.price);
         setText("#testMatchPct", `${data.matchPct}%`);
         setText("#testBalancePct", `${data.balancePct}%`);
@@ -1317,8 +1558,14 @@
       }
 
       function updateResults() {
-        const nickname = nicknameInput?.value.trim() || "You";
-        userRowName.textContent = nickname;
+        const firstName = firstNameInput?.value.trim();
+        const lastInitial = lastInitialInput?.value.trim();
+        const suffix = lastInitial ? `${lastInitial.toUpperCase()}.` : "";
+        const displayName = firstName ? `${firstName} ${suffix}`.trim() : "You";
+        userRowName.textContent = displayName;
+        if (selectedAvatar) {
+          userRowAvatar.src = selectedAvatar;
+        }
       }
 
       function resetFlow() {
@@ -1326,20 +1573,25 @@
         selectedTrainingLabel = "";
         selectedTestFeedback = "";
         selectedAvatar = "";
-        nicknameInput.value = "";
+        firstNameInput.value = "";
+        lastInitialInput.value = "";
+        gradeSelect.value = "";
         avatarButtons.forEach((button) => {
           button.classList.remove("is-selected");
           button.setAttribute("aria-pressed", "false");
         });
         setupNextButton.classList.remove("is-enabled");
         updateSetupNextState();
+        userRowAvatar.src = "assets/avatar1.png";
       }
 
       startButton?.addEventListener("click", () => {
         showScreen("setupScreen");
       });
 
-      nicknameInput?.addEventListener("input", updateSetupNextState);
+      firstNameInput?.addEventListener("input", updateSetupNextState);
+      lastInitialInput?.addEventListener("input", updateSetupNextState);
+      gradeSelect?.addEventListener("change", updateSetupNextState);
 
       avatarButtons.forEach((button) => {
         button.addEventListener("click", () => {
