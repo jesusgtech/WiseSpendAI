@@ -864,6 +864,13 @@
         flex-wrap: wrap;
       }
 
+      .results-note {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 0.95rem;
+        color: #3a5d86;
+      }
+
       @media (max-width: 640px) {
         #welcomeScreen {
           padding: 16px 14px 18px;
@@ -1267,8 +1274,10 @@
           </div>
 
           <div class="results-actions">
+            <button id="exportBtn" class="action-btn secondary" type="button">Export Data (JSON)</button>
             <button id="restartBtn" class="action-btn secondary" type="button">Play Again</button>
           </div>
+          <p class="results-note">Session data is saved locally for backup.</p>
         </div>
       </section>
     </main>
@@ -1301,6 +1310,7 @@
       const testYesBtn = document.querySelector("#testYesBtn");
       const nextTestDayBtn = document.querySelector("#nextTestDayBtn");
       const restartBtn = document.querySelector("#restartBtn");
+      const exportBtn = document.querySelector("#exportBtn");
       const userRowName = document.querySelector("#userRowName");
       const userRowAvatar = document.querySelector("#userRowAvatar");
       const aiChoicePill = document.querySelector("#aiChoicePill");
@@ -1381,6 +1391,15 @@
       let currentDay = 1;
       let selectedTrainingLabel = "";
       let selectedTestFeedback = "";
+      let sessionStartTime = Date.now();
+      let lastDecisionTimestamp = Date.now();
+      let activeDayData = null;
+      let sessionLog = [];
+      let sessionId = "";
+      let anonymousStudentId = "";
+      let classificationLog = [];
+      let decisionTreeLog = [];
+      let reflectionLog = [];
 
       const startingValues = {
         balance: 1500,
@@ -1394,6 +1413,105 @@
           screenElements[screenId].hidden = screenId !== id;
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function generateUUID() {
+        if (crypto?.randomUUID) {
+          return crypto.randomUUID();
+        }
+        return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (char) => {
+          const rand = (Math.random() * 16) | 0;
+          const value = char === "x" ? rand : (rand & 0x3) | 0x8;
+          return value.toString(16);
+        });
+      }
+
+      function generateAnonymousStudentId() {
+        const raw = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+        return `anon_${raw}`;
+      }
+
+      function logEvent(type, payload = {}) {
+        sessionLog.push({
+          type,
+          day: currentDay,
+          timestamp: new Date().toISOString(),
+          msSinceLastDecision: Date.now() - lastDecisionTimestamp,
+          payload,
+        });
+        lastDecisionTimestamp = Date.now();
+      }
+
+      function logClassification({ item, studentChoice, correctChoice }) {
+        classificationLog.push({
+          sessionID: sessionId,
+          itemID: item?.id || "",
+          studentChoice,
+          correctChoice: correctChoice ?? null,
+          responseTimeMs: Date.now() - lastDecisionTimestamp,
+          timestamp: new Date().toISOString(),
+        });
+      }
+
+      function logDecisionTree({ item, decisionPath, answers, finalClassification, timeSpentMs }) {
+        decisionTreeLog.push({
+          sessionID: sessionId,
+          itemID: item?.id || "",
+          decisionPath,
+          answers,
+          finalClassification,
+          timeSpentMs,
+        });
+      }
+
+      function logReflection({ questionId, selectedAnswer, explanationText, timeSpentMs }) {
+        reflectionLog.push({
+          sessionID: sessionId,
+          questionID: questionId,
+          selectedAnswer,
+          explanationText,
+          timeSpentMs,
+        });
+      }
+
+      function buildStudentSessionSummary() {
+        const firstName = firstNameInput?.value.trim();
+        const lastInitial = lastInitialInput?.value.trim();
+        const suffix = lastInitial ? `${lastInitial.toUpperCase()}.` : "";
+        const displayName = firstName ? `${firstName} ${suffix}`.trim() : "You";
+
+        const accuracyValues = classificationLog
+          .filter((entry) => entry.correctChoice !== null)
+          .map((entry) => entry.studentChoice === entry.correctChoice);
+        const totalAccuracy =
+          accuracyValues.length > 0
+            ? Math.round((accuracyValues.filter(Boolean).length / accuracyValues.length) * 100)
+            : null;
+
+        const avgResponseTimeMs =
+          classificationLog.length > 0
+            ? Math.round(
+                classificationLog.reduce((sum, entry) => sum + entry.responseTimeMs, 0) /
+                  classificationLog.length
+              )
+            : null;
+
+        return {
+          sessionID: sessionId,
+          anonymousStudentID: anonymousStudentId,
+          studentProfile: {
+            firstName: firstName || "",
+            lastInitial: lastInitial || "",
+            grade: gradeSelect?.value || "",
+            avatar: selectedAvatar || "",
+            displayName,
+          },
+          startTimestamp: new Date(sessionStartTime).toISOString(),
+          endTimestamp: new Date().toISOString(),
+          totalClassificationAccuracy: totalAccuracy,
+          avgResponseTimeMs,
+          startingValues,
+        };
       }
 
       function setBar(id, value) {
@@ -1437,7 +1555,7 @@
         const balanceAmount = Math.max(120, startingValues.balance - day * 32);
         const savingsAmount = Math.min(300, startingValues.savings + day * 5);
         const itemIndex = (day - 1) % itemPool.length;
-        const item = itemPool[itemIndex];
+        const item = { ...itemPool[itemIndex], id: `item_${itemIndex + 1}` };
         const priceValue = pricePool[itemIndex % pricePool.length];
         const price = `$${priceValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
@@ -1486,6 +1604,7 @@
       }
 
       function renderTrainingDay(data) {
+        activeDayData = data;
         setText(
           "#trainingHead",
           `Round ${data.round} · Day ${data.day} · Item: ${data.item.name}`
@@ -1508,6 +1627,7 @@
       }
 
       function renderTestDay(data) {
+        activeDayData = data;
         setText("#testHead", `Round ${data.round} · Day ${data.day} · Item: ${data.item.name}`);
         setText("#testItemEmoji", data.item.emoji);
         setText("#testItemName", data.item.name);
@@ -1545,6 +1665,12 @@
           renderTestDay(data);
           showScreen("testScreen");
         }
+        logEvent("view_day", {
+          phase: data.phase,
+          round: data.round,
+          dayInBlock: data.dayInBlock,
+          item: data.item,
+        });
       }
 
       function goToNextDay() {
@@ -1566,6 +1692,36 @@
         if (selectedAvatar) {
           userRowAvatar.src = selectedAvatar;
         }
+
+        const summary = buildStudentSessionSummary();
+        localStorage.setItem(
+          "wiseSpendLatestSession",
+          JSON.stringify({
+            studentSession: summary,
+            classifications: classificationLog,
+            decisionTree: decisionTreeLog,
+            reflections: reflectionLog,
+            events: sessionLog,
+          })
+        );
+      }
+
+      function exportSessionData() {
+        const summary = buildStudentSessionSummary();
+        const payload = {
+          studentSession: summary,
+          classifications: classificationLog,
+          decisionTree: decisionTreeLog,
+          reflections: reflectionLog,
+          events: sessionLog,
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = `wisespend-session-${Date.now()}.json`;
+        anchor.click();
+        URL.revokeObjectURL(url);
       }
 
       function resetFlow() {
@@ -1573,6 +1729,15 @@
         selectedTrainingLabel = "";
         selectedTestFeedback = "";
         selectedAvatar = "";
+        sessionLog = [];
+        classificationLog = [];
+        decisionTreeLog = [];
+        reflectionLog = [];
+        sessionId = "";
+        anonymousStudentId = "";
+        sessionStartTime = Date.now();
+        lastDecisionTimestamp = Date.now();
+        activeDayData = null;
         firstNameInput.value = "";
         lastInitialInput.value = "";
         gradeSelect.value = "";
@@ -1586,6 +1751,7 @@
       }
 
       startButton?.addEventListener("click", () => {
+        logEvent("start_clicked");
         showScreen("setupScreen");
       });
 
@@ -1608,12 +1774,27 @@
 
       setupNextButton?.addEventListener("click", () => {
         if (!setupNextButton.disabled) {
+          if (!sessionId) {
+            sessionId = generateUUID();
+          }
+          if (!anonymousStudentId) {
+            anonymousStudentId = generateAnonymousStudentId();
+          }
+          sessionStartTime = Date.now();
+          lastDecisionTimestamp = Date.now();
+          logEvent("setup_complete", {
+            firstName: firstNameInput?.value.trim() || "",
+            lastInitial: lastInitialInput?.value.trim() || "",
+            grade: gradeSelect?.value || "",
+            avatar: selectedAvatar || "",
+          });
           showScreen("tutorialScreen");
         }
       });
 
       startChallengeBtn?.addEventListener("click", () => {
         currentDay = 1;
+        logEvent("challenge_start");
         renderCurrentDay();
       });
 
@@ -1623,6 +1804,16 @@
           button.classList.add("is-selected");
           selectedTrainingLabel = button.dataset.label || "";
           nextTrainingDayBtn.disabled = !selectedTrainingLabel;
+          logEvent("training_choice", {
+            label: selectedTrainingLabel,
+            item: activeDayData?.item || null,
+            phase: "training",
+          });
+          logClassification({
+            item: activeDayData?.item || null,
+            studentChoice: selectedTrainingLabel,
+            correctChoice: null,
+          });
         });
       });
 
@@ -1638,6 +1829,17 @@
         clearSelection([testNoBtn, testYesBtn]);
         testNoBtn.classList.add("is-selected");
         nextTestDayBtn.disabled = false;
+        logEvent("test_feedback", {
+          feedback: selectedTestFeedback,
+          aiChoice: activeDayData?.item?.aiLabel || "",
+          item: activeDayData?.item || null,
+          phase: "test",
+        });
+        logClassification({
+          item: activeDayData?.item || null,
+          studentChoice: selectedTestFeedback,
+          correctChoice: null,
+        });
       });
 
       testYesBtn?.addEventListener("click", () => {
@@ -1645,6 +1847,17 @@
         clearSelection([testNoBtn, testYesBtn]);
         testYesBtn.classList.add("is-selected");
         nextTestDayBtn.disabled = false;
+        logEvent("test_feedback", {
+          feedback: selectedTestFeedback,
+          aiChoice: activeDayData?.item?.aiLabel || "",
+          item: activeDayData?.item || null,
+          phase: "test",
+        });
+        logClassification({
+          item: activeDayData?.item || null,
+          studentChoice: selectedTestFeedback,
+          correctChoice: null,
+        });
       });
 
       nextTestDayBtn?.addEventListener("click", () => {
@@ -1657,6 +1870,10 @@
       restartBtn?.addEventListener("click", () => {
         resetFlow();
         showScreen("welcomeScreen");
+      });
+
+      exportBtn?.addEventListener("click", () => {
+        exportSessionData();
       });
     </script>
   </body>
