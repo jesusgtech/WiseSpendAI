@@ -1394,6 +1394,7 @@
       let sessionStartTime = Date.now();
       let lastDecisionTimestamp = Date.now();
       let activeDayData = null;
+      let activeDecision = null;
       let sessionLog = [];
       let sessionId = "";
       let anonymousStudentId = "";
@@ -1565,12 +1566,14 @@
             round,
             day,
             dayInBlock,
-            item: { ...item, price },
+            item: { ...item, price, priceValue },
             confidence: Math.round(confidence),
             balancePct: Math.round(balancePct),
             happinessPct: Math.round(happinessPct),
             balanceText: `Balance: $${balanceAmount.toLocaleString()}`,
             savingsText: `Savings: $${savingsAmount.toLocaleString()}`,
+            balanceAmount,
+            savingsAmount,
           };
         }
 
@@ -1583,14 +1586,51 @@
           item: {
             ...item,
             price,
-            aiLabel: itemIndex % 2 === 0 ? "Need" : "Want",
+            priceValue,
           },
           matchPct: Math.round(matchPct),
           balancePct: Math.round(balancePct),
           happinessPct: Math.round(happinessPct),
           balanceText: `Balance: $${balanceAmount.toLocaleString()}`,
           savingsText: `Savings: $${savingsAmount.toLocaleString()}`,
+          balanceAmount,
+          savingsAmount,
         };
+      }
+
+      function evaluateDecisionTree(item, state) {
+        const path = [];
+        const answers = [];
+
+        const isExpensive = item.priceValue >= 100;
+        path.push("Price >= $100?");
+        answers.push(isExpensive ? "Yes" : "No");
+
+        const lowBalance = state.balanceAmount < 200;
+        path.push("Balance < $200?");
+        answers.push(lowBalance ? "Yes" : "No");
+
+        const lowHappiness = state.happinessPct < 35;
+        path.push("Happiness < 35%?");
+        answers.push(lowHappiness ? "Yes" : "No");
+
+        const lowConfidence = state.confidence < 55;
+        path.push("Confidence < 55%?");
+        answers.push(lowConfidence ? "Yes" : "No");
+
+        let finalClassification = "Need";
+
+        if (lowBalance && isExpensive) {
+          finalClassification = "Want";
+        } else if (lowHappiness && !isExpensive) {
+          finalClassification = "Want";
+        } else if (lowConfidence && isExpensive) {
+          finalClassification = "Want";
+        } else if (!isExpensive && !lowBalance) {
+          finalClassification = "Need";
+        }
+
+        return { decisionPath: path, answers, finalClassification };
       }
 
       function updateSetupNextState() {
@@ -1641,13 +1681,29 @@
         setBar("#testBalanceBar", data.balancePct);
         setBar("#testHappinessBar", data.happinessPct);
 
-        aiChoicePill.textContent = `AI Chose: ${data.item.aiLabel}`;
-        aiChoicePill.classList.toggle("need", data.item.aiLabel === "Need");
-        aiChoicePill.classList.toggle("want", data.item.aiLabel === "Want");
+        const decision = evaluateDecisionTree(data.item, {
+          balanceAmount: data.balanceAmount,
+          savingsAmount: data.savingsAmount,
+          happinessPct: data.happinessPct,
+          confidence: data.matchPct,
+        });
+        activeDecision = decision;
+
+        aiChoicePill.textContent = `AI Chose: ${decision.finalClassification}`;
+        aiChoicePill.classList.toggle("need", decision.finalClassification === "Need");
+        aiChoicePill.classList.toggle("want", decision.finalClassification === "Want");
 
         clearSelection([testNoBtn, testYesBtn]);
         selectedTestFeedback = "";
         nextTestDayBtn.disabled = true;
+
+        logDecisionTree({
+          item: data.item,
+          decisionPath: decision.decisionPath,
+          answers: decision.answers,
+          finalClassification: decision.finalClassification,
+          timeSpentMs: Date.now() - lastDecisionTimestamp,
+        });
 
         if (currentDay === 30) {
           nextTestDayBtn.textContent = "See Results";
@@ -1831,7 +1887,7 @@
         nextTestDayBtn.disabled = false;
         logEvent("test_feedback", {
           feedback: selectedTestFeedback,
-          aiChoice: activeDayData?.item?.aiLabel || "",
+          aiChoice: activeDecision?.finalClassification || "",
           item: activeDayData?.item || null,
           phase: "test",
         });
@@ -1849,7 +1905,7 @@
         nextTestDayBtn.disabled = false;
         logEvent("test_feedback", {
           feedback: selectedTestFeedback,
-          aiChoice: activeDayData?.item?.aiLabel || "",
+          aiChoice: activeDecision?.finalClassification || "",
           item: activeDayData?.item || null,
           phase: "test",
         });
