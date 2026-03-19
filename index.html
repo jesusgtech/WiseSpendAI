@@ -635,11 +635,7 @@
       }
 
       .phase-header-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        flex-wrap: wrap;
+        display: block;
       }
 
       .phase-title {
@@ -653,43 +649,6 @@
 
       .phase-title .blue {
         color: #3f72d1;
-      }
-
-      .mode-banner {
-        margin: 10px auto 0;
-        width: min(90vw, 520px);
-        padding: 8px 14px;
-        border-radius: 999px;
-        text-align: center;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        font-size: 0.92rem;
-      }
-
-      .phase-header-row .phase-title,
-      .phase-header-row .mode-banner {
-        flex: 1 1 320px;
-        margin: 0;
-      }
-
-      .phase-header-row .mode-banner {
-        width: auto;
-        padding: 16px 18px;
-        font-size: clamp(1.7rem, 4.8vw, 3.5rem);
-        line-height: 1;
-      }
-
-      .mode-banner.training {
-        background: #d6f0ff;
-        border: 2px solid #78b8e8;
-        color: #2a5c91;
-      }
-
-      .mode-banner.test {
-        background: #ffe7c3;
-        border: 2px solid #e3a552;
-        color: #874c06;
       }
 
       .phase-card {
@@ -1445,7 +1404,6 @@
           </div>
           <div class="phase-header-row">
             <h2 class="phase-title"><span class="blue">Training</span> Time!</h2>
-            <div class="mode-banner training">Mode: You Train the AI</div>
           </div>
 
           <div class="phase-card">
@@ -1495,7 +1453,6 @@
           </div>
           <div class="phase-header-row">
             <h2 class="phase-title"><span class="blue">Test</span> Time!</h2>
-            <div class="mode-banner test">Mode: AI Decides</div>
           </div>
 
           <div class="phase-card">
