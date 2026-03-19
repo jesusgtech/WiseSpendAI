@@ -118,7 +118,7 @@
 
       #setupScreen {
         min-height: 100vh;
-        padding: 26px 20px 30px;
+        padding: 18px 18px 22px;
         background: radial-gradient(circle at 15% 20%, #e8f3ff 0%, #f6f0ff 44%, #fef8ff 100%);
       }
 
@@ -128,9 +128,9 @@
       }
 
       .setup-title {
-        margin: 0 0 24px;
+        margin: 0 0 16px;
         text-align: center;
-        font-size: clamp(2rem, 5vw, 4rem);
+        font-size: clamp(1.8rem, 4.6vw, 3.4rem);
         letter-spacing: 0.01em;
         color: #4b4b4b;
         text-transform: uppercase;
@@ -139,14 +139,14 @@
       .setup-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 22px;
+        gap: 16px;
       }
 
       .setup-panel {
         border-radius: 32px;
         border: 4px solid transparent;
-        padding: 18px 18px 20px;
-        min-height: 330px;
+        padding: 14px 14px 16px;
+        min-height: 290px;
       }
 
       .setup-panel.profile {
@@ -163,32 +163,32 @@
         margin: 0;
         color: #eaf8ff;
         text-align: center;
-        font-size: clamp(1.6rem, 3vw, 3rem);
+        font-size: clamp(1.35rem, 2.6vw, 2.4rem);
         font-weight: 800;
         text-transform: uppercase;
       }
 
       .setup-panel-body {
-        margin-top: 16px;
+        margin-top: 12px;
         border-radius: 24px;
-        min-height: 230px;
+        min-height: 205px;
         background: linear-gradient(160deg, #f5f0ff 0%, #deecf9 100%);
-        padding: 26px 24px;
+        padding: 18px 18px;
       }
 
       .setup-label {
         display: block;
-        margin-bottom: 14px;
+        margin-bottom: 10px;
         text-align: center;
         color: #121212;
-        font-size: clamp(1.2rem, 2.2vw, 2.2rem);
+        font-size: clamp(1.05rem, 2vw, 1.8rem);
         font-weight: 500;
         text-transform: uppercase;
       }
 
       .profile-fields {
         display: grid;
-        gap: 14px;
+        gap: 10px;
       }
 
       .field-label {
@@ -201,11 +201,11 @@
 
       .field-input {
         width: 100%;
-        height: 90px;
+        height: 72px;
         border-radius: 999px;
         border: 3px solid #d5d9e6;
         padding: 0 24px;
-        font-size: clamp(1.2rem, 2vw, 1.8rem);
+        font-size: clamp(1.05rem, 1.8vw, 1.45rem);
         color: #202020;
         background: #ffffff;
       }
@@ -224,8 +224,8 @@
       }
 
       .avatar-btn {
-        width: 88px;
-        height: 88px;
+        width: 78px;
+        height: 78px;
         border-radius: 20px;
         border: 3px solid transparent;
         background: rgba(255, 255, 255, 0.78);
@@ -248,8 +248,8 @@
       }
 
       .avatar-img {
-        width: 72px;
-        height: 72px;
+        width: 62px;
+        height: 62px;
         border-radius: 50%;
         object-fit: cover;
         border: 3px solid #ffffff;
@@ -291,15 +291,15 @@
       }
 
       .setup-next-btn {
-        margin: 28px auto 0;
+        margin: 20px auto 0;
         display: block;
         width: min(92vw, 520px);
-        height: 104px;
+        height: 82px;
         border-radius: 999px;
         border: 2px solid #7f8a98;
         background: linear-gradient(180deg, #9ba3ad 0%, #8a939f 100%);
         color: #f5f8fb;
-        font-size: clamp(2rem, 5vw, 4rem);
+        font-size: clamp(1.5rem, 4vw, 2.9rem);
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.02em;
@@ -328,7 +328,7 @@
 
       #tutorialScreen {
         min-height: 100vh;
-        padding: 24px 22px 32px;
+        padding: 16px 18px 20px;
       }
 
       .tutorial-wrap {
@@ -339,7 +339,7 @@
       .tutorial-title {
         margin: 0;
         text-align: center;
-        font-size: clamp(2rem, 5.3vw, 4rem);
+        font-size: clamp(1.7rem, 4.6vw, 3.2rem);
         line-height: 1.04;
         font-weight: 800;
         letter-spacing: -0.02em;
@@ -371,10 +371,10 @@
       }
 
       .tutorial-grid {
-        margin-top: 28px;
+        margin-top: 18px;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 18px;
+        gap: 14px;
       }
 
       .step-card { 
@@ -386,16 +386,16 @@
       }
 
       .step-head {
-        padding: 14px 16px;
+        padding: 10px 12px;
         background: #6ab2e9;
         color: #f5fbff;
         text-align: center;
-        font-size: clamp(1rem, 1.3vw, 1.55rem);
+        font-size: clamp(0.92rem, 1.1vw, 1.25rem);
         font-weight: 800;
       }
 
       .step-visual {
-        height: 180px;
+        height: 145px;
         display: grid;
         place-items: center;
         background: #d9eefb;
@@ -439,16 +439,16 @@
 
       .step-copy {
         margin: 0;
-        padding: 14px 16px 18px;
+        padding: 10px 12px 12px;
         text-align: center;
-        font-size: clamp(1rem, 2vw, 1.35rem);
+        font-size: clamp(0.92rem, 1.6vw, 1.08rem);
         line-height: 1.25;
         font-weight: 700;
       }
 
       .progress-track {
-        margin: 0 18px 16px;
-        height: 22px;
+        margin: 0 14px 12px;
+        height: 18px;
         border-radius: 999px;
         background: #cde4f8;
         display: flex;
@@ -464,15 +464,15 @@
       }
 
       .challenge-btn {
-        margin: 42px auto 0;
+        margin: 24px auto 0;
         display: block;
         width: min(90vw, 640px);
-        height: 112px;
-        border-radius: 34px;
+        height: 84px;
+        border-radius: 28px;
         border: 2px solid #4f84de;
         background: linear-gradient(90deg, #4f84de 0%, #3a72d8 100%);
         color: #f6fbff;
-        font-size: clamp(1.6rem, 4vw, 3rem);
+        font-size: clamp(1.35rem, 3.5vw, 2.4rem);
         font-weight: 800;
         letter-spacing: 0.02em;
         text-transform: uppercase;
@@ -494,18 +494,18 @@
       }
 
       .definition-box {
-        margin: 26px auto 0;
+        margin: 18px auto 0;
         max-width: 920px;
         border-radius: 20px;
         background: #eef6ff;
         border: 2px solid #a6c7f4;
-        padding: 18px 20px;
+        padding: 14px 16px;
       }
 
       .definition-title {
-        margin: 0 0 10px;
+        margin: 0 0 8px;
         text-align: center;
-        font-size: clamp(1.2rem, 2.6vw, 2rem);
+        font-size: clamp(1rem, 2.2vw, 1.55rem);
         text-transform: uppercase;
         color: #2d5aa8;
       }
@@ -520,8 +520,8 @@
         background: #ffffff;
         border-radius: 16px;
         border: 1px solid #c8dcf6;
-        padding: 12px 14px;
-        font-size: 0.98rem;
+        padding: 10px 12px;
+        font-size: 0.9rem;
         line-height: 1.35;
       }
 
@@ -534,14 +534,19 @@
       }
 
       #trainingScreen,
+      #reflectionScreen,
       #testScreen,
       #resultsScreen {
         min-height: 100vh;
-        padding: 24px 16px 32px;
+        padding: 16px 14px 20px;
       }
 
       #trainingScreen {
         background: linear-gradient(180deg, #e6f5ff 0%, #f7fbff 100%);
+      }
+
+      #reflectionScreen {
+        background: linear-gradient(180deg, #eef4ff 0%, #fffaf2 100%);
       }
 
       #testScreen {
@@ -556,7 +561,7 @@
       .phase-title {
         margin: 0;
         text-align: center;
-        font-size: clamp(2.1rem, 5.6vw, 4.8rem);
+        font-size: clamp(1.7rem, 4.8vw, 3.5rem);
         line-height: 1;
         letter-spacing: 0.01em;
         text-transform: uppercase;
@@ -567,14 +572,15 @@
       }
 
       .mode-banner {
-        margin: 14px auto 0;
+        margin: 10px auto 0;
         width: min(90vw, 520px);
-        padding: 10px 16px;
+        padding: 8px 14px;
         border-radius: 999px;
         text-align: center;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.04em;
+        font-size: 0.92rem;
       }
 
       .mode-banner.training {
@@ -590,7 +596,7 @@
       }
 
       .phase-card {
-        margin-top: 22px;
+        margin-top: 16px;
         background: #ffffff;
         border: 4px solid #9ed1ef;
         border-radius: 30px;
@@ -602,41 +608,41 @@
         background: linear-gradient(180deg, #7dc2eb 0%, #6fb8e4 100%);
         color: #eef9ff;
         text-align: center;
-        padding: 14px 10px;
-        font-size: clamp(1.4rem, 3vw, 3rem);
+        padding: 10px 10px;
+        font-size: clamp(1.15rem, 2.4vw, 2.15rem);
         font-weight: 700;
       }
 
       .phase-card-body {
         display: grid;
         grid-template-columns: 1.3fr 1fr;
-        gap: 18px;
-        padding: 18px;
+        gap: 14px;
+        padding: 14px;
       }
 
       .item-box {
         border-radius: 24px;
         border: 2px solid #d3e5f2;
         background: #ffffff;
-        padding: 16px;
+        padding: 12px;
         text-align: center;
       }
 
       .item-emoji {
-        font-size: clamp(3rem, 9vw, 7rem);
+        font-size: clamp(2.6rem, 8vw, 5.6rem);
         line-height: 1.1;
       }
 
       .item-price {
-        margin: 8px 0 10px;
-        font-size: clamp(2rem, 4.5vw, 5rem);
+        margin: 6px 0 8px;
+        font-size: clamp(1.7rem, 4vw, 3.8rem);
         line-height: 1;
         font-weight: 900;
       }
 
       .item-name {
-        margin: 6px 0 0;
-        font-size: clamp(1.1rem, 2.5vw, 2rem);
+        margin: 4px 0 0;
+        font-size: clamp(1rem, 2vw, 1.45rem);
         font-weight: 700;
         color: #2a4b74;
       }
@@ -644,12 +650,12 @@
       .pill-label {
         margin: 0 auto;
         width: fit-content;
-        min-width: 200px;
-        padding: 12px 26px;
+        min-width: 170px;
+        padding: 10px 22px;
         border-radius: 999px;
         border: 2px solid;
         color: #ffffff;
-        font-size: clamp(1.5rem, 3.6vw, 3.4rem);
+        font-size: clamp(1.2rem, 3vw, 2.3rem);
         text-transform: uppercase;
         font-weight: 800;
       }
@@ -668,33 +674,33 @@
         border-radius: 24px;
         border: 2px solid #d3e5f2;
         background: linear-gradient(165deg, #edf8ff 0%, #e2f1fc 100%);
-        padding: 16px;
+        padding: 12px;
       }
 
       .brain-title {
-        margin: 0 0 10px;
+        margin: 0 0 8px;
         text-align: center;
-        font-size: clamp(1rem, 2vw, 1.5rem);
+        font-size: clamp(0.92rem, 1.7vw, 1.2rem);
         color: #3a5f89;
         font-weight: 800;
         text-transform: uppercase;
       }
 
       .metric {
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }
 
       .metric-label {
         display: flex;
         justify-content: space-between;
-        font-size: 1rem;
+        font-size: 0.92rem;
         font-weight: 700;
         margin-bottom: 4px;
       }
 
       .meter {
         width: 100%;
-        height: 24px;
+        height: 20px;
         border-radius: 999px;
         border: 2px solid #7ea2c0;
         background: #eaf4fb;
@@ -720,14 +726,14 @@
         display: flex;
         justify-content: space-between;
         gap: 10px;
-        margin-top: 12px;
-        font-size: 1rem;
+        margin-top: 8px;
+        font-size: 0.92rem;
         font-weight: 700;
         color: #1f3a55;
       }
 
       .choice-row {
-        margin-top: 18px;
+        margin-top: 14px;
         display: flex;
         justify-content: center;
         gap: 14px;
@@ -735,12 +741,12 @@
       }
 
       .choice-btn {
-        min-width: 180px;
-        padding: 14px 28px;
+        min-width: 160px;
+        padding: 12px 24px;
         border-radius: 999px;
         border: 2px solid;
         color: #ffffff;
-        font-size: clamp(1.4rem, 3vw, 2.8rem);
+        font-size: clamp(1.15rem, 2.6vw, 2rem);
         font-weight: 800;
         text-transform: uppercase;
         cursor: pointer;
@@ -782,15 +788,15 @@
       }
 
       .action-btn {
-        margin: 22px auto 0;
+        margin: 16px auto 0;
         display: block;
         width: min(90vw, 520px);
-        height: 92px;
+        height: 72px;
         border-radius: 999px;
         border: 2px solid #2f8e5f;
         background: linear-gradient(180deg, #53cb97 0%, #2aaf77 100%);
         color: #f2fcf6;
-        font-size: clamp(1.4rem, 3.8vw, 3.1rem);
+        font-size: clamp(1.15rem, 3vw, 2.15rem);
         font-weight: 800;
         text-transform: uppercase;
         cursor: pointer;
@@ -810,10 +816,91 @@
       }
 
       .sub-prompt {
-        margin: 18px 0 0;
+        margin: 12px 0 0;
         text-align: center;
-        font-size: clamp(1.4rem, 3vw, 2.8rem);
+        font-size: clamp(1.15rem, 2.4vw, 1.9rem);
         font-weight: 700;
+      }
+
+      .reflection-wrap {
+        max-width: 1220px;
+        margin: 0 auto;
+      }
+
+      .reflection-card {
+        margin-top: 16px;
+        border-radius: 34px;
+        border: 3px solid rgba(185, 205, 239, 0.9);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(244, 248, 255, 0.94) 100%);
+        box-shadow: 0 14px 28px rgba(112, 140, 192, 0.18);
+        padding: 24px 26px;
+      }
+
+      .reflection-intro {
+        margin: 0 0 8px;
+        text-align: center;
+        font-size: clamp(1.35rem, 2.7vw, 2.4rem);
+        font-weight: 800;
+        color: #325f9f;
+      }
+
+      .reflection-layout {
+        display: grid;
+        grid-template-columns: minmax(210px, 320px) 1fr;
+        gap: 24px;
+        align-items: center;
+      }
+
+      .reflection-bot {
+        text-align: center;
+      }
+
+      .reflection-bot img {
+        width: min(100%, 260px);
+        height: auto;
+      }
+
+      .reflection-panel {
+        padding: 6px 4px;
+      }
+
+      .reflection-question {
+        margin: 0 0 16px;
+        font-size: clamp(1.25rem, 2.5vw, 2rem);
+        line-height: 1.3;
+        font-weight: 800;
+        color: #24324a;
+      }
+
+      .reflection-options {
+        display: grid;
+        gap: 12px;
+      }
+
+      .reflection-option {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 20px;
+        border: 2px solid #bfd2eb;
+        background: rgba(255, 255, 255, 0.96);
+        color: #25354e;
+        text-align: left;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 120ms ease, border-color 180ms ease, background 180ms ease;
+      }
+
+      .reflection-option:hover {
+        transform: translateY(-1px);
+        border-color: #7ea8dd;
+        background: #f7fbff;
+      }
+
+      .reflection-option.is-selected {
+        border-color: #5d90d1;
+        background: #deebff;
+        box-shadow: 0 0 0 3px rgba(93, 144, 209, 0.16);
       }
 
       .results-wrap {
@@ -825,12 +912,12 @@
         margin: 0;
         text-align: center;
         color: #2d62bb;
-        font-size: clamp(2.2rem, 6vw, 5rem);
+        font-size: clamp(1.8rem, 5vw, 3.6rem);
         text-transform: uppercase;
       }
 
       .leaderboard-box {
-        margin-top: 24px;
+        margin-top: 16px;
         border-radius: 26px;
         overflow: hidden;
         border: 4px solid #4d95dd;
@@ -841,9 +928,9 @@
         background: linear-gradient(180deg, #4f98e8 0%, #347ed3 100%);
         color: #ebf7ff;
         text-align: center;
-        font-size: clamp(1.7rem, 4vw, 3.6rem);
+        font-size: clamp(1.35rem, 3vw, 2.5rem);
         font-weight: 800;
-        padding: 14px 8px;
+        padding: 10px 8px;
       }
 
       .leaderboard-table {
@@ -854,10 +941,10 @@
 
       .leaderboard-table th,
       .leaderboard-table td {
-        padding: 12px 10px;
+        padding: 10px 8px;
         text-align: center;
         border: 1px solid #7eb2de;
-        font-size: clamp(0.95rem, 2vw, 1.7rem);
+        font-size: clamp(0.88rem, 1.6vw, 1.2rem);
       }
 
       .leaderboard-table thead th {
@@ -892,7 +979,7 @@
       }
 
       .results-actions {
-        margin-top: 24px;
+        margin-top: 16px;
         display: flex;
         gap: 12px;
         justify-content: center;
@@ -900,10 +987,41 @@
       }
 
       .results-note {
-        margin-top: 10px;
+        margin-top: 8px;
         text-align: center;
-        font-size: 0.95rem;
+        font-size: 0.88rem;
         color: #3a5d86;
+      }
+
+      @media (max-height: 900px) {
+        #setupScreen,
+        #tutorialScreen,
+        #trainingScreen,
+        #reflectionScreen,
+        #testScreen,
+        #resultsScreen {
+          padding-top: 12px;
+          padding-bottom: 16px;
+        }
+
+        .setup-title,
+        .tutorial-title,
+        .phase-title,
+        .results-title {
+          transform: scale(0.94);
+          transform-origin: top center;
+        }
+
+        .setup-grid,
+        .tutorial-grid {
+          gap: 12px;
+        }
+
+        .challenge-btn,
+        .setup-next-btn,
+        .action-btn {
+          height: 66px;
+        }
       }
 
       @media (max-width: 640px) {
@@ -923,12 +1041,12 @@
         }
 
         #setupScreen {
-          padding: 16px 10px 24px;
+          padding: 12px 10px 18px;
         }
 
         .setup-grid {
           grid-template-columns: 1fr;
-          gap: 14px;
+          gap: 12px;
         }
 
         .setup-panel {
@@ -938,12 +1056,12 @@
         }
 
         .setup-panel-body {
-          padding: 18px 14px;
+          padding: 14px 12px;
           min-height: 0;
         }
 
         .field-input {
-          height: 72px;
+          height: 60px;
         }
 
         .avatar-btn {
@@ -954,28 +1072,28 @@
         }
 
         .setup-next-btn {
-          margin-top: 18px;
-          height: 84px;
+          margin-top: 14px;
+          height: 70px;
         }
 
         #tutorialScreen {
-          padding: 18px 12px 24px;
+          padding: 12px 10px 18px;
         }
 
         .tutorial-grid {
           grid-template-columns: 1fr;
-          gap: 14px;
-          margin-top: 20px;
+          gap: 12px;
+          margin-top: 14px;
         }
 
         .step-visual {
-          height: 145px;
+          height: 128px;
         }
 
         .challenge-btn {
-          margin-top: 24px;
-          height: 86px;
-          border-radius: 24px;
+          margin-top: 18px;
+          height: 72px;
+          border-radius: 22px;
         }
 
         .definition-grid {
@@ -983,15 +1101,29 @@
         }
 
         #trainingScreen,
+        #reflectionScreen,
         #testScreen,
         #resultsScreen {
-          padding: 16px 10px 24px;
+          padding: 12px 10px 18px;
+        }
+
+        .reflection-layout {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .reflection-card {
+          padding: 14px 12px;
+        }
+
+        .reflection-bot img {
+          width: min(100%, 180px);
         }
 
         .phase-card-body {
           grid-template-columns: 1fr;
-          gap: 12px;
-          padding: 12px;
+          gap: 10px;
+          padding: 10px;
         }
 
         .pill-label {
@@ -1000,7 +1132,7 @@
         }
 
         .action-btn {
-          height: 74px;
+          height: 64px;
         }
       }
     </style>
@@ -1069,6 +1201,7 @@
                     <option value="6">6th Grade</option>
                     <option value="7">7th Grade</option>
                     <option value="8">8th Grade</option>
+                    <option value="9">Other</option>
                   </select>
                 </div>
               </div>
@@ -1264,6 +1397,29 @@
         </div>
       </section>
 
+      <section id="reflectionScreen" hidden>
+        <div class="reflection-wrap">
+          <div class="reflection-card">
+            <p class="reflection-intro">Hey coach, I have a question...</p>
+
+            <div class="reflection-layout">
+              <div class="reflection-bot">
+                <img src="assets/robot-doubt.png" alt="WiseSpend AI mascot asking a question" />
+              </div>
+
+              <div class="reflection-panel">
+                <h2 id="reflectionQuestion" class="reflection-question">
+                  How trained do you think I am after 10 days?
+                </h2>
+                <div id="reflectionOptions" class="reflection-options" role="group" aria-label="Reflection choices"></div>
+              </div>
+            </div>
+
+            <button id="nextReflectionBtn" class="action-btn" type="button" disabled>Next</button>
+          </div>
+        </div>
+      </section>
+
       <section id="resultsScreen" hidden>
         <div class="results-wrap">
           <h2 class="results-title">Results!</h2>
@@ -1334,6 +1490,7 @@
         "tutorialScreen",
         "trainingScreen",
         "testScreen",
+        "reflectionScreen",
         "resultsScreen",
       ];
 
@@ -1355,6 +1512,9 @@
       const testNoBtn = document.querySelector("#testNoBtn");
       const testYesBtn = document.querySelector("#testYesBtn");
       const nextTestDayBtn = document.querySelector("#nextTestDayBtn");
+      const reflectionQuestion = document.querySelector("#reflectionQuestion");
+      const reflectionOptions = document.querySelector("#reflectionOptions");
+      const nextReflectionBtn = document.querySelector("#nextReflectionBtn");
       const restartBtn = document.querySelector("#restartBtn");
       const exportBtn = document.querySelector("#exportBtn");
       const userRowName = document.querySelector("#userRowName");
@@ -1430,19 +1590,62 @@
         3.5, 6, 2, 18, 45, 65, 38, 25, 55, 90,
         140, 95, 160, 449.99, 28000, 10, 60, 799, 39, 200,
         130, 25, 899, 320, 640, 40, 20, 55, 220, 8,
-        6, 5, 4, 9, 28, 15, 18, 2, 90, 350,
+        6, 5, 4, 9, 28, 15, 18, 2, 90, 7,
         25, 120, 5, 3, 12, 9, 2, 4, 7, 110,
         20, 15, 45, 12, 14, 6,
+      ];
+
+      const reflectionQuestions = [
+        {
+          id: "reflection_1",
+          prompt: "How trained do you think I am after 5 days?",
+          triggerDay: 10,
+          continueDay: 11,
+          choices: [
+            "Not trained at all",
+            "Slightly trained",
+            "Somewhat trained",
+            "Already trained",
+          ],
+        },
+        {
+          id: "reflection_2",
+          prompt: "Why do you think I have still made mistakes?",
+          triggerDay: 20,
+          continueDay: 21,
+          choices: [
+            "The rules in the decision tree are incomplete",
+            "The AI is broken and cannot learn",
+            "The AI always makes mistakes",
+            "The item cannot be classified",
+          ],
+        },
+        {
+          id: "reflection_3",
+          prompt: "What changed about the decisions I made after training?",
+          triggerDay: 30,
+          continueDay: null,
+          choices: [
+            "You made more accurate decisions",
+            "You stopped working",
+            "You made completely random decisions",
+            "Nothing changed",
+          ],
+        },
       ];
 
       let selectedAvatar = "";
       let currentDay = 1;
       let selectedTrainingLabel = "";
       let selectedTestFeedback = "";
+      let selectedReflectionAnswer = "";
       let sessionStartTime = Date.now();
       let lastDecisionTimestamp = Date.now();
       let activeDayData = null;
       let activeDecision = null;
+      let activeReflection = null;
+      let reflectionStartTimestamp = 0;
+      let sessionItemOrder = [];
       let sessionLog = [];
       let sessionId = "";
       let anonymousStudentId = "";
@@ -1478,6 +1681,25 @@
       function generateAnonymousStudentId() {
         const raw = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
         return `anon_${raw}`;
+      }
+
+      function shuffleArray(items) {
+        const copy = [...items];
+        for (let index = copy.length - 1; index > 0; index -= 1) {
+          const swapIndex = Math.floor(Math.random() * (index + 1));
+          [copy[index], copy[swapIndex]] = [copy[swapIndex], copy[index]];
+        }
+        return copy;
+      }
+
+      function buildSessionItemOrder() {
+        const combinedItems = itemPool.map((item, index) => ({
+          ...item,
+          id: `item_${index + 1}`,
+          priceValue: pricePool[index % pricePool.length],
+        }));
+
+        sessionItemOrder = shuffleArray(combinedItems).slice(0, 30);
       }
 
       function logEvent(type, payload = {}) {
@@ -1614,9 +1836,11 @@
         );
         const balanceAmount = Math.max(120, startingValues.balance - day * 32);
         const savingsAmount = Math.min(300, startingValues.savings + day * 5);
-        const itemIndex = (day - 1) % itemPool.length;
-        const item = { ...itemPool[itemIndex], id: `item_${itemIndex + 1}` };
-        const priceValue = pricePool[itemIndex % pricePool.length];
+        if (sessionItemOrder.length === 0) {
+          buildSessionItemOrder();
+        }
+        const item = sessionItemOrder[(day - 1) % sessionItemOrder.length];
+        const priceValue = item.priceValue;
         const price = `$${priceValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
         if (phase === "training") {
@@ -1704,6 +1928,7 @@
 
       function renderTrainingDay(data) {
         activeDayData = data;
+        activeDecision = null;
         setText(
           "#trainingHead",
           `Round ${data.round} · Day ${data.day} · Item: ${data.item.name}`
@@ -1788,13 +2013,51 @@
         });
       }
 
+      function renderReflectionScreen(day) {
+        const reflection = reflectionQuestions.find((item) => item.triggerDay === day);
+        if (!reflection) {
+          return;
+        }
+
+        activeReflection = reflection;
+        selectedReflectionAnswer = "";
+        reflectionStartTimestamp = Date.now();
+        reflectionQuestion.textContent = reflection.prompt;
+        reflectionOptions.innerHTML = "";
+        nextReflectionBtn.disabled = true;
+
+        reflection.choices.forEach((choice) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "reflection-option";
+          button.textContent = choice;
+          button.addEventListener("click", () => {
+            reflectionOptions
+              .querySelectorAll(".reflection-option")
+              .forEach((optionButton) => optionButton.classList.remove("is-selected"));
+            button.classList.add("is-selected");
+            selectedReflectionAnswer = choice;
+            nextReflectionBtn.disabled = false;
+          });
+          reflectionOptions.appendChild(button);
+        });
+
+        showScreen("reflectionScreen");
+        logEvent("reflection_viewed", {
+          questionID: reflection.id,
+          triggerDay: reflection.triggerDay,
+        });
+      }
+
       function goToNextDay() {
         if (currentDay >= 30) {
-          updateResults();
-          showScreen("resultsScreen");
+          renderReflectionScreen(30);
           return;
         }
         currentDay += 1;
+        if ([11, 21].includes(currentDay) && activeReflection) {
+          activeReflection = null;
+        }
         renderCurrentDay();
       }
 
@@ -1843,6 +2106,7 @@
         currentDay = 1;
         selectedTrainingLabel = "";
         selectedTestFeedback = "";
+        selectedReflectionAnswer = "";
         selectedAvatar = "";
         sessionLog = [];
         classificationLog = [];
@@ -1853,6 +2117,12 @@
         sessionStartTime = Date.now();
         lastDecisionTimestamp = Date.now();
         activeDayData = null;
+        activeDecision = null;
+        activeReflection = null;
+        reflectionStartTimestamp = 0;
+        sessionItemOrder = [];
+        reflectionOptions.innerHTML = "";
+        nextReflectionBtn.disabled = true;
         firstNameInput.value = "";
         lastInitialInput.value = "";
         gradeSelect.value = "";
@@ -1914,6 +2184,7 @@
 
       startChallengeBtn?.addEventListener("click", () => {
         currentDay = 1;
+        buildSessionItemOrder();
         logEvent("challenge_start");
         renderCurrentDay();
       });
@@ -1984,7 +2255,40 @@
         if (!selectedTestFeedback) {
           return;
         }
+        if ([10, 20, 30].includes(currentDay)) {
+          renderReflectionScreen(currentDay);
+          return;
+        }
         goToNextDay();
+      });
+
+      nextReflectionBtn?.addEventListener("click", () => {
+        if (!activeReflection || !selectedReflectionAnswer) {
+          return;
+        }
+
+        const timeSpentMs = Date.now() - reflectionStartTimestamp;
+        logReflection({
+          questionId: activeReflection.id,
+          selectedAnswer: selectedReflectionAnswer,
+          explanationText: "",
+          timeSpentMs,
+        });
+        logEvent("reflection_answered", {
+          questionID: activeReflection.id,
+          selectedAnswer: selectedReflectionAnswer,
+          timeSpentMs,
+        });
+
+        if (activeReflection.continueDay === null) {
+          updateResults();
+          showScreen("resultsScreen");
+          return;
+        }
+
+        currentDay = activeReflection.continueDay;
+        activeReflection = null;
+        renderCurrentDay();
       });
 
       restartBtn?.addEventListener("click", () => {
