@@ -1616,7 +1616,6 @@
           </div>
 
           <div class="results-actions">
-            <button id="exportBtn" class="action-btn secondary" type="button">Export Data (JSON)</button>
             <button id="restartBtn" class="action-btn secondary" type="button">Play Again</button>
           </div>
         </div>
@@ -1658,7 +1657,6 @@
       const reflectionOptions = document.querySelector("#reflectionOptions");
       const nextReflectionBtn = document.querySelector("#nextReflectionBtn");
       const restartBtn = document.querySelector("#restartBtn");
-      const exportBtn = document.querySelector("#exportBtn");
       const userRowName = document.querySelector("#userRowName");
       const userRowAvatar = document.querySelector("#userRowAvatar");
       const aiChoicePill = document.querySelector("#aiChoicePill");
@@ -2502,12 +2500,9 @@
       });
 
       restartBtn?.addEventListener("click", () => {
+        exportSessionData();
         resetFlow();
         showScreen("welcomeScreen");
-      });
-
-      exportBtn?.addEventListener("click", () => {
-        exportSessionData();
       });
     </script>
   </body>
