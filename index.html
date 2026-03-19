@@ -34,6 +34,37 @@
         min-height: 100vh;
       }
 
+      main > section {
+        will-change: opacity, transform;
+      }
+
+      main > section.screen-enter,
+      main > section.screen-exit {
+        transition: opacity 220ms ease, transform 220ms ease;
+      }
+
+      main > section.screen-enter {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      main > section.screen-enter.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      main > section.screen-exit {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        main > section.screen-enter,
+        main > section.screen-exit {
+          transition: none;
+        }
+      }
+
       #welcomeScreen {
         min-height: 100vh;
         padding: 20px 18px 24px;
@@ -1681,6 +1712,8 @@
       let classificationLog = [];
       let decisionTreeLog = [];
       let reflectionLog = [];
+      let isScreenTransitioning = false;
+      let queuedScreenId = null;
 
       const startingValues = {
         balance: 1500,
@@ -1689,11 +1722,64 @@
         confidence: 60,
       };
 
+      const SCREEN_TRANSITION_MS = 220;
+
       function showScreen(id) {
-        screenIds.forEach((screenId) => {
-          screenElements[screenId].hidden = screenId !== id;
-        });
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        const nextScreen = screenElements[id];
+        const currentScreenId = screenIds.find((screenId) => !screenElements[screenId].hidden);
+        const currentScreen = currentScreenId ? screenElements[currentScreenId] : null;
+
+        if (!nextScreen) {
+          return;
+        }
+
+        if (!currentScreen || currentScreen === nextScreen) {
+          screenIds.forEach((screenId) => {
+            screenElements[screenId].hidden = screenId !== id;
+          });
+          nextScreen.classList.remove("screen-enter", "screen-exit");
+          nextScreen.classList.add("is-visible");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
+
+        if (isScreenTransitioning) {
+          queuedScreenId = id;
+          return;
+        }
+
+        isScreenTransitioning = true;
+        queuedScreenId = null;
+
+        currentScreen.classList.remove("screen-enter", "is-visible");
+        currentScreen.classList.add("screen-exit");
+
+        window.setTimeout(() => {
+          currentScreen.hidden = true;
+          currentScreen.classList.remove("screen-exit", "is-visible");
+
+          nextScreen.hidden = false;
+          nextScreen.classList.remove("screen-exit", "is-visible");
+          nextScreen.classList.add("screen-enter");
+          void nextScreen.offsetWidth;
+          nextScreen.classList.add("is-visible");
+
+          window.scrollTo({ top: 0, behavior: "smooth" });
+
+          window.setTimeout(() => {
+            nextScreen.classList.remove("screen-enter");
+            isScreenTransitioning = false;
+
+            if (queuedScreenId && queuedScreenId !== id) {
+              const nextQueuedScreenId = queuedScreenId;
+              queuedScreenId = null;
+              showScreen(nextQueuedScreenId);
+              return;
+            }
+
+            queuedScreenId = null;
+          }, SCREEN_TRANSITION_MS);
+        }, SCREEN_TRANSITION_MS);
       }
 
       function generateUUID() {
