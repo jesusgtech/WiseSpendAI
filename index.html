@@ -1430,7 +1430,6 @@
                 </div>
                 <div class="stats-row">
                   <span id="trainBalanceText">Balance: $1,500</span>
-                  <span id="trainSavingsText">Savings: $50</span>
                 </div>
               </div>
             </div>
@@ -1480,7 +1479,6 @@
                 </div>
                 <div class="stats-row">
                   <span id="testBalanceText">Balance: $1,200</span>
-                  <span id="testSavingsText">Savings: $50</span>
                 </div>
               </div>
             </div>
@@ -2110,7 +2108,6 @@
         setText("#trainBalancePct", `${data.balancePct}%`);
         setText("#trainHappinessPct", `${data.happinessPct}%`);
         setText("#trainBalanceText", data.balanceText);
-        setText("#trainSavingsText", data.savingsText);
         setBar("#trainConfBar", data.confidence);
         setBar("#trainBalanceBar", data.balancePct);
         setBar("#trainHappinessBar", data.happinessPct);
@@ -2130,7 +2127,6 @@
         setText("#testBalancePct", `${data.balancePct}%`);
         setText("#testHappinessPct", `${data.happinessPct}%`);
         setText("#testBalanceText", data.balanceText);
-        setText("#testSavingsText", data.savingsText);
         setBar("#testMatchBar", data.matchPct);
         setBar("#testBalanceBar", data.balancePct);
         setBar("#testHappinessBar", data.happinessPct);
