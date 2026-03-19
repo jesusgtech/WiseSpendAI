@@ -1587,7 +1587,6 @@
             <button id="exportBtn" class="action-btn secondary" type="button">Export Data (JSON)</button>
             <button id="restartBtn" class="action-btn secondary" type="button">Play Again</button>
           </div>
-          <p class="results-note">Session data is saved locally for backup.</p>
         </div>
       </section>
     </main>
@@ -1619,7 +1618,10 @@
       const nextTrainingDayBtn = document.querySelector("#nextTrainingDayBtn");
       const testNoBtn = document.querySelector("#testNoBtn");
       const testYesBtn = document.querySelector("#testYesBtn");
-      const nextTestDayBtn = document.querySelector("#nextTestDayBtn");
+      const trainingHudAvatar = document.querySelector("#trainingHudAvatar");
+      const trainingHudName = document.querySelector("#trainingHudName");
+      const testHudAvatar = document.querySelector("#testHudAvatar");
+      const testHudName = document.querySelector("#testHudName");
       const reflectionQuestion = document.querySelector("#reflectionQuestion");
       const reflectionOptions = document.querySelector("#reflectionOptions");
       const nextReflectionBtn = document.querySelector("#nextReflectionBtn");
@@ -1948,6 +1950,24 @@
         };
       }
 
+      function updateGameplayHud() {
+        const firstName = firstNameInput?.value.trim() || "Player";
+        const avatarSrc = selectedAvatar || "assets/avatar1.png";
+
+        if (trainingHudName) {
+          trainingHudName.textContent = firstName;
+        }
+        if (testHudName) {
+          testHudName.textContent = firstName;
+        }
+        if (trainingHudAvatar) {
+          trainingHudAvatar.src = avatarSrc;
+        }
+        if (testHudAvatar) {
+          testHudAvatar.src = avatarSrc;
+        }
+      }
+
       function setBar(id, value) {
         const el = document.querySelector(id);
         if (el) {
@@ -2142,7 +2162,6 @@
 
         clearSelection([testNoBtn, testYesBtn]);
         selectedTestFeedback = "";
-        nextTestDayBtn.disabled = true;
 
         logDecisionTree({
           item: data.item,
@@ -2151,12 +2170,6 @@
           finalClassification: decision.finalClassification,
           timeSpentMs: Date.now() - lastDecisionTimestamp,
         });
-
-        if (currentDay === 30) {
-          nextTestDayBtn.textContent = "See Results";
-        } else {
-          nextTestDayBtn.textContent = "Next Day";
-        }
       }
 
       function renderCurrentDay() {
@@ -2233,6 +2246,7 @@
         if (selectedAvatar) {
           userRowAvatar.src = selectedAvatar;
         }
+        updateGameplayHud();
 
         const summary = buildStudentSessionSummary();
         localStorage.setItem(
@@ -2297,6 +2311,7 @@
         updateSetupNextState();
         updateAvatarPreview("");
         userRowAvatar.src = "assets/avatar1.png";
+        updateGameplayHud();
       }
 
       startButton?.addEventListener("click", () => {
@@ -2341,6 +2356,7 @@
             grade: gradeSelect?.value || "",
             avatar: selectedAvatar || "",
           });
+          updateGameplayHud();
           showScreen("tutorialScreen");
         }
       });
@@ -2382,7 +2398,6 @@
         selectedTestFeedback = "No";
         clearSelection([testNoBtn, testYesBtn]);
         testNoBtn.classList.add("is-selected");
-        nextTestDayBtn.disabled = false;
         logEvent("test_feedback", {
           feedback: selectedTestFeedback,
           aiChoice: activeDecision?.finalClassification || "",
@@ -2394,13 +2409,18 @@
           studentChoice: selectedTestFeedback,
           correctChoice: null,
         });
+
+        if ([10, 20, 30].includes(currentDay)) {
+          renderReflectionScreen(currentDay);
+          return;
+        }
+        goToNextDay();
       });
 
       testYesBtn?.addEventListener("click", () => {
         selectedTestFeedback = "Yes";
         clearSelection([testNoBtn, testYesBtn]);
         testYesBtn.classList.add("is-selected");
-        nextTestDayBtn.disabled = false;
         logEvent("test_feedback", {
           feedback: selectedTestFeedback,
           aiChoice: activeDecision?.finalClassification || "",
@@ -2412,12 +2432,7 @@
           studentChoice: selectedTestFeedback,
           correctChoice: null,
         });
-      });
 
-      nextTestDayBtn?.addEventListener("click", () => {
-        if (!selectedTestFeedback) {
-          return;
-        }
         if ([10, 20, 30].includes(currentDay)) {
           renderReflectionScreen(currentDay);
           return;
