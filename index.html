@@ -558,6 +558,14 @@
         margin: 0 auto;
       }
 
+      .phase-header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
       .phase-title {
         margin: 0;
         text-align: center;
@@ -581,6 +589,19 @@
         text-transform: uppercase;
         letter-spacing: 0.04em;
         font-size: 0.92rem;
+      }
+
+      .phase-header-row .phase-title,
+      .phase-header-row .mode-banner {
+        flex: 1 1 320px;
+        margin: 0;
+      }
+
+      .phase-header-row .mode-banner {
+        width: auto;
+        padding: 16px 18px;
+        font-size: clamp(1.7rem, 4.8vw, 3.5rem);
+        line-height: 1;
       }
 
       .mode-banner.training {
@@ -1126,6 +1147,10 @@
           padding: 10px;
         }
 
+        .phase-header-row {
+          flex-direction: column;
+        }
+
         .pill-label {
           min-width: 150px;
           padding: 10px 20px;
@@ -1310,8 +1335,10 @@
 
       <section id="trainingScreen" hidden>
         <div class="phase-wrap">
-          <h2 class="phase-title"><span class="blue">Training</span> Week</h2>
-          <div class="mode-banner training">Mode: You Train the AI</div>
+          <div class="phase-header-row">
+            <h2 class="phase-title"><span class="blue">Training</span> Time!</h2>
+            <div class="mode-banner training">Mode: You Train the AI</div>
+          </div>
 
           <div class="phase-card">
             <div id="trainingHead" class="phase-card-head">Round 1 · Day 3 · Item: School Backpack</div>
@@ -1354,8 +1381,10 @@
 
       <section id="testScreen" hidden>
         <div class="phase-wrap">
-          <h2 class="phase-title"><span class="blue">Test</span> Week</h2>
-          <div class="mode-banner test">Mode: AI Decides</div>
+          <div class="phase-header-row">
+            <h2 class="phase-title"><span class="blue">Test</span> Time!</h2>
+            <div class="mode-banner test">Mode: AI Decides</div>
+          </div>
 
           <div class="phase-card">
             <div id="testHead" class="phase-card-head">Round 1 · Day 8 · Item: Video Game Console</div>
