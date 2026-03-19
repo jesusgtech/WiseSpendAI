@@ -589,6 +589,33 @@
         margin: 0 auto;
       }
 
+      .player-hud {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+        padding: 8px 14px 8px 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.92);
+        border: 2px solid rgba(132, 173, 224, 0.7);
+        box-shadow: 0 6px 16px rgba(90, 126, 181, 0.12);
+      }
+
+      .player-hud-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ffffff;
+      }
+
+      .player-hud-name {
+        font-size: 0.98rem;
+        font-weight: 800;
+        color: #28486f;
+        letter-spacing: 0.01em;
+      }
+
       .phase-header-row {
         display: flex;
         align-items: center;
@@ -1182,6 +1209,20 @@
           flex-direction: column;
         }
 
+        .player-hud {
+          margin-bottom: 10px;
+          padding: 6px 12px 6px 6px;
+        }
+
+        .player-hud-avatar {
+          width: 36px;
+          height: 36px;
+        }
+
+        .player-hud-name {
+          font-size: 0.9rem;
+        }
+
         .pill-label {
           min-width: 150px;
           padding: 10px 20px;
@@ -1366,6 +1407,10 @@
 
       <section id="trainingScreen" hidden>
         <div class="phase-wrap">
+          <div class="player-hud">
+            <img id="trainingHudAvatar" class="player-hud-avatar" src="assets/avatar1.png" alt="Player avatar" />
+            <span id="trainingHudName" class="player-hud-name">Player</span>
+          </div>
           <div class="phase-header-row">
             <h2 class="phase-title"><span class="blue">Training</span> Time!</h2>
             <div class="mode-banner training">Mode: You Train the AI</div>
@@ -1412,6 +1457,10 @@
 
       <section id="testScreen" hidden>
         <div class="phase-wrap">
+          <div class="player-hud">
+            <img id="testHudAvatar" class="player-hud-avatar" src="assets/avatar1.png" alt="Player avatar" />
+            <span id="testHudName" class="player-hud-name">Player</span>
+          </div>
           <div class="phase-header-row">
             <h2 class="phase-title"><span class="blue">Test</span> Time!</h2>
             <div class="mode-banner test">Mode: AI Decides</div>
@@ -1453,7 +1502,6 @@
             <button id="testNoBtn" class="choice-btn no" type="button">No ✕</button>
             <button id="testYesBtn" class="choice-btn yes" type="button">Yes ✓</button>
           </div>
-          <button id="nextTestDayBtn" class="action-btn" type="button" disabled>Next Day</button>
         </div>
       </section>
 
