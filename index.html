@@ -583,6 +583,7 @@
       }
 
       #trainingScreen,
+      #testingCutsceneScreen,
       #reflectionScreen,
       #testScreen,
       #resultsScreen {
@@ -592,6 +593,15 @@
 
       #trainingScreen {
         background: linear-gradient(180deg, #e6f5ff 0%, #f7fbff 100%);
+      }
+
+      #testingCutsceneScreen {
+        min-height: 100vh;
+        padding: 18px 14px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(180deg, #d7f0ff 0%, #edf8ff 60%, #fff7e7 100%);
+        overflow: hidden;
       }
 
       #reflectionScreen {
@@ -605,6 +615,81 @@
       .phase-wrap {
         max-width: 1220px;
         margin: 0 auto;
+      }
+
+      .cutscene-wrap {
+        width: min(92vw, 640px);
+        min-height: min(54vh, 320px);
+        display: grid;
+        place-items: center;
+      }
+
+      .cutscene-card {
+        position: relative;
+        width: min(92vw, 520px);
+        padding: 28px 24px 24px;
+        border-radius: 28px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.92);
+        border: 4px solid rgba(255, 255, 255, 0.98);
+        box-shadow: 0 18px 36px rgba(47, 103, 154, 0.16);
+        animation: cutsceneCardPop 520ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+      }
+
+      .cutscene-card::before {
+        content: "";
+        display: block;
+        width: 72px;
+        height: 8px;
+        margin: 0 auto 18px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #2f6ddb 0%, #38b7ab 100%);
+      }
+
+      .cutscene-kicker {
+        margin: 0;
+        font-size: 0.88rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #2f6ddb;
+      }
+
+      .cutscene-title {
+        margin: 12px 0 0;
+        font-size: clamp(2.7rem, 9vw, 4.9rem);
+        line-height: 0.9;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        color: #23508c;
+        text-shadow: 0 6px 14px rgba(107, 169, 222, 0.14);
+      }
+
+      .cutscene-copy {
+        margin: 12px auto 0;
+        max-width: 360px;
+        font-size: clamp(0.98rem, 2.2vw, 1.15rem);
+        line-height: 1.35;
+        font-weight: 700;
+        color: #315579;
+      }
+
+      @keyframes cutsceneCardPop {
+        0% {
+          opacity: 0;
+          transform: scale(0.88) translateY(22px);
+        }
+
+        65% {
+          opacity: 1;
+          transform: scale(1.04) translateY(0);
+        }
+
+        100% {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
       }
 
       .player-hud {
@@ -726,11 +811,40 @@
       }
 
       .item-box {
+        position: relative;
         border-radius: 24px;
         border: 2px solid #d3e5f2;
         background: #ffffff;
         padding: 10px;
         text-align: center;
+        overflow: hidden;
+      }
+
+      .item-box::after {
+        content: "";
+        position: absolute;
+        inset: -24% auto -24% -38%;
+        width: 34%;
+        background: linear-gradient(
+          115deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.32) 35%,
+          rgba(255, 255, 255, 0.98) 50%,
+          rgba(255, 255, 255, 0.32) 65%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        transform: rotate(16deg) translateX(-180%);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .item-box.is-highlighted {
+        animation: itemBoxPulse 1500ms ease-out;
+      }
+
+      .item-box.is-highlighted::after {
+        animation: itemBoxShine 1500ms ease-out;
+        opacity: 1;
       }
 
       .item-emoji {
@@ -933,6 +1047,42 @@
         100% {
           opacity: 0;
           transform: rotate(16deg) translateX(360%);
+        }
+      }
+
+      @keyframes itemBoxPulse {
+        0% {
+          transform: scale(0.95);
+          border-color: #d3e5f2;
+          box-shadow: 0 0 0 0 rgba(255, 211, 102, 0), 0 8px 18px rgba(90, 132, 177, 0.08);
+        }
+
+        32% {
+          transform: scale(1.05);
+          border-color: #f1c65a;
+          box-shadow: 0 0 0 8px rgba(255, 223, 111, 0.24), 0 18px 34px rgba(167, 131, 31, 0.2);
+        }
+
+        100% {
+          transform: scale(1);
+          border-color: #d3e5f2;
+          box-shadow: 0 0 0 0 rgba(255, 211, 102, 0), 0 0 0 rgba(90, 132, 177, 0);
+        }
+      }
+
+      @keyframes itemBoxShine {
+        0% {
+          opacity: 0;
+          transform: rotate(16deg) translateX(-180%);
+        }
+
+        16% {
+          opacity: 1;
+        }
+
+        100% {
+          opacity: 0;
+          transform: rotate(16deg) translateX(410%);
         }
       }
 
@@ -1327,14 +1477,20 @@
         .brain-box.is-highlighted .brain-title,
         .brain-box.is-highlighted .metric,
         .brain-box.is-highlighted .metric .meter,
+        .item-box.is-highlighted,
         .phase-card-balance.is-highlighted {
           animation: none !important;
           transform: none !important;
         }
 
+        .item-box::after,
         .phase-card-balance::after {
           animation: none !important;
           opacity: 0 !important;
+        }
+
+        .cutscene-card {
+          animation: none !important;
         }
       }
 
@@ -1342,6 +1498,7 @@
         #setupScreen,
         #tutorialScreen,
         #trainingScreen,
+        #testingCutsceneScreen,
         #reflectionScreen,
         #testScreen,
         #resultsScreen {
@@ -1387,6 +1544,15 @@
 
         #setupScreen {
           padding: 12px 10px 18px;
+        }
+
+        .cutscene-wrap {
+          min-height: 62vh;
+        }
+
+        .cutscene-card {
+          padding: 22px 18px 20px;
+          border-radius: 26px;
         }
 
         .setup-grid {
@@ -1446,6 +1612,7 @@
         }
 
         #trainingScreen,
+        #testingCutsceneScreen,
         #reflectionScreen,
         #testScreen,
         #resultsScreen {
@@ -1690,7 +1857,7 @@
               <span class="phase-card-balance">Balance: $1,500</span>
             </div>
             <div class="phase-card-body">
-              <div class="item-box">
+              <div id="trainingItemBox" class="item-box">
                 <div id="trainingItemEmoji" class="item-emoji">🎒</div>
                 <p id="trainingItemName" class="item-name">School Backpack</p>
                 <p id="trainingItemPrice" class="item-price">$49.99</p>
@@ -1722,6 +1889,16 @@
         </div>
       </section>
 
+      <section id="testingCutsceneScreen" hidden>
+        <div class="cutscene-wrap" aria-live="polite">
+          <div class="cutscene-card">
+            <p class="cutscene-kicker">Round 1</p>
+            <h2 class="cutscene-title">Testing Time!</h2>
+            <p class="cutscene-copy">Your AI is making choices on its own now.</p>
+          </div>
+        </div>
+      </section>
+
       <section id="testScreen" hidden>
         <div class="phase-wrap">
           <div class="player-hud">
@@ -1741,7 +1918,7 @@
               <span class="phase-card-balance">Balance: $1,200</span>
             </div>
             <div class="phase-card-body">
-              <div class="item-box">
+              <div id="testItemBox" class="item-box">
                 <div id="testItemEmoji" class="item-emoji">🎮</div>
                 <p id="testItemName" class="item-name">Video Game Console</p>
                 <p id="testItemPrice" class="item-price">$449.99</p>
@@ -1863,6 +2040,7 @@
         "setupScreen",
         "tutorialScreen",
         "trainingScreen",
+        "testingCutsceneScreen",
         "testScreen",
         "reflectionScreen",
         "resultsScreen",
@@ -1889,6 +2067,8 @@
       const trainingHudName = document.querySelector("#trainingHudName");
       const testHudAvatar = document.querySelector("#testHudAvatar");
       const testHudName = document.querySelector("#testHudName");
+      const trainingItemBox = document.querySelector("#trainingItemBox");
+      const testItemBox = document.querySelector("#testItemBox");
       const trainingBrainBox = document.querySelector("#trainingBrainBox");
       const testBrainBox = document.querySelector("#testBrainBox");
       const reflectionQuestion = document.querySelector("#reflectionQuestion");
@@ -2034,7 +2214,10 @@
       let queuedScreenId = null;
       let brainHighlightTimeoutId = null;
       let phaseHighlightFollowupTimeoutId = null;
+      let itemHighlightFollowupTimeoutId = null;
       let hasPlayedGameStartHighlight = false;
+      let hasShownFirstTestingCutscene = false;
+      let testingCutsceneTimeoutId = null;
 
       const startingValues = {
         balance: 1500,
@@ -2044,6 +2227,9 @@
       };
 
       const SCREEN_TRANSITION_MS = 220;
+      const TESTING_CUTSCENE_MS = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? 2900
+        : 3900;
 
       function showScreen(id) {
         const nextScreen = screenElements[id];
@@ -2280,6 +2466,25 @@
         }, 1150);
       }
 
+      function highlightItemBox(itemBox) {
+        if (!itemBox) {
+          return;
+        }
+
+        if (itemBox.highlightTimeoutId) {
+          window.clearTimeout(itemBox.highlightTimeoutId);
+        }
+
+        itemBox.classList.remove("is-highlighted");
+        void itemBox.offsetWidth;
+        itemBox.classList.add("is-highlighted");
+
+        itemBox.highlightTimeoutId = window.setTimeout(() => {
+          itemBox.classList.remove("is-highlighted");
+          itemBox.highlightTimeoutId = null;
+        }, 1650);
+      }
+
       function highlightBrainBox(brainBox) {
         if (!brainBox) {
           return;
@@ -2305,6 +2510,7 @@
           currentVisibleScreenId && currentVisibleScreenId !== screenId
             ? SCREEN_TRANSITION_MS + 40
             : 40;
+        const itemBox = screenId === "trainingScreen" ? trainingItemBox : testItemBox;
         const brainBox = screenId === "trainingScreen" ? trainingBrainBox : testBrainBox;
         const headId = screenId === "trainingScreen" ? "#trainingHead" : "#testHead";
 
@@ -2316,14 +2522,40 @@
           window.clearTimeout(phaseHighlightFollowupTimeoutId);
         }
 
+        if (itemHighlightFollowupTimeoutId) {
+          window.clearTimeout(itemHighlightFollowupTimeoutId);
+        }
+
         brainHighlightTimeoutId = window.setTimeout(() => {
           highlightPhaseBalance(headId);
           phaseHighlightFollowupTimeoutId = window.setTimeout(() => {
-            highlightBrainBox(brainBox);
+            highlightItemBox(itemBox);
             phaseHighlightFollowupTimeoutId = null;
-          }, 620);
+          }, 520);
+          itemHighlightFollowupTimeoutId = window.setTimeout(() => {
+            highlightBrainBox(brainBox);
+            itemHighlightFollowupTimeoutId = null;
+          }, 1220);
           brainHighlightTimeoutId = null;
         }, delayMs);
+      }
+
+      function playTestingCutscene() {
+        if (testingCutsceneTimeoutId) {
+          window.clearTimeout(testingCutsceneTimeoutId);
+        }
+
+        hasShownFirstTestingCutscene = true;
+        showScreen("testingCutsceneScreen");
+        logEvent("testing_cutscene_shown", {
+          round: getRound(currentDay),
+          day: currentDay,
+        });
+
+        testingCutsceneTimeoutId = window.setTimeout(() => {
+          testingCutsceneTimeoutId = null;
+          renderCurrentDay();
+        }, TESTING_CUTSCENE_MS);
       }
 
       function clearSelection(buttons) {
@@ -2574,6 +2806,10 @@
           return;
         }
         currentDay += 1;
+        if (currentDay === 6 && !hasShownFirstTestingCutscene) {
+          playTestingCutscene();
+          return;
+        }
         if ([11, 21].includes(currentDay) && activeReflection) {
           activeReflection = null;
         }
@@ -2642,6 +2878,7 @@
         reflectionStartTimestamp = 0;
         sessionItemOrder = [];
         hasPlayedGameStartHighlight = false;
+        hasShownFirstTestingCutscene = false;
         reflectionOptions.innerHTML = "";
         nextReflectionBtn.disabled = true;
         if (brainHighlightTimeoutId) {
@@ -2652,6 +2889,16 @@
           window.clearTimeout(phaseHighlightFollowupTimeoutId);
           phaseHighlightFollowupTimeoutId = null;
         }
+        if (itemHighlightFollowupTimeoutId) {
+          window.clearTimeout(itemHighlightFollowupTimeoutId);
+          itemHighlightFollowupTimeoutId = null;
+        }
+        if (testingCutsceneTimeoutId) {
+          window.clearTimeout(testingCutsceneTimeoutId);
+          testingCutsceneTimeoutId = null;
+        }
+        trainingItemBox?.classList.remove("is-highlighted");
+        testItemBox?.classList.remove("is-highlighted");
         trainingBrainBox?.classList.remove("is-highlighted");
         testBrainBox?.classList.remove("is-highlighted");
         firstNameInput.value = "";
@@ -2717,6 +2964,7 @@
 
       startChallengeBtn?.addEventListener("click", () => {
         currentDay = 1;
+        hasShownFirstTestingCutscene = false;
         buildSessionItemOrder();
         logEvent("challenge_start");
         renderCurrentDay();
