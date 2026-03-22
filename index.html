@@ -663,10 +663,59 @@
       .phase-card-head {
         background: linear-gradient(180deg, #7dc2eb 0%, #6fb8e4 100%);
         color: #eef9ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
         text-align: center;
-        padding: 10px 10px;
+        padding: 12px 14px;
         font-size: clamp(1.15rem, 2.4vw, 2.15rem);
-        font-weight: 700;
+        font-weight: 800;
+      }
+
+      .phase-card-divider {
+        opacity: 0.7;
+      }
+
+      .phase-card-balance {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.94);
+        color: #21558f;
+        font-weight: 900;
+        box-shadow: 0 4px 12px rgba(19, 78, 136, 0.16);
+        overflow: hidden;
+      }
+
+      .phase-card-balance::after {
+        content: "";
+        position: absolute;
+        inset: -30% auto -30% -40%;
+        width: 34%;
+        background: linear-gradient(
+          115deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.35) 35%,
+          rgba(255, 255, 255, 0.98) 50%,
+          rgba(255, 255, 255, 0.35) 65%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        transform: rotate(16deg) translateX(-180%);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .phase-card-balance.is-highlighted {
+        animation: balanceBadgePulse 1050ms ease-out;
+      }
+
+      .phase-card-balance.is-highlighted::after {
+        animation: balanceBadgeShine 1050ms ease-out;
+        opacity: 1;
       }
 
       .phase-card-body {
@@ -727,23 +776,227 @@
       }
 
       .brain-box {
+        position: relative;
         border-radius: 24px;
         border: 2px solid #d3e5f2;
         background: linear-gradient(165deg, #edf8ff 0%, #e2f1fc 100%);
         padding: 14px;
+        overflow: hidden;
+        box-shadow: 0 10px 22px rgba(93, 149, 194, 0.12);
+        transform-origin: center;
+      }
+
+      .brain-box::after {
+        content: "";
+        position: absolute;
+        inset: -20% auto -20% -38%;
+        width: 34%;
+        background: linear-gradient(
+          115deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.32) 34%,
+          rgba(255, 255, 255, 0.98) 50%,
+          rgba(255, 255, 255, 0.32) 66%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        transform: rotate(16deg) translateX(-180%);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .brain-box.is-highlighted {
+        border-color: #7ec0ef;
+        box-shadow: 0 0 0 5px rgba(126, 192, 239, 0.28), 0 24px 42px rgba(74, 129, 179, 0.28);
+        animation: brainPulse 2600ms cubic-bezier(0.2, 0.9, 0.2, 1);
+      }
+
+      .brain-box.is-highlighted::after {
+        animation: brainShine 2200ms ease-out;
+        opacity: 1;
       }
 
       .brain-title {
-        margin: 0 0 8px;
+        margin: 0 auto 10px;
+        width: fit-content;
         text-align: center;
+        padding: 6px 14px;
+        border-radius: 999px;
         font-size: clamp(0.92rem, 1.7vw, 1.2rem);
         color: #3a5f89;
         font-weight: 800;
         text-transform: uppercase;
+        background: rgba(255, 255, 255, 0.72);
+        border: 2px solid rgba(133, 181, 224, 0.45);
+        box-shadow: 0 6px 14px rgba(77, 128, 176, 0.12);
+      }
+
+      .brain-box.is-highlighted .brain-title {
+        animation: brainTitlePulse 2400ms ease-out;
+      }
+
+      @keyframes brainShine {
+        0% {
+          opacity: 0;
+          transform: rotate(16deg) translateX(-180%);
+        }
+
+        12% {
+          opacity: 1;
+        }
+
+        100% {
+          opacity: 0;
+          transform: rotate(16deg) translateX(420%);
+        }
+      }
+
+      @keyframes brainPulse {
+        0% {
+          transform: scale(0.96);
+          box-shadow: 0 0 0 0 rgba(126, 192, 239, 0), 0 8px 18px rgba(74, 129, 179, 0.12);
+        }
+
+        28% {
+          transform: scale(1.045);
+          box-shadow: 0 0 0 8px rgba(126, 192, 239, 0.24), 0 30px 48px rgba(74, 129, 179, 0.3);
+        }
+
+        58% {
+          transform: scale(1);
+          box-shadow: 0 0 0 6px rgba(126, 192, 239, 0.2), 0 22px 38px rgba(74, 129, 179, 0.24);
+        }
+
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(126, 192, 239, 0), 0 10px 22px rgba(93, 149, 194, 0.12);
+        }
+      }
+
+      @keyframes brainTitlePulse {
+        0% {
+          transform: scale(0.92);
+          background: rgba(255, 255, 255, 0.88);
+          border-color: rgba(133, 181, 224, 0.4);
+          color: #31557e;
+        }
+
+        28% {
+          transform: scale(1.12);
+          background: #fff6b8;
+          border-color: rgba(255, 215, 79, 0.88);
+          color: #224d82;
+          box-shadow: 0 0 0 6px rgba(255, 233, 122, 0.28), 0 10px 24px rgba(119, 146, 62, 0.18);
+        }
+
+        100% {
+          transform: scale(1);
+          background: rgba(255, 255, 255, 0.72);
+          border-color: rgba(133, 181, 224, 0.45);
+          color: #3a5f89;
+          box-shadow: 0 6px 14px rgba(77, 128, 176, 0.12);
+        }
+      }
+
+      @keyframes balanceBadgePulse {
+        0% {
+          transform: scale(0.92);
+          background: rgba(255, 255, 255, 0.98);
+          color: #21558f;
+          box-shadow: 0 4px 12px rgba(19, 78, 136, 0.16);
+        }
+
+        34% {
+          transform: scale(1.12);
+          background: #fff3a6;
+          color: #174974;
+          box-shadow: 0 0 0 8px rgba(255, 222, 93, 0.28), 0 14px 30px rgba(155, 127, 33, 0.22);
+        }
+
+        100% {
+          transform: scale(1);
+          background: rgba(255, 255, 255, 0.94);
+          color: #21558f;
+          box-shadow: 0 4px 12px rgba(19, 78, 136, 0.16);
+        }
+      }
+
+      @keyframes balanceBadgeShine {
+        0% {
+          opacity: 0;
+          transform: rotate(16deg) translateX(-180%);
+        }
+
+        18% {
+          opacity: 1;
+        }
+
+        100% {
+          opacity: 0;
+          transform: rotate(16deg) translateX(360%);
+        }
+      }
+
+      @keyframes metricGlow {
+        0% {
+          transform: scale(0.96);
+          background: rgba(255, 255, 255, 0);
+          box-shadow: none;
+        }
+
+        35% {
+          transform: scale(1.03);
+          background: rgba(255, 247, 192, 0.72);
+          box-shadow: 0 0 0 4px rgba(255, 228, 112, 0.22);
+        }
+
+        100% {
+          transform: scale(1);
+          background: rgba(255, 255, 255, 0);
+          box-shadow: none;
+        }
+      }
+
+      @keyframes meterPulse {
+        0% {
+          transform: scale(1);
+          border-color: #7ea2c0;
+          box-shadow: none;
+        }
+
+        35% {
+          transform: scale(1.03);
+          border-color: #ffd44e;
+          box-shadow: 0 0 0 5px rgba(255, 224, 99, 0.28), 0 10px 18px rgba(133, 171, 56, 0.18);
+        }
+
+        100% {
+          transform: scale(1);
+          border-color: #7ea2c0;
+          box-shadow: none;
+        }
       }
 
       .metric {
+        position: relative;
         margin-bottom: 8px;
+        padding: 4px 6px;
+        border-radius: 18px;
+      }
+
+      .brain-box.is-highlighted .metric {
+        animation: metricGlow 760ms ease-out both;
+      }
+
+      .brain-box.is-highlighted .metric:nth-of-type(1) {
+        animation-delay: 240ms;
+      }
+
+      .brain-box.is-highlighted .metric:nth-of-type(2) {
+        animation-delay: 980ms;
+      }
+
+      .brain-box.is-highlighted .metric:nth-of-type(3) {
+        animation-delay: 1720ms;
       }
 
       .metric-label {
@@ -763,6 +1016,18 @@
         overflow: hidden;
       }
 
+      .brain-box.is-highlighted .metric:nth-of-type(1) .meter {
+        animation: meterPulse 760ms ease-out 240ms both;
+      }
+
+      .brain-box.is-highlighted .metric:nth-of-type(2) .meter {
+        animation: meterPulse 760ms ease-out 980ms both;
+      }
+
+      .brain-box.is-highlighted .metric:nth-of-type(3) .meter {
+        animation: meterPulse 760ms ease-out 1720ms both;
+      }
+
       .meter > span {
         display: block;
         height: 100%;
@@ -776,16 +1041,6 @@
 
       .meter.happy > span {
         background: linear-gradient(90deg, #ffd366 0%, #f3ae2c 100%);
-      }
-
-      .stats-row {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        margin-top: 8px;
-        font-size: 0.92rem;
-        font-weight: 700;
-        color: #1f3a55;
       }
 
       .choice-row {
@@ -1060,6 +1315,26 @@
         .definition-box:hover,
         .definition-box:focus-within {
           transform: none;
+        }
+
+        .brain-box::after {
+          animation: none !important;
+          opacity: 0 !important;
+        }
+
+        .brain-box,
+        .brain-box.is-highlighted,
+        .brain-box.is-highlighted .brain-title,
+        .brain-box.is-highlighted .metric,
+        .brain-box.is-highlighted .metric .meter,
+        .phase-card-balance.is-highlighted {
+          animation: none !important;
+          transform: none !important;
+        }
+
+        .phase-card-balance::after {
+          animation: none !important;
+          opacity: 0 !important;
         }
       }
 
@@ -1407,14 +1682,20 @@
           </div>
 
           <div class="phase-card">
-            <div id="trainingHead" class="phase-card-head">Round 1 · Day 3 · Item: School Backpack</div>
+            <div id="trainingHead" class="phase-card-head">
+              Round 1
+              <span class="phase-card-divider">·</span>
+              Day 3
+              <span class="phase-card-divider">·</span>
+              <span class="phase-card-balance">Balance: $1,500</span>
+            </div>
             <div class="phase-card-body">
               <div class="item-box">
                 <div id="trainingItemEmoji" class="item-emoji">🎒</div>
                 <p id="trainingItemName" class="item-name">School Backpack</p>
                 <p id="trainingItemPrice" class="item-price">$49.99</p>
               </div>
-              <div class="brain-box">
+              <div id="trainingBrainBox" class="brain-box">
                 <p class="brain-title">AI "Brain" View (Placeholder)</p>
                 <div class="metric">
                   <div class="metric-label"><span>AI Label Confidence</span><span id="trainConf">60%</span></div>
@@ -1427,9 +1708,6 @@
                 <div class="metric">
                   <div class="metric-label"><span>Happiness</span><span id="trainHappinessPct">70%</span></div>
                   <div class="meter happy"><span id="trainHappinessBar" style="width: 70%"></span></div>
-                </div>
-                <div class="stats-row">
-                  <span id="trainBalanceText">Balance: $1,500</span>
                 </div>
               </div>
             </div>
@@ -1455,7 +1733,13 @@
           </div>
 
           <div class="phase-card">
-            <div id="testHead" class="phase-card-head">Round 1 · Day 8 · Item: Video Game Console</div>
+            <div id="testHead" class="phase-card-head">
+              Round 1
+              <span class="phase-card-divider">·</span>
+              Day 8
+              <span class="phase-card-divider">·</span>
+              <span class="phase-card-balance">Balance: $1,200</span>
+            </div>
             <div class="phase-card-body">
               <div class="item-box">
                 <div id="testItemEmoji" class="item-emoji">🎮</div>
@@ -1463,7 +1747,7 @@
                 <p id="testItemPrice" class="item-price">$449.99</p>
                 <p id="aiChoicePill" class="pill-label need">AI Chose: Need</p>
               </div>
-              <div class="brain-box">
+              <div id="testBrainBox" class="brain-box">
                 <p class="brain-title">AI "Brain" View (Placeholder)</p>
                 <div class="metric">
                   <div class="metric-label"><span>AI Label Match</span><span id="testMatchPct">60%</span></div>
@@ -1476,9 +1760,6 @@
                 <div class="metric">
                   <div class="metric-label"><span>Happiness Level</span><span id="testHappinessPct">10%</span></div>
                   <div class="meter happy"><span id="testHappinessBar" style="width: 10%"></span></div>
-                </div>
-                <div class="stats-row">
-                  <span id="testBalanceText">Balance: $1,200</span>
                 </div>
               </div>
             </div>
@@ -1608,6 +1889,8 @@
       const trainingHudName = document.querySelector("#trainingHudName");
       const testHudAvatar = document.querySelector("#testHudAvatar");
       const testHudName = document.querySelector("#testHudName");
+      const trainingBrainBox = document.querySelector("#trainingBrainBox");
+      const testBrainBox = document.querySelector("#testBrainBox");
       const reflectionQuestion = document.querySelector("#reflectionQuestion");
       const reflectionOptions = document.querySelector("#reflectionOptions");
       const nextReflectionBtn = document.querySelector("#nextReflectionBtn");
@@ -1749,6 +2032,9 @@
       let reflectionLog = [];
       let isScreenTransitioning = false;
       let queuedScreenId = null;
+      let brainHighlightTimeoutId = null;
+      let phaseHighlightFollowupTimeoutId = null;
+      let hasPlayedGameStartHighlight = false;
 
       const startingValues = {
         balance: 1500,
@@ -1967,6 +2253,79 @@
         }
       }
 
+      function setPhaseHead(id, data) {
+        const el = document.querySelector(id);
+        if (el) {
+          el.innerHTML = `Round ${data.round} <span class="phase-card-divider">·</span> Day ${data.day} <span class="phase-card-divider">·</span> <span class="phase-card-balance">${data.balanceText}</span>`;
+        }
+      }
+
+      function highlightPhaseBalance(headId) {
+        const balanceBadge = document.querySelector(`${headId} .phase-card-balance`);
+        if (!balanceBadge) {
+          return;
+        }
+
+        if (balanceBadge.highlightTimeoutId) {
+          window.clearTimeout(balanceBadge.highlightTimeoutId);
+        }
+
+        balanceBadge.classList.remove("is-highlighted");
+        void balanceBadge.offsetWidth;
+        balanceBadge.classList.add("is-highlighted");
+
+        balanceBadge.highlightTimeoutId = window.setTimeout(() => {
+          balanceBadge.classList.remove("is-highlighted");
+          balanceBadge.highlightTimeoutId = null;
+        }, 1150);
+      }
+
+      function highlightBrainBox(brainBox) {
+        if (!brainBox) {
+          return;
+        }
+
+        if (brainBox.highlightTimeoutId) {
+          window.clearTimeout(brainBox.highlightTimeoutId);
+        }
+
+        brainBox.classList.remove("is-highlighted");
+        void brainBox.offsetWidth;
+        brainBox.classList.add("is-highlighted");
+
+        brainBox.highlightTimeoutId = window.setTimeout(() => {
+          brainBox.classList.remove("is-highlighted");
+          brainBox.highlightTimeoutId = null;
+        }, 2900);
+      }
+
+      function scheduleBrainBoxHighlight(screenId) {
+        const currentVisibleScreenId = screenIds.find((id) => !screenElements[id].hidden);
+        const delayMs =
+          currentVisibleScreenId && currentVisibleScreenId !== screenId
+            ? SCREEN_TRANSITION_MS + 40
+            : 40;
+        const brainBox = screenId === "trainingScreen" ? trainingBrainBox : testBrainBox;
+        const headId = screenId === "trainingScreen" ? "#trainingHead" : "#testHead";
+
+        if (brainHighlightTimeoutId) {
+          window.clearTimeout(brainHighlightTimeoutId);
+        }
+
+        if (phaseHighlightFollowupTimeoutId) {
+          window.clearTimeout(phaseHighlightFollowupTimeoutId);
+        }
+
+        brainHighlightTimeoutId = window.setTimeout(() => {
+          highlightPhaseBalance(headId);
+          phaseHighlightFollowupTimeoutId = window.setTimeout(() => {
+            highlightBrainBox(brainBox);
+            phaseHighlightFollowupTimeoutId = null;
+          }, 620);
+          brainHighlightTimeoutId = null;
+        }, delayMs);
+      }
+
       function clearSelection(buttons) {
         buttons.forEach((button) => button.classList.remove("is-selected"));
       }
@@ -2097,17 +2456,13 @@
       function renderTrainingDay(data) {
         activeDayData = data;
         activeDecision = null;
-        setText(
-          "#trainingHead",
-          `Round ${data.round} · Day ${data.day} · Item: ${data.item.name}`
-        );
+        setPhaseHead("#trainingHead", data);
         setText("#trainingItemEmoji", data.item.emoji);
         setText("#trainingItemName", data.item.name);
         setText("#trainingItemPrice", data.item.price);
         setText("#trainConf", `${data.confidence}%`);
         setText("#trainBalancePct", `${data.balancePct}%`);
         setText("#trainHappinessPct", `${data.happinessPct}%`);
-        setText("#trainBalanceText", data.balanceText);
         setBar("#trainConfBar", data.confidence);
         setBar("#trainBalanceBar", data.balancePct);
         setBar("#trainHappinessBar", data.happinessPct);
@@ -2119,14 +2474,13 @@
 
       function renderTestDay(data) {
         activeDayData = data;
-        setText("#testHead", `Round ${data.round} · Day ${data.day} · Item: ${data.item.name}`);
+        setPhaseHead("#testHead", data);
         setText("#testItemEmoji", data.item.emoji);
         setText("#testItemName", data.item.name);
         setText("#testItemPrice", data.item.price);
         setText("#testMatchPct", `${data.matchPct}%`);
         setText("#testBalancePct", `${data.balancePct}%`);
         setText("#testHappinessPct", `${data.happinessPct}%`);
-        setText("#testBalanceText", data.balanceText);
         setBar("#testMatchBar", data.matchPct);
         setBar("#testBalanceBar", data.balancePct);
         setBar("#testHappinessBar", data.happinessPct);
@@ -2164,6 +2518,12 @@
           renderTestDay(data);
           showScreen("testScreen");
         }
+
+        if (!hasPlayedGameStartHighlight && currentDay === 1) {
+          scheduleBrainBoxHighlight(data.phase === "training" ? "trainingScreen" : "testScreen");
+          hasPlayedGameStartHighlight = true;
+        }
+
         logEvent("view_day", {
           phase: data.phase,
           round: data.round,
@@ -2281,8 +2641,19 @@
         activeReflection = null;
         reflectionStartTimestamp = 0;
         sessionItemOrder = [];
+        hasPlayedGameStartHighlight = false;
         reflectionOptions.innerHTML = "";
         nextReflectionBtn.disabled = true;
+        if (brainHighlightTimeoutId) {
+          window.clearTimeout(brainHighlightTimeoutId);
+          brainHighlightTimeoutId = null;
+        }
+        if (phaseHighlightFollowupTimeoutId) {
+          window.clearTimeout(phaseHighlightFollowupTimeoutId);
+          phaseHighlightFollowupTimeoutId = null;
+        }
+        trainingBrainBox?.classList.remove("is-highlighted");
+        testBrainBox?.classList.remove("is-highlighted");
         firstNameInput.value = "";
         lastInitialInput.value = "";
         gradeSelect.value = "";
