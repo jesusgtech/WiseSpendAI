@@ -117,6 +117,28 @@
         height: auto;
       }
 
+      .welcome-status-slot {
+        min-height: 56px;
+        width: min(84vw, 420px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .welcome-status-message {
+        margin: 0;
+        width: 100%;
+        padding: 12px 18px;
+        border-radius: 999px;
+        border: 2px solid rgba(58, 118, 223, 0.18);
+        background: rgba(255, 255, 255, 0.88);
+        color: #24539c;
+        font-size: 1rem;
+        font-weight: 800;
+        letter-spacing: 0.01em;
+        box-shadow: 0 12px 28px rgba(58, 118, 223, 0.12);
+      }
+
       .start-btn {
         margin-top: 6px;
         width: min(84vw, 380px);
@@ -244,6 +266,13 @@
       .field-input:focus-visible {
         outline: 3px solid #9fc0ff;
         outline-offset: 2px;
+      }
+
+      .setup-warning {
+        margin: 10px 0 0;
+        font-size: 0.98rem;
+        font-weight: 800;
+        color: #c53a2f;
       }
 
       .avatar-row {
@@ -586,7 +615,8 @@
       #testingCutsceneScreen,
       #reflectionScreen,
       #testScreen,
-      #resultsScreen {
+      #resultsScreen,
+      #scoreExplainScreen {
         min-height: 100vh;
         padding: 16px 14px 20px;
       }
@@ -610,6 +640,10 @@
 
       #testScreen {
         background: linear-gradient(180deg, #fff3e2 0%, #ffffff 100%);
+      }
+
+      #scoreExplainScreen {
+        background: linear-gradient(180deg, #f0f7ff 0%, #fff8e9 100%);
       }
 
       .phase-wrap {
@@ -944,6 +978,13 @@
         box-shadow: 0 6px 14px rgba(77, 128, 176, 0.12);
       }
 
+      .brain-note {
+        margin: 10px 0 0;
+        font-size: 0.92rem;
+        line-height: 1.4;
+        color: #48698f;
+      }
+
       .brain-box.is-highlighted .brain-title {
         animation: brainTitlePulse 2400ms ease-out;
       }
@@ -1145,10 +1186,6 @@
         animation-delay: 980ms;
       }
 
-      .brain-box.is-highlighted .metric:nth-of-type(3) {
-        animation-delay: 1720ms;
-      }
-
       .metric-label {
         display: flex;
         justify-content: space-between;
@@ -1174,19 +1211,11 @@
         animation: meterPulse 760ms ease-out 980ms both;
       }
 
-      .brain-box.is-highlighted .metric:nth-of-type(3) .meter {
-        animation: meterPulse 760ms ease-out 1720ms both;
-      }
-
       .meter > span {
         display: block;
         height: 100%;
         border-radius: 999px;
         background: linear-gradient(90deg, #8adf7a 0%, #58c250 100%);
-      }
-
-      .meter.balance > span {
-        background: linear-gradient(90deg, #73c6ff 0%, #3f95ec 100%);
       }
 
       .meter.happy > span {
@@ -1281,6 +1310,62 @@
         text-align: center;
         font-size: clamp(1.15rem, 2.4vw, 1.9rem);
         font-weight: 700;
+      }
+
+      .training-decision-layout {
+        margin: 14px auto 0;
+        width: min(96vw, 860px);
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+        align-items: stretch;
+      }
+
+      .training-decision-layout.has-followup {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .training-decision-layout:not(.has-followup) {
+        width: min(90vw, 520px);
+      }
+
+      .training-choice-panel {
+        min-width: 0;
+        padding: 14px 16px 18px;
+        border-radius: 24px;
+        box-shadow: 0 10px 18px rgba(124, 154, 198, 0.12);
+      }
+
+      .training-choice-panel .sub-prompt {
+        margin-top: 0;
+        font-size: clamp(1rem, 2.1vw, 1.55rem);
+      }
+
+      .training-decision-layout .choice-row {
+        margin-top: 12px;
+        gap: 12px;
+      }
+
+      .training-decision-layout .choice-btn {
+        min-width: 0;
+        flex: 1 1 120px;
+        max-width: none;
+        padding: 12px 18px;
+      }
+
+      .training-primary-choice {
+        border: 2px solid rgba(125, 184, 224, 0.7);
+        background: rgba(255, 255, 255, 0.95);
+      }
+
+      .training-followup {
+        border: 2px dashed rgba(221, 158, 37, 0.62);
+        background: rgba(255, 251, 241, 0.92);
+        box-shadow: 0 10px 18px rgba(210, 165, 67, 0.12);
+      }
+
+      .training-followup .sub-prompt {
+        color: #8a5a11;
       }
 
       .reflection-wrap {
@@ -1454,6 +1539,85 @@
         color: #3a5d86;
       }
 
+      .score-explain-grid {
+        margin-top: 16px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .score-card {
+        border-radius: 26px;
+        border: 3px solid rgba(135, 181, 227, 0.88);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(243, 249, 255, 0.96) 100%);
+        box-shadow: 0 12px 24px rgba(96, 135, 191, 0.14);
+        padding: 18px 18px 20px;
+      }
+
+      .score-card-title {
+        margin: 0 0 12px;
+        font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+        font-weight: 800;
+        color: #2f5f9e;
+      }
+
+      .score-card-copy {
+        margin: 12px 0 0;
+        font-size: 0.95rem;
+        line-height: 1.45;
+        color: #35506f;
+      }
+
+      .score-breakdown-rows {
+        display: grid;
+        gap: 10px;
+      }
+
+      .score-breakdown-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 18px;
+        background: rgba(236, 245, 255, 0.98);
+        border: 2px solid rgba(162, 194, 232, 0.82);
+      }
+
+      .score-breakdown-label {
+        font-size: 0.98rem;
+        font-weight: 700;
+        color: #2e4d73;
+      }
+
+      .score-breakdown-value {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #214f8a;
+        white-space: nowrap;
+      }
+
+      .score-breakdown-row.total {
+        background: linear-gradient(180deg, #fff5d2 0%, #ffe7a7 100%);
+        border-color: rgba(226, 182, 69, 0.78);
+      }
+
+      .score-decision-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .score-decision-item {
+        padding: 12px 14px;
+        border-radius: 18px;
+        background: rgba(244, 249, 255, 0.98);
+        border: 2px solid rgba(196, 214, 239, 0.88);
+        color: #304762;
+        font-size: 0.96rem;
+        line-height: 1.4;
+        font-weight: 700;
+      }
+
       @media (prefers-reduced-motion: reduce) {
         .step-card,
         .definition-box {
@@ -1501,7 +1665,8 @@
         #testingCutsceneScreen,
         #reflectionScreen,
         #testScreen,
-        #resultsScreen {
+        #resultsScreen,
+        #scoreExplainScreen {
           padding-top: 12px;
           padding-bottom: 16px;
         }
@@ -1615,7 +1780,8 @@
         #testingCutsceneScreen,
         #reflectionScreen,
         #testScreen,
-        #resultsScreen {
+        #resultsScreen,
+        #scoreExplainScreen {
           padding: 12px 10px 18px;
         }
 
@@ -1656,6 +1822,10 @@
           font-size: 0.9rem;
         }
 
+        .score-explain-grid {
+          grid-template-columns: 1fr;
+        }
+
         .pill-label {
           min-width: 150px;
           padding: 10px 20px;
@@ -1691,6 +1861,9 @@
             src="assets/robot-money.png"
             alt="Sad robot holding money"
           />
+        </div>
+        <div class="welcome-status-slot" aria-live="polite">
+          <p id="welcomeStatusMessage" class="welcome-status-message" hidden></p>
         </div>
         <button class="start-btn" type="button">Start</button>
       </section>
@@ -1734,6 +1907,9 @@
                     <option value="9">Other</option>
                   </select>
                 </div>
+                <p id="nameTakenMessage" class="setup-warning" hidden aria-live="polite">
+                  That name is taken.
+                </p>
               </div>
             </article>
 
@@ -1863,27 +2039,41 @@
                 <p id="trainingItemPrice" class="item-price">$49.99</p>
               </div>
               <div id="trainingBrainBox" class="brain-box">
-                <p class="brain-title">AI "Brain" View (Placeholder)</p>
+                <p class="brain-title">AI Brain View</p>
                 <div class="metric">
                   <div class="metric-label"><span>AI Label Confidence</span><span id="trainConf">60%</span></div>
                   <div class="meter"><span id="trainConfBar" style="width: 60%"></span></div>
                 </div>
                 <div class="metric">
-                  <div class="metric-label"><span>Balance Health</span><span id="trainBalancePct">50%</span></div>
-                  <div class="meter balance"><span id="trainBalanceBar" style="width: 50%"></span></div>
-                </div>
-                <div class="metric">
                   <div class="metric-label"><span>Happiness</span><span id="trainHappinessPct">70%</span></div>
                   <div class="meter happy"><span id="trainHappinessBar" style="width: 70%"></span></div>
                 </div>
+                <p id="trainingBrainNote" class="brain-note">
+                  I am waiting for your first labels so I can learn your patterns.
+                </p>
               </div>
             </div>
           </div>
 
-          <p class="sub-prompt">How should you label this item?</p>
-          <div class="choice-row">
-            <button class="choice-btn need" type="button" data-label="Need">Need</button>
-            <button class="choice-btn want" type="button" data-label="Want">Want</button>
+          <div id="trainingDecisionLayout" class="training-decision-layout">
+            <div class="training-choice-panel training-primary-choice">
+              <p class="sub-prompt">How should you label this item?</p>
+              <div class="choice-row">
+                <button class="choice-btn need" type="button" data-label="Need">Need</button>
+                <button class="choice-btn want" type="button" data-label="Want">Want</button>
+              </div>
+            </div>
+            <div id="trainingWantFollowup" class="training-choice-panel training-followup" hidden>
+              <p class="sub-prompt">Buy this item anyways?</p>
+              <div class="choice-row">
+                <button id="trainingBuyYesBtn" class="choice-btn yes" type="button" data-buy-choice="Yes">
+                  Yes
+                </button>
+                <button id="trainingBuyNoBtn" class="choice-btn no" type="button" data-buy-choice="No">
+                  No
+                </button>
+              </div>
+            </div>
           </div>
           <button id="nextTrainingDayBtn" class="action-btn" type="button" disabled>Next Day</button>
         </div>
@@ -1922,27 +2112,26 @@
                 <div id="testItemEmoji" class="item-emoji">🎮</div>
                 <p id="testItemName" class="item-name">Video Game Console</p>
                 <p id="testItemPrice" class="item-price">$449.99</p>
-                <p id="aiChoicePill" class="pill-label need">AI Chose: Need</p>
+                <p id="aiChoicePill" class="pill-label need">AI Chose: Need and bought it</p>
               </div>
               <div id="testBrainBox" class="brain-box">
-                <p class="brain-title">AI "Brain" View (Placeholder)</p>
+                <p class="brain-title">AI Brain View</p>
                 <div class="metric">
-                  <div class="metric-label"><span>AI Label Match</span><span id="testMatchPct">60%</span></div>
+                  <div class="metric-label"><span>AI Label Confidence</span><span id="testMatchPct">60%</span></div>
                   <div class="meter"><span id="testMatchBar" style="width: 60%"></span></div>
                 </div>
                 <div class="metric">
-                  <div class="metric-label"><span>Current Bank Balance</span><span id="testBalancePct">30%</span></div>
-                  <div class="meter balance"><span id="testBalanceBar" style="width: 30%"></span></div>
-                </div>
-                <div class="metric">
-                  <div class="metric-label"><span>Happiness Level</span><span id="testHappinessPct">10%</span></div>
+                  <div class="metric-label"><span>Happiness</span><span id="testHappinessPct">10%</span></div>
                   <div class="meter happy"><span id="testHappinessBar" style="width: 10%"></span></div>
                 </div>
+                <p id="testBrainNote" class="brain-note">
+                  I am using your training to decide whether this looks like a need or a want.
+                </p>
               </div>
             </div>
           </div>
 
-          <p class="sub-prompt">Was the AI right? (Placeholder feedback)</p>
+          <p class="sub-prompt">Was the AI right about this choice?</p>
           <div class="choice-row">
             <button id="testNoBtn" class="choice-btn no" type="button">No ✕</button>
             <button id="testYesBtn" class="choice-btn yes" type="button">Yes ✓</button>
@@ -1975,7 +2164,8 @@
 
       <section id="resultsScreen" hidden>
         <div class="results-wrap">
-          <h2 class="results-title">Results!</h2>
+          <h2 id="resultsTitle" class="results-title">Results!</h2>
+          <p id="resultsSummary" class="results-note"></p>
 
           <div class="leaderboard-box">
             <div class="leaderboard-head">Leaderboard</div>
@@ -1988,48 +2178,37 @@
                   <th>Budget Left</th>
                 </tr>
               </thead>
-              <tbody id="leaderboardBody">
-                <tr class="highlight">
-                  <td>1</td>
-                  <td>
-                    <span class="leaderboard-name">
-                      <img id="userRowAvatar" class="leaderboard-avatar" src="assets/avatar1.png" alt="Player avatar" />
-                      <span id="userRowName">You</span>
-                    </span>
-                  </td>
-                  <td>98%</td>
-                  <td>$850</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Ben</td>
-                  <td>95%</td>
-                  <td>$820</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Chloe</td>
-                  <td>92%</td>
-                  <td>$790</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>David</td>
-                  <td>88%</td>
-                  <td>$750</td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>Emily</td>
-                  <td>85%</td>
-                  <td>$720</td>
-                </tr>
-              </tbody>
+              <tbody id="leaderboardBody"></tbody>
             </table>
           </div>
 
           <div class="results-actions">
-            <button id="restartBtn" class="action-btn secondary" type="button">Play Again</button>
+            <button id="explainScoreBtn" class="action-btn secondary" type="button">Explain My Score</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="scoreExplainScreen" hidden>
+        <div class="results-wrap">
+          <h2 class="results-title">Why You Got This Score</h2>
+          <p id="scoreExplainIntro" class="results-note"></p>
+
+          <div class="score-explain-grid">
+            <div class="score-card">
+              <h3 class="score-card-title">Score Formula</h3>
+              <div id="scoreBreakdownRows" class="score-breakdown-rows"></div>
+              <p id="scoreExplainFormula" class="score-card-copy"></p>
+            </div>
+
+            <div class="score-card">
+              <h3 class="score-card-title">What Happened</h3>
+              <div id="scoreDecisionList" class="score-decision-list"></div>
+            </div>
+          </div>
+
+          <div class="results-actions">
+            <button id="playAgainBtn" class="action-btn secondary" type="button">Play Again</button>
+            <button id="quitGameBtn" class="action-btn" type="button">Quit Game</button>
           </div>
         </div>
       </section>
@@ -2044,6 +2223,7 @@
         "testScreen",
         "reflectionScreen",
         "resultsScreen",
+        "scoreExplainScreen",
       ];
 
       const screenElements = Object.fromEntries(
@@ -2053,13 +2233,19 @@
       const startButton = document.querySelector(".start-btn");
       const setupNextButton = document.querySelector(".setup-next-btn");
       const startChallengeBtn = document.querySelector("#startChallengeBtn");
+      const welcomeStatusMessage = document.querySelector("#welcomeStatusMessage");
       const firstNameInput = document.querySelector("#firstNameInput");
       const lastInitialInput = document.querySelector("#lastInitialInput");
       const gradeSelect = document.querySelector("#gradeSelect");
+      const nameTakenMessage = document.querySelector("#nameTakenMessage");
       const avatarButtons = document.querySelectorAll(".avatar-btn");
       const trainingChoiceButtons = document.querySelectorAll(
         "#trainingScreen .choice-btn[data-label]"
       );
+      const trainingDecisionLayout = document.querySelector("#trainingDecisionLayout");
+      const trainingWantFollowup = document.querySelector("#trainingWantFollowup");
+      const trainingBuyYesBtn = document.querySelector("#trainingBuyYesBtn");
+      const trainingBuyNoBtn = document.querySelector("#trainingBuyNoBtn");
       const nextTrainingDayBtn = document.querySelector("#nextTrainingDayBtn");
       const testNoBtn = document.querySelector("#testNoBtn");
       const testYesBtn = document.querySelector("#testYesBtn");
@@ -2071,15 +2257,25 @@
       const testItemBox = document.querySelector("#testItemBox");
       const trainingBrainBox = document.querySelector("#trainingBrainBox");
       const testBrainBox = document.querySelector("#testBrainBox");
+      const trainingBrainNote = document.querySelector("#trainingBrainNote");
+      const testBrainNote = document.querySelector("#testBrainNote");
       const reflectionQuestion = document.querySelector("#reflectionQuestion");
       const reflectionOptions = document.querySelector("#reflectionOptions");
       const nextReflectionBtn = document.querySelector("#nextReflectionBtn");
-      const restartBtn = document.querySelector("#restartBtn");
-      const userRowName = document.querySelector("#userRowName");
-      const userRowAvatar = document.querySelector("#userRowAvatar");
+      const explainScoreBtn = document.querySelector("#explainScoreBtn");
+      const playAgainBtn = document.querySelector("#playAgainBtn");
+      const quitGameBtn = document.querySelector("#quitGameBtn");
+      const resultsTitle = document.querySelector("#resultsTitle");
+      const leaderboardBody = document.querySelector("#leaderboardBody");
+      const resultsSummary = document.querySelector("#resultsSummary");
+      const scoreExplainIntro = document.querySelector("#scoreExplainIntro");
+      const scoreBreakdownRows = document.querySelector("#scoreBreakdownRows");
+      const scoreExplainFormula = document.querySelector("#scoreExplainFormula");
+      const scoreDecisionList = document.querySelector("#scoreDecisionList");
       const aiChoicePill = document.querySelector("#aiChoicePill");
       const avatarPreviewWrap = document.querySelector("#avatarPreviewWrap");
       const avatarPreviewImage = document.querySelector("#avatarPreviewImage");
+      const trainingBuyChoiceButtons = [trainingBuyYesBtn, trainingBuyNoBtn].filter(Boolean);
 
       const itemPool = [
         { emoji: "🍩", name: "Donut" },
@@ -2195,8 +2391,17 @@
       let selectedAvatar = "";
       let currentDay = 1;
       let selectedTrainingLabel = "";
+      let selectedTrainingBuyChoice = "";
       let selectedTestFeedback = "";
       let selectedReflectionAnswer = "";
+      let aiConfidencePct = 60;
+      let currentBalance = 1500;
+      let currentHappinessPct = 80;
+      let trainingExamples = [];
+      let gameplayStats = createGameplayStats();
+      let currentScoreBreakdown = null;
+      let currentSessionRecord = null;
+      let currentLeaderboardRank = null;
       let sessionStartTime = Date.now();
       let lastDecisionTimestamp = Date.now();
       let activeDayData = null;
@@ -2218,6 +2423,8 @@
       let hasPlayedGameStartHighlight = false;
       let hasShownFirstTestingCutscene = false;
       let testingCutsceneTimeoutId = null;
+      let welcomeStatusTimeoutId = null;
+      let resultsScreenMode = "session";
 
       const startingValues = {
         balance: 1500,
@@ -2230,6 +2437,222 @@
       const TESTING_CUTSCENE_MS = window.matchMedia("(prefers-reduced-motion: reduce)").matches
         ? 2900
         : 3900;
+      const RESEARCH_DATA_KEY = "wiseSpendResearchData";
+      const LATEST_SESSION_KEY = "wiseSpendLatestSession";
+      const AI_CONFIDENCE_STEP = 8;
+      const AI_CONFIDENCE_MIN = 15;
+      const AI_CONFIDENCE_MAX = 95;
+      const NEED_HAPPINESS_DELTA = -1;
+      const WANT_BUY_HAPPINESS_DELTA = 6;
+      const WANT_SKIP_HAPPINESS_DELTA = -5;
+      const RESET_CODE = {
+        firstName: "reset",
+        lastInitial: "t",
+        grade: "9",
+      };
+      const LEADERBOARD_VIEW_CODE = {
+        firstName: "leaderboard",
+        lastInitial: "t",
+      };
+
+      function createGameplayStats() {
+        return {
+          totalSpent: 0,
+          needsBought: 0,
+          wantsBought: 0,
+          wantsRejected: 0,
+          trainingNeedsBought: 0,
+          trainingWantsBought: 0,
+          trainingWantsRejected: 0,
+          testNeedsBought: 0,
+          testWantsBought: 0,
+          testWantsRejected: 0,
+          aiRightCount: 0,
+          aiWrongCount: 0,
+        };
+      }
+
+      function roundMoney(value) {
+        return Math.round(value * 100) / 100;
+      }
+
+      function clampPercent(value) {
+        return Math.max(0, Math.min(100, Math.round(value)));
+      }
+
+      function formatCurrency(value) {
+        return roundMoney(value).toLocaleString(undefined, {
+          style: "currency",
+          currency: "USD",
+        });
+      }
+
+      function formatDisplayName(profile) {
+        const firstName = profile?.firstName?.trim() || "";
+        const lastInitial = profile?.lastInitial?.trim() || "";
+        const suffix = lastInitial ? `${lastInitial.toUpperCase()}.` : "";
+        return firstName ? `${firstName} ${suffix}`.trim() : "You";
+      }
+
+      function getCurrentStudentProfile() {
+        return {
+          firstName: firstNameInput?.value.trim() || "",
+          lastInitial: lastInitialInput?.value.trim() || "",
+          grade: gradeSelect?.value || "",
+          avatar: selectedAvatar || "assets/avatar1.png",
+          displayName: formatDisplayName({
+            firstName: firstNameInput?.value.trim() || "",
+            lastInitial: lastInitialInput?.value.trim() || "",
+          }),
+        };
+      }
+
+      function getPlayerKey(profile) {
+        return [
+          profile?.firstName || "",
+          profile?.lastInitial || "",
+          profile?.grade || "",
+          profile?.avatar || "",
+        ]
+          .map((value) => value.trim().toLowerCase())
+          .join("|");
+      }
+
+      function isResetCodeEntered(profile) {
+        return (
+          (profile?.firstName || "").trim().toLowerCase() === RESET_CODE.firstName &&
+          (profile?.lastInitial || "").trim().toLowerCase() === RESET_CODE.lastInitial &&
+          (profile?.grade || "").trim() === RESET_CODE.grade
+        );
+      }
+
+      function isLeaderboardViewCodeEntered(profile) {
+        return (
+          (profile?.firstName || "").trim().toLowerCase() === LEADERBOARD_VIEW_CODE.firstName &&
+          (profile?.lastInitial || "").trim().toLowerCase() === LEADERBOARD_VIEW_CODE.lastInitial
+        );
+      }
+
+      function isLeaderboardNameTaken(profile) {
+        const displayName = formatDisplayName(profile).trim().toLowerCase();
+
+        if (!profile?.firstName?.trim() || !profile?.lastInitial?.trim() || !displayName) {
+          return false;
+        }
+
+        return (loadResearchData().players || []).some((player) => {
+          if (!player?.latestResult) {
+            return false;
+          }
+
+          const playerDisplayName = (
+            player.studentProfile?.displayName || formatDisplayName(player.studentProfile)
+          )
+            .trim()
+            .toLowerCase();
+
+          return playerDisplayName === displayName;
+        });
+      }
+
+      function loadResearchData() {
+        try {
+          const raw = localStorage.getItem(RESEARCH_DATA_KEY);
+          if (!raw) {
+            return { version: 1, players: [] };
+          }
+
+          const parsed = JSON.parse(raw);
+          if (!parsed || !Array.isArray(parsed.players)) {
+            return { version: 1, players: [] };
+          }
+
+          return parsed;
+        } catch {
+          return { version: 1, players: [] };
+        }
+      }
+
+      function saveResearchData(data) {
+        localStorage.setItem(
+          RESEARCH_DATA_KEY,
+          JSON.stringify({
+            version: 1,
+            updatedAt: new Date().toISOString(),
+            players: Array.isArray(data?.players) ? data.players : [],
+          })
+        );
+      }
+
+      function clearStoredLeaderboardData() {
+        localStorage.removeItem(RESEARCH_DATA_KEY);
+        localStorage.removeItem(LATEST_SESSION_KEY);
+        renderLeaderboard();
+      }
+
+      function showWelcomeStatus(text, durationMs = 5000) {
+        if (!welcomeStatusMessage) {
+          return;
+        }
+
+        if (welcomeStatusTimeoutId) {
+          window.clearTimeout(welcomeStatusTimeoutId);
+          welcomeStatusTimeoutId = null;
+        }
+
+        welcomeStatusMessage.textContent = text;
+        welcomeStatusMessage.hidden = false;
+
+        welcomeStatusTimeoutId = window.setTimeout(() => {
+          welcomeStatusMessage.hidden = true;
+          welcomeStatusMessage.textContent = "";
+          welcomeStatusTimeoutId = null;
+        }, durationMs);
+      }
+
+      function setResultsScreenMode(mode) {
+        resultsScreenMode = mode;
+
+        if (resultsTitle) {
+          resultsTitle.textContent = mode === "leaderboard" ? "Leaderboard" : "Results!";
+        }
+
+        if (explainScoreBtn) {
+          explainScoreBtn.textContent = mode === "leaderboard" ? "Back to Title" : "Explain My Score";
+        }
+      }
+
+      function showLeaderboardOnlyScreen() {
+        setResultsScreenMode("leaderboard");
+        renderLeaderboard();
+        if (resultsSummary) {
+          resultsSummary.textContent = "Read-only leaderboard view. Scores were not changed.";
+        }
+        showScreen("resultsScreen");
+      }
+
+      function getLeaderboardEntries(data = loadResearchData()) {
+        return (data.players || [])
+          .filter((player) => player?.latestResult)
+          .map((player) => ({
+            playerKey: player.playerKey,
+            displayName: player.studentProfile?.displayName || "Player",
+            avatar: player.studentProfile?.avatar || "assets/avatar1.png",
+            latestResult: player.latestResult,
+          }))
+          .sort((entryA, entryB) => {
+            if (entryB.latestResult.totalScore !== entryA.latestResult.totalScore) {
+              return entryB.latestResult.totalScore - entryA.latestResult.totalScore;
+            }
+            if (entryB.latestResult.balanceLeft !== entryA.latestResult.balanceLeft) {
+              return entryB.latestResult.balanceLeft - entryA.latestResult.balanceLeft;
+            }
+            if (entryB.latestResult.happinessPct !== entryA.latestResult.happinessPct) {
+              return entryB.latestResult.happinessPct - entryA.latestResult.happinessPct;
+            }
+            return entryB.latestResult.aiConfidencePct - entryA.latestResult.aiConfidencePct;
+          });
+      }
 
       function showScreen(id) {
         const nextScreen = screenElements[id];
@@ -2368,17 +2791,11 @@
       }
 
       function buildStudentSessionSummary() {
-        const firstName = firstNameInput?.value.trim();
-        const lastInitial = lastInitialInput?.value.trim();
-        const suffix = lastInitial ? `${lastInitial.toUpperCase()}.` : "";
-        const displayName = firstName ? `${firstName} ${suffix}`.trim() : "You";
-
-        const accuracyValues = classificationLog
-          .filter((entry) => entry.correctChoice !== null)
-          .map((entry) => entry.studentChoice === entry.correctChoice);
+        const studentProfile = getCurrentStudentProfile();
+        const totalFeedbackCount = gameplayStats.aiRightCount + gameplayStats.aiWrongCount;
         const totalAccuracy =
-          accuracyValues.length > 0
-            ? Math.round((accuracyValues.filter(Boolean).length / accuracyValues.length) * 100)
+          totalFeedbackCount > 0
+            ? Math.round((gameplayStats.aiRightCount / totalFeedbackCount) * 100)
             : null;
 
         const avgResponseTimeMs =
@@ -2392,13 +2809,7 @@
         return {
           sessionID: sessionId,
           anonymousStudentID: anonymousStudentId,
-          studentProfile: {
-            firstName: firstName || "",
-            lastInitial: lastInitial || "",
-            grade: gradeSelect?.value || "",
-            avatar: selectedAvatar || "",
-            displayName,
-          },
+          studentProfile,
           startTimestamp: new Date(sessionStartTime).toISOString(),
           endTimestamp: new Date().toISOString(),
           totalClassificationAccuracy: totalAccuracy,
@@ -2562,6 +2973,37 @@
         buttons.forEach((button) => button.classList.remove("is-selected"));
       }
 
+      function adjustAIConfidence(changeAmount) {
+        aiConfidencePct = Math.max(
+          AI_CONFIDENCE_MIN,
+          Math.min(AI_CONFIDENCE_MAX, aiConfidencePct + changeAmount)
+        );
+
+        return Math.round(aiConfidencePct);
+      }
+
+      function updateTrainingNextDayState() {
+        const requiresBuyChoice = selectedTrainingLabel === "Want";
+        nextTrainingDayBtn.disabled =
+          !selectedTrainingLabel || (requiresBuyChoice && !selectedTrainingBuyChoice);
+      }
+
+      function resetTrainingWantFollowup() {
+        selectedTrainingBuyChoice = "";
+        clearSelection(trainingBuyChoiceButtons);
+        trainingDecisionLayout?.classList.remove("has-followup");
+        if (trainingWantFollowup) {
+          trainingWantFollowup.hidden = true;
+        }
+      }
+
+      function showTrainingWantFollowup() {
+        trainingDecisionLayout?.classList.add("has-followup");
+        if (trainingWantFollowup) {
+          trainingWantFollowup.hidden = false;
+        }
+      }
+
       function updateAvatarPreview(avatarSrc, altText = "Selected avatar") {
         if (!avatarPreviewWrap || !avatarPreviewImage) {
           return;
@@ -2571,6 +3013,531 @@
         avatarPreviewWrap.hidden = !hasAvatar;
         avatarPreviewImage.src = hasAvatar ? avatarSrc : "";
         avatarPreviewImage.alt = altText;
+      }
+
+      function getSelectedAvatarAlt() {
+        const selectedButton = Array.from(avatarButtons).find(
+          (button) => button.dataset.avatar === selectedAvatar
+        );
+        return selectedButton?.querySelector(".avatar-img")?.alt || "Selected avatar";
+      }
+
+      function getPriceBucket(priceValue) {
+        if (priceValue <= 20) {
+          return "low";
+        }
+        if (priceValue <= 80) {
+          return "medium";
+        }
+        if (priceValue <= 250) {
+          return "high";
+        }
+        return "very high";
+      }
+
+      function getItemCategory(item) {
+        const name = (item?.name || "").toLowerCase();
+        const categoryChecks = [
+          ["meal", ["sandwich", "apple", "cheese", "juice box", "fork and knife"]],
+          ["treat", ["donut", "pretzel", "cupcake"]],
+          [
+            "school",
+            ["notebook", "pencil", "scissors", "paperclip", "printer", "mouse", "keyboard", "monitor", "laptop", "map"],
+          ],
+          ["care", ["toilet paper", "razor", "toothbrush", "sponge", "bandages", "lotion"]],
+          ["home", ["flashlight", "fire extinguisher", "battery", "broom", "bed", "chair", "padlock"]],
+          ["tools", ["shovel", "wrench", "hammer"]],
+          ["fun", ["soccer ball", "roller skates", "skateboard", "snorkel gear", "dice", "bowling ball", "toy sword", "teddy bear"]],
+          ["music", ["microphone", "drum", "drum kit", "trumpet", "guitar", "banjo", "saxophone", "headphones"]],
+          ["tech", ["watch", "smartphone", "phone", "camera", "video camera", "video game console"]],
+          ["big purchase", ["suv", "desktop monitor", "telescope"]],
+        ];
+
+        const match = categoryChecks.find(([, keywords]) =>
+          keywords.some((keyword) => name.includes(keyword))
+        );
+
+        return match?.[0] || "general";
+      }
+
+      function getDefaultCategoryBias(category) {
+        if (["meal", "school", "care", "home", "tools"].includes(category)) {
+          return 0.55;
+        }
+
+        if (["treat", "fun", "music", "tech", "big purchase"].includes(category)) {
+          return -0.55;
+        }
+
+        return 0;
+      }
+
+      function getDefaultWantBuyBias(category) {
+        if (["treat", "fun", "music"].includes(category)) {
+          return 0.3;
+        }
+
+        if (["tech", "big purchase"].includes(category)) {
+          return -0.35;
+        }
+
+        return 0;
+      }
+
+      function getDefaultWantBuyChoice(category) {
+        return getDefaultWantBuyBias(category) > 0 ? "Yes" : "No";
+      }
+
+      function getLabelCounts(map, key) {
+        if (!map[key]) {
+          map[key] = { need: 0, want: 0 };
+        }
+
+        return map[key];
+      }
+
+      function getBuyCounts(map, key) {
+        if (!map[key]) {
+          map[key] = { yes: 0, no: 0 };
+        }
+
+        return map[key];
+      }
+
+      function getLabelBias(counts) {
+        if (!counts) {
+          return 0;
+        }
+
+        const total = counts.need + counts.want;
+        if (!total) {
+          return 0;
+        }
+
+        return (counts.need - counts.want) / total;
+      }
+
+      function getBuyBias(counts) {
+        if (!counts) {
+          return 0;
+        }
+
+        const total = counts.yes + counts.no;
+        if (!total) {
+          return 0;
+        }
+
+        return (counts.yes - counts.no) / total;
+      }
+
+      function buildTrainingModel() {
+        const model = {
+          totals: { need: 0, want: 0 },
+          byCategory: {},
+          byPriceBucket: {},
+          wantBuyTotals: { yes: 0, no: 0 },
+          wantBuyByCategory: {},
+          wantBuyByPriceBucket: {},
+        };
+
+        trainingExamples.forEach((example) => {
+          const labelKey = example.label.toLowerCase();
+          const categoryCounts = getLabelCounts(model.byCategory, example.category);
+          const priceCounts = getLabelCounts(model.byPriceBucket, example.priceBucket);
+
+          model.totals[labelKey] += 1;
+          categoryCounts[labelKey] += 1;
+          priceCounts[labelKey] += 1;
+
+          if (example.label === "Want") {
+            const buyKey = example.buyChoice === "Yes" ? "yes" : "no";
+            const categoryBuyCounts = getBuyCounts(model.wantBuyByCategory, example.category);
+            const priceBuyCounts = getBuyCounts(model.wantBuyByPriceBucket, example.priceBucket);
+
+            model.wantBuyTotals[buyKey] += 1;
+            categoryBuyCounts[buyKey] += 1;
+            priceBuyCounts[buyKey] += 1;
+          }
+        });
+
+        return model;
+      }
+
+      function buildTrainingBrainNote() {
+        if (!trainingExamples.length) {
+          return "I am waiting for your first labels so I can learn your patterns.";
+        }
+
+        const model = buildTrainingModel();
+        const categoryEntries = Object.entries(model.byCategory).filter(
+          ([, counts]) => counts.need + counts.want > 0
+        );
+        const strongestCategory = categoryEntries.sort((entryA, entryB) => {
+          const totalA = entryA[1].need + entryA[1].want;
+          const totalB = entryB[1].need + entryB[1].want;
+          return totalB - totalA;
+        })[0];
+
+        const buyBias = getBuyBias(model.wantBuyTotals);
+        const buyPatternText =
+          model.wantBuyTotals.yes + model.wantBuyTotals.no > 0
+            ? buyBias >= 0
+              ? "You usually still buy some wants."
+              : "You usually skip wants to protect the budget."
+            : "You have not coached me on want purchases yet.";
+
+        if (!strongestCategory) {
+          return `You have taught me ${trainingExamples.length} example${trainingExamples.length === 1 ? "" : "s"}. ${buyPatternText}`;
+        }
+
+        const [categoryName, counts] = strongestCategory;
+        const categoryTrend = counts.need >= counts.want ? "Needs" : "Wants";
+
+        return `You have taught me ${model.totals.need} Needs and ${model.totals.want} Wants. Right now, ${categoryName} items lean ${categoryTrend}. ${buyPatternText}`;
+      }
+
+      function buildDecisionNote(result) {
+        const reasonBits = result.reasoning.slice(0, 2);
+        const actionText =
+          result.finalClassification === "Need"
+            ? "That made this a Need, so I bought it."
+            : result.buyDecision
+              ? "I labeled it a Want, but I bought it to protect happiness."
+              : "I labeled it a Want, so I skipped it to protect the budget.";
+
+        return `${reasonBits.join(" ")} ${actionText}`.trim();
+      }
+
+      function evaluateDecisionTree(item, state) {
+        const model = buildTrainingModel();
+        const category = getItemCategory(item);
+        const priceBucket = getPriceBucket(item.priceValue);
+        const categoryCounts = model.byCategory[category];
+        const priceCounts = model.byPriceBucket[priceBucket];
+        const overallBias = getLabelBias(model.totals);
+        const categoryBias = categoryCounts ? getLabelBias(categoryCounts) : getDefaultCategoryBias(category);
+        const priceBias = priceCounts ? getLabelBias(priceCounts) : 0;
+        const canComfortablyAfford = state.balanceAmount >= item.priceValue * 1.4;
+        const isTightPurchase = item.priceValue > state.balanceAmount * 0.35;
+
+        const path = [
+          "Have I seen this kind of item in training?",
+          "In this price range, did you lean Need or Want?",
+          "Would this cost a big chunk of the balance?",
+        ];
+
+        const answers = [
+          categoryCounts
+            ? `Yes - ${categoryCounts.need >= categoryCounts.want ? "mostly Need" : "mostly Want"}`
+            : "Not yet - using my starter rule",
+          priceCounts
+            ? `${priceCounts.need >= priceCounts.want ? "Mostly Need" : "Mostly Want"}`
+            : "Not enough price examples yet",
+          isTightPurchase ? "Yes" : "No",
+        ];
+
+        const reasoning = [];
+        let labelScore = categoryBias * 2.2 + priceBias * 1.4 + overallBias * 0.8;
+
+        reasoning.push(
+          categoryBias >= 0
+            ? `Your training usually treats ${category} items more like Needs.`
+            : `Your training usually treats ${category} items more like Wants.`
+        );
+
+        if (priceCounts) {
+          reasoning.push(
+            priceBias >= 0
+              ? `In the ${priceBucket} price range, you leaned Need.`
+              : `In the ${priceBucket} price range, you leaned Want.`
+          );
+        } else {
+          reasoning.push(`I do not know this price range well yet, so category matters more.`);
+        }
+
+        if (isTightPurchase) {
+          labelScore -= 1.1;
+          reasoning.push(`This item takes a big bite out of the balance.`);
+        }
+
+        const finalClassification = labelScore >= 0 ? "Need" : "Want";
+        let buyDecision = finalClassification === "Need";
+
+        if (finalClassification === "Want") {
+          const wantBuyCategoryCounts = model.wantBuyByCategory[category];
+          const wantBuyPriceCounts = model.wantBuyByPriceBucket[priceBucket];
+          const wantBuyOverallBias = getBuyBias(model.wantBuyTotals);
+          const wantBuyCategoryBias = wantBuyCategoryCounts
+            ? getBuyBias(wantBuyCategoryCounts)
+            : getDefaultWantBuyBias(category);
+          const wantBuyPriceBias = wantBuyPriceCounts ? getBuyBias(wantBuyPriceCounts) : 0;
+
+          path.push("When you call Wants like this, do you usually still buy them?");
+          path.push("Is happiness low enough to need a boost?");
+
+          answers.push(
+            wantBuyCategoryCounts || wantBuyPriceCounts
+              ? wantBuyCategoryBias + wantBuyPriceBias + wantBuyOverallBias >= 0
+                ? "Usually yes"
+                : "Usually no"
+              : getDefaultWantBuyChoice(category) === "Yes"
+                ? "Maybe yes"
+                : "Usually no"
+          );
+          answers.push(state.happinessPct <= 35 ? "Yes" : "No");
+
+          let buyScore = wantBuyCategoryBias * 1.8 + wantBuyPriceBias * 1.2 + wantBuyOverallBias * 0.8;
+
+          if (state.happinessPct <= 35) {
+            buyScore += 1.6;
+            reasoning.push(`Happiness is getting low, so a Want could help.`);
+          } else {
+            reasoning.push(`Happiness is stable enough that I can be picky.`);
+          }
+
+          if (!canComfortablyAfford) {
+            buyScore -= 1.9;
+            reasoning.push(`The balance is too tight for an easy Want purchase.`);
+          }
+
+          buyDecision = buyScore > 0;
+        }
+
+        const result = {
+          decisionPath: path,
+          answers,
+          finalClassification,
+          buyDecision,
+          category,
+          priceBucket,
+          reasoning,
+        };
+
+        result.brainNote = buildDecisionNote(result);
+        return result;
+      }
+
+      function applyDayOutcome({ phase, item, classification, buyDecision }) {
+        const bought = classification === "Need" || buyDecision;
+        const happinessDelta =
+          classification === "Need"
+            ? NEED_HAPPINESS_DELTA
+            : buyDecision
+              ? WANT_BUY_HAPPINESS_DELTA
+              : WANT_SKIP_HAPPINESS_DELTA;
+
+        const balanceBefore = currentBalance;
+        const happinessBefore = currentHappinessPct;
+
+        if (bought) {
+          currentBalance = roundMoney(currentBalance - item.priceValue);
+          gameplayStats.totalSpent = roundMoney(gameplayStats.totalSpent + item.priceValue);
+        }
+
+        currentHappinessPct = clampPercent(currentHappinessPct + happinessDelta);
+
+        if (classification === "Need") {
+          gameplayStats.needsBought += 1;
+          if (phase === "training") {
+            gameplayStats.trainingNeedsBought += 1;
+          } else {
+            gameplayStats.testNeedsBought += 1;
+          }
+        } else if (buyDecision) {
+          gameplayStats.wantsBought += 1;
+          if (phase === "training") {
+            gameplayStats.trainingWantsBought += 1;
+          } else {
+            gameplayStats.testWantsBought += 1;
+          }
+        } else {
+          gameplayStats.wantsRejected += 1;
+          if (phase === "training") {
+            gameplayStats.trainingWantsRejected += 1;
+          } else {
+            gameplayStats.testWantsRejected += 1;
+          }
+        }
+
+        logEvent("day_outcome", {
+          phase,
+          item,
+          classification,
+          buyDecision,
+          balanceBefore,
+          balanceAfter: currentBalance,
+          happinessBefore,
+          happinessAfter: currentHappinessPct,
+          happinessDelta,
+        });
+      }
+
+      function calculateScoreBreakdown() {
+        const aiConfidence = Math.round(aiConfidencePct);
+        const happiness = clampPercent(currentHappinessPct);
+        const balanceLeft = roundMoney(currentBalance);
+        const balanceScore = clampPercent((Math.max(balanceLeft, 0) / startingValues.balance) * 100);
+        const totalScore = aiConfidence + happiness + balanceScore;
+
+        return {
+          aiConfidencePct: aiConfidence,
+          happinessPct: happiness,
+          balanceLeft,
+          balanceScore,
+          totalScore,
+          maxScore: 300,
+        };
+      }
+
+      function buildDecisionSummaryLines(scoreBreakdown) {
+        return [
+          `Your AI confidence finished at ${scoreBreakdown.aiConfidencePct}% because you marked it right ${gameplayStats.aiRightCount} time${gameplayStats.aiRightCount === 1 ? "" : "s"} and wrong ${gameplayStats.aiWrongCount} time${gameplayStats.aiWrongCount === 1 ? "" : "s"}.`,
+          `Happiness finished at ${scoreBreakdown.happinessPct}% after buying ${gameplayStats.needsBought} Need${gameplayStats.needsBought === 1 ? "" : "s"}, buying ${gameplayStats.wantsBought} Want${gameplayStats.wantsBought === 1 ? "" : "s"}, and skipping ${gameplayStats.wantsRejected} Want${gameplayStats.wantsRejected === 1 ? "" : "s"}.`,
+          `You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)} left.`,
+          `The AI learned from ${trainingExamples.length} training example${trainingExamples.length === 1 ? "" : "s"} across the three training periods.`,
+        ];
+      }
+
+      function renderScoreExplainScreen() {
+        if (!currentScoreBreakdown || !currentSessionRecord) {
+          return;
+        }
+
+        const breakdownRows = [
+          ["AI confidence", `${currentScoreBreakdown.aiConfidencePct} pts`],
+          ["Happiness", `${currentScoreBreakdown.happinessPct} pts`],
+          ["Balance left score", `${currentScoreBreakdown.balanceScore} pts`],
+          ["Total score", `${currentScoreBreakdown.totalScore} / ${currentScoreBreakdown.maxScore}`],
+        ];
+
+        scoreExplainIntro.textContent = `${currentSessionRecord.studentSession.studentProfile.displayName} finished with rank #${currentLeaderboardRank || "?"} and ${currentScoreBreakdown.totalScore} points.`;
+        scoreBreakdownRows.innerHTML = breakdownRows
+          .map(
+            ([label, value], index) => `
+              <div class="score-breakdown-row${index === breakdownRows.length - 1 ? " total" : ""}">
+                <span class="score-breakdown-label">${label}</span>
+                <span class="score-breakdown-value">${value}</span>
+              </div>
+            `
+          )
+          .join("");
+        scoreExplainFormula.textContent =
+          "Final score = AI confidence + happiness + balance-left score. The balance-left score turns your remaining budget into a 0-100 score so money, happiness, and confidence all matter.";
+        scoreDecisionList.innerHTML = buildDecisionSummaryLines(currentScoreBreakdown)
+          .map((line) => `<div class="score-decision-item">${line}</div>`)
+          .join("");
+      }
+
+      function renderLeaderboard(currentPlayerKey) {
+        const entries = getLeaderboardEntries();
+        leaderboardBody.innerHTML = "";
+        currentLeaderboardRank = null;
+
+        if (!entries.length) {
+          leaderboardBody.innerHTML = `
+            <tr>
+              <td colspan="4">Finish a run to create the first leaderboard score.</td>
+            </tr>
+          `;
+          return;
+        }
+
+        entries.forEach((entry, index) => {
+          const row = document.createElement("tr");
+          if (entry.playerKey === currentPlayerKey) {
+            row.classList.add("highlight");
+            currentLeaderboardRank = index + 1;
+          }
+
+          row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>
+              <span class="leaderboard-name">
+                <img class="leaderboard-avatar" src="${entry.avatar}" alt="Player avatar" />
+                <span>${entry.displayName}</span>
+              </span>
+            </td>
+            <td>${entry.latestResult.totalScore}</td>
+            <td>${formatCurrency(entry.latestResult.balanceLeft)}</td>
+          `;
+          leaderboardBody.appendChild(row);
+        });
+      }
+
+      function persistCurrentSessionResult() {
+        const summary = buildStudentSessionSummary();
+        const playerKey = getPlayerKey(summary.studentProfile);
+        currentScoreBreakdown = calculateScoreBreakdown();
+
+        currentSessionRecord = {
+          sessionID: summary.sessionID,
+          studentSession: {
+            ...summary,
+            endingValues: {
+              balance: roundMoney(currentBalance),
+              happiness: clampPercent(currentHappinessPct),
+              confidence: Math.round(aiConfidencePct),
+            },
+            gameplayStats,
+            scoreBreakdown: currentScoreBreakdown,
+          },
+          classifications: classificationLog,
+          decisionTree: decisionTreeLog,
+          reflections: reflectionLog,
+          events: sessionLog,
+        };
+
+        const researchData = loadResearchData();
+        let playerRecord = researchData.players.find((player) => player.playerKey === playerKey);
+
+        if (!playerRecord) {
+          playerRecord = {
+            playerKey,
+            studentProfile: summary.studentProfile,
+            latestResult: null,
+            sessions: [],
+          };
+          researchData.players.push(playerRecord);
+        }
+
+        playerRecord.studentProfile = summary.studentProfile;
+        playerRecord.sessions = Array.isArray(playerRecord.sessions) ? playerRecord.sessions : [];
+        const existingSessionIndex = playerRecord.sessions.findIndex(
+          (session) => session.sessionID === currentSessionRecord.sessionID
+        );
+        if (existingSessionIndex >= 0) {
+          playerRecord.sessions[existingSessionIndex] = currentSessionRecord;
+        } else {
+          playerRecord.sessions.push(currentSessionRecord);
+        }
+        playerRecord.latestResult = {
+          sessionID: summary.sessionID,
+          totalScore: currentScoreBreakdown.totalScore,
+          balanceLeft: currentScoreBreakdown.balanceLeft,
+          balanceScore: currentScoreBreakdown.balanceScore,
+          happinessPct: currentScoreBreakdown.happinessPct,
+          aiConfidencePct: currentScoreBreakdown.aiConfidencePct,
+          completedAt: summary.endTimestamp,
+        };
+
+        saveResearchData(researchData);
+        localStorage.setItem(LATEST_SESSION_KEY, JSON.stringify(currentSessionRecord));
+        renderLeaderboard(playerKey);
+
+        const profileName = summary.studentProfile.displayName;
+        resultsSummary.textContent = `${profileName} finished with ${currentScoreBreakdown.totalScore} points, ${formatCurrency(currentScoreBreakdown.balanceLeft)} left, and rank #${currentLeaderboardRank || "?"}.`;
+      }
+
+      function exportSessionData() {
+        const blob = new Blob([JSON.stringify(loadResearchData(), null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = "wisespend-research-data.json";
+        anchor.click();
+        URL.revokeObjectURL(url);
       }
 
       function getRound(day) {
@@ -2587,20 +3554,16 @@
         const phase = getPhase(day);
         const dayInBlock = ((day - 1) % 10) + 1;
 
-        const confidence = Math.min(95, startingValues.confidence + day * 0.9);
-        const balancePct = Math.max(18, 70 - day);
-        const happinessPct = Math.max(
-          15,
-          startingValues.happiness - Math.floor(day * 1.2) + (phase === "test" ? -6 : 3)
-        );
-        const balanceAmount = Math.max(120, startingValues.balance - day * 32);
-        const savingsAmount = Math.min(300, startingValues.savings + day * 5);
+        const confidence = Math.round(aiConfidencePct);
+        const happinessPct = clampPercent(currentHappinessPct);
+        const balanceAmount = roundMoney(currentBalance);
+        const savingsAmount = startingValues.savings;
         if (sessionItemOrder.length === 0) {
           buildSessionItemOrder();
         }
         const item = sessionItemOrder[(day - 1) % sessionItemOrder.length];
         const priceValue = item.priceValue;
-        const price = `$${priceValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        const price = formatCurrency(priceValue);
 
         if (phase === "training") {
           return {
@@ -2609,17 +3572,15 @@
             day,
             dayInBlock,
             item: { ...item, price, priceValue },
-            confidence: Math.round(confidence),
-            balancePct: Math.round(balancePct),
-            happinessPct: Math.round(happinessPct),
-            balanceText: `Balance: $${balanceAmount.toLocaleString()}`,
-            savingsText: `Savings: $${savingsAmount.toLocaleString()}`,
+            confidence,
+            happinessPct,
+            balanceText: `Balance: ${formatCurrency(balanceAmount)}`,
+            savingsText: `Savings: ${formatCurrency(savingsAmount)}`,
             balanceAmount,
             savingsAmount,
           };
         }
 
-        const matchPct = Math.min(97, 55 + day * 1.1);
         return {
           phase,
           round,
@@ -2630,59 +3591,75 @@
             price,
             priceValue,
           },
-          matchPct: Math.round(matchPct),
-          balancePct: Math.round(balancePct),
-          happinessPct: Math.round(happinessPct),
-          balanceText: `Balance: $${balanceAmount.toLocaleString()}`,
-          savingsText: `Savings: $${savingsAmount.toLocaleString()}`,
+          matchPct: confidence,
+          happinessPct,
+          balanceText: `Balance: ${formatCurrency(balanceAmount)}`,
+          savingsText: `Savings: ${formatCurrency(savingsAmount)}`,
           balanceAmount,
           savingsAmount,
         };
-      }
-
-      function evaluateDecisionTree(item, state) {
-        const path = [];
-        const answers = [];
-
-        const isExpensive = item.priceValue >= 100;
-        path.push("Price >= $100?");
-        answers.push(isExpensive ? "Yes" : "No");
-
-        const lowBalance = state.balanceAmount < 200;
-        path.push("Balance < $200?");
-        answers.push(lowBalance ? "Yes" : "No");
-
-        const lowHappiness = state.happinessPct < 35;
-        path.push("Happiness < 35%?");
-        answers.push(lowHappiness ? "Yes" : "No");
-
-        const lowConfidence = state.confidence < 55;
-        path.push("Confidence < 55%?");
-        answers.push(lowConfidence ? "Yes" : "No");
-
-        let finalClassification = "Need";
-
-        if (lowBalance && isExpensive) {
-          finalClassification = "Want";
-        } else if (lowHappiness && !isExpensive) {
-          finalClassification = "Want";
-        } else if (lowConfidence && isExpensive) {
-          finalClassification = "Want";
-        } else if (!isExpensive && !lowBalance) {
-          finalClassification = "Need";
-        }
-
-        return { decisionPath: path, answers, finalClassification };
       }
 
       function updateSetupNextState() {
         const firstName = firstNameInput?.value.trim();
         const lastInitial = lastInitialInput?.value.trim();
         const grade = gradeSelect?.value;
-        const isReady = Boolean(firstName && lastInitial && grade && selectedAvatar);
+        const isLeaderboardCode = isLeaderboardViewCodeEntered({
+          firstName,
+          lastInitial,
+        });
+        const isResetCode = isResetCodeEntered({
+          firstName,
+          lastInitial,
+          grade,
+        });
+        const isSpecialSetupCode = isResetCode || isLeaderboardCode;
+        const isReady = isSpecialSetupCode || Boolean(firstName && lastInitial && grade && selectedAvatar);
+        const isNameTaken = isLeaderboardNameTaken({
+          firstName,
+          lastInitial,
+        });
 
-        setupNextButton.disabled = !isReady;
-        setupNextButton.classList.toggle("is-enabled", isReady);
+        if (nameTakenMessage) {
+          nameTakenMessage.hidden = !isNameTaken || isSpecialSetupCode;
+        }
+
+        setupNextButton.disabled = !isReady || (isNameTaken && !isSpecialSetupCode);
+        setupNextButton.classList.toggle("is-enabled", isReady && (!isNameTaken || isSpecialSetupCode));
+      }
+
+      function initializeSessionIdentity() {
+        sessionId = generateUUID();
+        anonymousStudentId = generateAnonymousStudentId();
+        sessionStartTime = Date.now();
+        lastDecisionTimestamp = Date.now();
+      }
+
+      function createProfileSnapshot() {
+        return {
+          firstName: firstNameInput?.value.trim() || "",
+          lastInitial: lastInitialInput?.value.trim() || "",
+          grade: gradeSelect?.value || "",
+          avatar: selectedAvatar || "",
+          avatarAlt: getSelectedAvatarAlt(),
+        };
+      }
+
+      function applyProfileSnapshot(profile) {
+        firstNameInput.value = profile.firstName || "";
+        lastInitialInput.value = profile.lastInitial || "";
+        gradeSelect.value = profile.grade || "";
+        selectedAvatar = profile.avatar || "";
+
+        avatarButtons.forEach((button) => {
+          const isSelected = button.dataset.avatar === selectedAvatar;
+          button.classList.toggle("is-selected", isSelected);
+          button.setAttribute("aria-pressed", String(isSelected));
+        });
+
+        updateAvatarPreview(selectedAvatar, profile.avatarAlt || "Selected avatar");
+        updateSetupNextState();
+        updateGameplayHud();
       }
 
       function renderTrainingDay(data) {
@@ -2693,15 +3670,15 @@
         setText("#trainingItemName", data.item.name);
         setText("#trainingItemPrice", data.item.price);
         setText("#trainConf", `${data.confidence}%`);
-        setText("#trainBalancePct", `${data.balancePct}%`);
         setText("#trainHappinessPct", `${data.happinessPct}%`);
         setBar("#trainConfBar", data.confidence);
-        setBar("#trainBalanceBar", data.balancePct);
         setBar("#trainHappinessBar", data.happinessPct);
+        setText("#trainingBrainNote", buildTrainingBrainNote());
 
         clearSelection(trainingChoiceButtons);
         selectedTrainingLabel = "";
-        nextTrainingDayBtn.disabled = true;
+        resetTrainingWantFollowup();
+        updateTrainingNextDayState();
       }
 
       function renderTestDay(data) {
@@ -2711,10 +3688,8 @@
         setText("#testItemName", data.item.name);
         setText("#testItemPrice", data.item.price);
         setText("#testMatchPct", `${data.matchPct}%`);
-        setText("#testBalancePct", `${data.balancePct}%`);
         setText("#testHappinessPct", `${data.happinessPct}%`);
         setBar("#testMatchBar", data.matchPct);
-        setBar("#testBalanceBar", data.balancePct);
         setBar("#testHappinessBar", data.happinessPct);
 
         const decision = evaluateDecisionTree(data.item, {
@@ -2725,9 +3700,15 @@
         });
         activeDecision = decision;
 
-        aiChoicePill.textContent = `AI Chose: ${decision.finalClassification}`;
+        aiChoicePill.textContent =
+          decision.finalClassification === "Need"
+            ? "AI Chose: Need and bought it"
+            : decision.buyDecision
+              ? "AI Chose: Want and bought it"
+              : "AI Chose: Want and skipped it";
         aiChoicePill.classList.toggle("need", decision.finalClassification === "Need");
         aiChoicePill.classList.toggle("want", decision.finalClassification === "Want");
+        setText("#testBrainNote", decision.brainNote);
 
         clearSelection([testNoBtn, testYesBtn]);
         selectedTestFeedback = "";
@@ -2816,54 +3797,74 @@
         renderCurrentDay();
       }
 
-      function updateResults() {
-        const firstName = firstNameInput?.value.trim();
-        const lastInitial = lastInitialInput?.value.trim();
-        const suffix = lastInitial ? `${lastInitial.toUpperCase()}.` : "";
-        const displayName = firstName ? `${firstName} ${suffix}`.trim() : "You";
-        userRowName.textContent = displayName;
-        if (selectedAvatar) {
-          userRowAvatar.src = selectedAvatar;
-        }
-        updateGameplayHud();
+      function resolveTestFeedback(feedback) {
+        selectedTestFeedback = feedback;
+        const confidenceBeforeFeedback = aiConfidencePct;
 
-        const summary = buildStudentSessionSummary();
-        localStorage.setItem(
-          "wiseSpendLatestSession",
-          JSON.stringify({
-            studentSession: summary,
-            classifications: classificationLog,
-            decisionTree: decisionTreeLog,
-            reflections: reflectionLog,
-            events: sessionLog,
-          })
+        applyDayOutcome({
+          phase: "test",
+          item: activeDayData?.item || null,
+          classification: activeDecision?.finalClassification || "Want",
+          buyDecision: Boolean(activeDecision?.buyDecision),
+        });
+
+        if (feedback === "Yes") {
+          gameplayStats.aiRightCount += 1;
+        } else {
+          gameplayStats.aiWrongCount += 1;
+        }
+
+        const confidenceAfterFeedback = adjustAIConfidence(
+          feedback === "Yes" ? AI_CONFIDENCE_STEP : -AI_CONFIDENCE_STEP
         );
+
+        logEvent("test_feedback", {
+          feedback,
+          aiChoice: activeDecision?.finalClassification || "",
+          aiBoughtItem: Boolean(
+            activeDecision?.finalClassification === "Need" || activeDecision?.buyDecision
+          ),
+          confidenceBeforeFeedback,
+          confidenceAfterFeedback,
+          item: activeDayData?.item || null,
+          phase: "test",
+        });
+        logClassification({
+          item: activeDayData?.item || null,
+          studentChoice: activeDecision?.finalClassification || "",
+          correctChoice: feedback === "Yes" ? activeDecision?.finalClassification || null : null,
+        });
+
+        if ([10, 20, 30].includes(currentDay)) {
+          renderReflectionScreen(currentDay);
+          return;
+        }
+
+        goToNextDay();
       }
 
-      function exportSessionData() {
-        const summary = buildStudentSessionSummary();
-        const payload = {
-          studentSession: summary,
-          classifications: classificationLog,
-          decisionTree: decisionTreeLog,
-          reflections: reflectionLog,
-          events: sessionLog,
-        };
-        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const anchor = document.createElement("a");
-        anchor.href = url;
-        anchor.download = `wisespend-session-${Date.now()}.json`;
-        anchor.click();
-        URL.revokeObjectURL(url);
+      function updateResults() {
+        setResultsScreenMode("session");
+        updateGameplayHud();
+        persistCurrentSessionResult();
+        renderScoreExplainScreen();
       }
 
       function resetFlow() {
         currentDay = 1;
         selectedTrainingLabel = "";
+        selectedTrainingBuyChoice = "";
         selectedTestFeedback = "";
         selectedReflectionAnswer = "";
         selectedAvatar = "";
+        aiConfidencePct = startingValues.confidence;
+        currentBalance = startingValues.balance;
+        currentHappinessPct = startingValues.happiness;
+        trainingExamples = [];
+        gameplayStats = createGameplayStats();
+        currentScoreBreakdown = null;
+        currentSessionRecord = null;
+        currentLeaderboardRank = null;
         sessionLog = [];
         classificationLog = [];
         decisionTreeLog = [];
@@ -2901,9 +3902,43 @@
         testItemBox?.classList.remove("is-highlighted");
         trainingBrainBox?.classList.remove("is-highlighted");
         testBrainBox?.classList.remove("is-highlighted");
+        resetTrainingWantFollowup();
+        if (resultsSummary) {
+          resultsSummary.textContent = "";
+        }
+        if (scoreExplainIntro) {
+          scoreExplainIntro.textContent = "";
+        }
+        if (scoreBreakdownRows) {
+          scoreBreakdownRows.innerHTML = "";
+        }
+        if (scoreExplainFormula) {
+          scoreExplainFormula.textContent = "";
+        }
+        if (scoreDecisionList) {
+          scoreDecisionList.innerHTML = "";
+        }
+        if (welcomeStatusTimeoutId) {
+          window.clearTimeout(welcomeStatusTimeoutId);
+          welcomeStatusTimeoutId = null;
+        }
+        if (welcomeStatusMessage) {
+          welcomeStatusMessage.hidden = true;
+          welcomeStatusMessage.textContent = "";
+        }
+        setResultsScreenMode("session");
+        if (trainingBrainNote) {
+          trainingBrainNote.textContent = "I am waiting for your first labels so I can learn your patterns.";
+        }
+        if (testBrainNote) {
+          testBrainNote.textContent = "I am using your training to decide whether this looks like a need or a want.";
+        }
         firstNameInput.value = "";
         lastInitialInput.value = "";
         gradeSelect.value = "";
+        if (nameTakenMessage) {
+          nameTakenMessage.hidden = true;
+        }
         avatarButtons.forEach((button) => {
           button.classList.remove("is-selected");
           button.setAttribute("aria-pressed", "false");
@@ -2911,7 +3946,6 @@
         setupNextButton.classList.remove("is-enabled");
         updateSetupNextState();
         updateAvatarPreview("");
-        userRowAvatar.src = "assets/avatar1.png";
         updateGameplayHud();
       }
 
@@ -2943,18 +3977,31 @@
 
       setupNextButton?.addEventListener("click", () => {
         if (!setupNextButton.disabled) {
-          if (!sessionId) {
-            sessionId = generateUUID();
-          }
-          if (!anonymousStudentId) {
-            anonymousStudentId = generateAnonymousStudentId();
-          }
-          sessionStartTime = Date.now();
-          lastDecisionTimestamp = Date.now();
-          logEvent("setup_complete", {
+          const profile = {
             firstName: firstNameInput?.value.trim() || "",
             lastInitial: lastInitialInput?.value.trim() || "",
             grade: gradeSelect?.value || "",
+          };
+
+          if (isResetCodeEntered(profile)) {
+            clearStoredLeaderboardData();
+            resetFlow();
+            showScreen("welcomeScreen");
+            showWelcomeStatus("Leaderboard reset");
+            return;
+          }
+
+          if (isLeaderboardViewCodeEntered(profile)) {
+            resetFlow();
+            showLeaderboardOnlyScreen();
+            return;
+          }
+
+          initializeSessionIdentity();
+          logEvent("setup_complete", {
+            firstName: profile.firstName,
+            lastInitial: profile.lastInitial,
+            grade: profile.grade,
             avatar: selectedAvatar || "",
           });
           updateGameplayHud();
@@ -2965,81 +4012,121 @@
       startChallengeBtn?.addEventListener("click", () => {
         currentDay = 1;
         hasShownFirstTestingCutscene = false;
+        aiConfidencePct = startingValues.confidence;
+        currentBalance = startingValues.balance;
+        currentHappinessPct = startingValues.happiness;
+        trainingExamples = [];
+        gameplayStats = createGameplayStats();
+        currentScoreBreakdown = null;
+        currentSessionRecord = null;
+        currentLeaderboardRank = null;
         buildSessionItemOrder();
-        logEvent("challenge_start");
+        logEvent("challenge_start", {
+          balance: currentBalance,
+          happiness: currentHappinessPct,
+          confidence: aiConfidencePct,
+        });
         renderCurrentDay();
       });
 
       trainingChoiceButtons.forEach((button) => {
         button.addEventListener("click", () => {
+          const nextLabel = button.dataset.label || "";
+          const labelChanged = selectedTrainingLabel !== nextLabel;
+
           clearSelection(trainingChoiceButtons);
           button.classList.add("is-selected");
-          selectedTrainingLabel = button.dataset.label || "";
-          nextTrainingDayBtn.disabled = !selectedTrainingLabel;
+          selectedTrainingLabel = nextLabel;
+
+          if (selectedTrainingLabel === "Want") {
+            showTrainingWantFollowup();
+            if (labelChanged) {
+              selectedTrainingBuyChoice = "";
+              clearSelection(trainingBuyChoiceButtons);
+            }
+          } else {
+            resetTrainingWantFollowup();
+          }
+
+          updateTrainingNextDayState();
           logEvent("training_choice", {
             label: selectedTrainingLabel,
             item: activeDayData?.item || null,
             phase: "training",
           });
-          logClassification({
+        });
+      });
+
+      trainingBuyChoiceButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          if (selectedTrainingLabel !== "Want") {
+            return;
+          }
+
+          clearSelection(trainingBuyChoiceButtons);
+          button.classList.add("is-selected");
+          selectedTrainingBuyChoice = button.dataset.buyChoice || "";
+          updateTrainingNextDayState();
+          logEvent("training_buy_choice", {
+            label: selectedTrainingLabel,
+            buyChoice: selectedTrainingBuyChoice,
             item: activeDayData?.item || null,
-            studentChoice: selectedTrainingLabel,
-            correctChoice: null,
+            phase: "training",
           });
         });
       });
 
       nextTrainingDayBtn?.addEventListener("click", () => {
-        if (!selectedTrainingLabel) {
+        if (!selectedTrainingLabel || (selectedTrainingLabel === "Want" && !selectedTrainingBuyChoice)) {
           return;
         }
+
+        const item = activeDayData?.item || null;
+        const category = getItemCategory(item);
+        const priceBucket = getPriceBucket(item?.priceValue || 0);
+        const buyChoice = selectedTrainingLabel === "Want" ? selectedTrainingBuyChoice : "Auto";
+
+        trainingExamples.push({
+          day: currentDay,
+          item,
+          label: selectedTrainingLabel,
+          buyChoice,
+          category,
+          priceBucket,
+        });
+
+        logEvent("training_choice_confirmed", {
+          label: selectedTrainingLabel,
+          buyChoice,
+          category,
+          priceBucket,
+          item,
+          phase: "training",
+        });
+        logClassification({
+          item,
+          studentChoice: selectedTrainingLabel,
+          correctChoice: null,
+        });
+        applyDayOutcome({
+          phase: "training",
+          item,
+          classification: selectedTrainingLabel,
+          buyDecision: selectedTrainingLabel === "Need" ? true : selectedTrainingBuyChoice === "Yes",
+        });
         goToNextDay();
       });
 
       testNoBtn?.addEventListener("click", () => {
-        selectedTestFeedback = "No";
         clearSelection([testNoBtn, testYesBtn]);
         testNoBtn.classList.add("is-selected");
-        logEvent("test_feedback", {
-          feedback: selectedTestFeedback,
-          aiChoice: activeDecision?.finalClassification || "",
-          item: activeDayData?.item || null,
-          phase: "test",
-        });
-        logClassification({
-          item: activeDayData?.item || null,
-          studentChoice: selectedTestFeedback,
-          correctChoice: null,
-        });
-
-        if ([10, 20, 30].includes(currentDay)) {
-          renderReflectionScreen(currentDay);
-          return;
-        }
-        goToNextDay();
+        resolveTestFeedback("No");
       });
 
       testYesBtn?.addEventListener("click", () => {
-        selectedTestFeedback = "Yes";
         clearSelection([testNoBtn, testYesBtn]);
         testYesBtn.classList.add("is-selected");
-        logEvent("test_feedback", {
-          feedback: selectedTestFeedback,
-          aiChoice: activeDecision?.finalClassification || "",
-          item: activeDayData?.item || null,
-          phase: "test",
-        });
-        logClassification({
-          item: activeDayData?.item || null,
-          studentChoice: selectedTestFeedback,
-          correctChoice: null,
-        });
-
-        if ([10, 20, 30].includes(currentDay)) {
-          renderReflectionScreen(currentDay);
-          return;
-        }
-        goToNextDay();
+        resolveTestFeedback("Yes");
       });
 
       nextReflectionBtn?.addEventListener("click", () => {
@@ -3071,7 +4158,29 @@
         renderCurrentDay();
       });
 
-      restartBtn?.addEventListener("click", () => {
+      explainScoreBtn?.addEventListener("click", () => {
+        if (resultsScreenMode === "leaderboard") {
+          resetFlow();
+          showScreen("welcomeScreen");
+          return;
+        }
+
+        renderScoreExplainScreen();
+        showScreen("scoreExplainScreen");
+      });
+
+      playAgainBtn?.addEventListener("click", () => {
+        const savedProfile = createProfileSnapshot();
+        resetFlow();
+        applyProfileSnapshot(savedProfile);
+        initializeSessionIdentity();
+        logEvent("replay_same_player", {
+          player: formatDisplayName(savedProfile),
+        });
+        showScreen("tutorialScreen");
+      });
+
+      quitGameBtn?.addEventListener("click", () => {
         exportSessionData();
         resetFlow();
         showScreen("welcomeScreen");
