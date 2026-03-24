@@ -1248,9 +1248,19 @@
         background: linear-gradient(180deg, #84d973 0%, #61bf57 100%);
       }
 
+      .choice-btn.need:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(74, 162, 75, 0.18);
+      }
+
       .choice-btn.want {
         border-color: #cc7c21;
         background: linear-gradient(180deg, #ffbf50 0%, #ec9e2d 100%);
+      }
+
+      .choice-btn.want:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(204, 124, 33, 0.18);
       }
 
       .choice-btn.no {
@@ -1310,6 +1320,100 @@
         text-align: center;
         font-size: clamp(1.15rem, 2.4vw, 1.9rem);
         font-weight: 700;
+      }
+
+      #testScreen .phase-wrap {
+        max-width: 1160px;
+      }
+
+      #testScreen .phase-header-row {
+        margin-bottom: 4px;
+      }
+
+      #testScreen .phase-title {
+        font-size: clamp(1.45rem, 4.1vw, 2.7rem);
+      }
+
+      #testScreen .phase-card {
+        margin-top: 10px;
+      }
+
+      #testScreen .phase-card-head {
+        gap: 8px;
+        padding: 10px 12px;
+        font-size: clamp(1rem, 2.1vw, 1.8rem);
+      }
+
+      #testScreen .phase-card-body {
+        gap: 10px;
+        padding: 10px;
+      }
+
+      #testScreen .item-box {
+        padding: 8px;
+      }
+
+      #testScreen .item-emoji {
+        font-size: clamp(2.2rem, 6.8vw, 4.4rem);
+      }
+
+      #testScreen .item-price {
+        margin: 4px 0 6px;
+        font-size: clamp(1.45rem, 3.2vw, 2.9rem);
+      }
+
+      #testScreen .item-name {
+        font-size: clamp(0.92rem, 1.8vw, 1.2rem);
+      }
+
+      #testScreen .pill-label {
+        min-width: 150px;
+        padding: 8px 18px;
+        font-size: clamp(1rem, 2.2vw, 1.55rem);
+      }
+
+      #testScreen .brain-box {
+        padding: 12px;
+      }
+
+      #testScreen .brain-title {
+        margin-bottom: 8px;
+        padding: 5px 12px;
+      }
+
+      #testScreen .metric {
+        margin-bottom: 6px;
+        padding: 2px 4px;
+      }
+
+      #testScreen .metric-label {
+        font-size: 0.86rem;
+        margin-bottom: 3px;
+      }
+
+      #testScreen .meter {
+        height: 18px;
+      }
+
+      #testScreen .brain-note {
+        margin-top: 8px;
+        font-size: 0.92rem;
+      }
+
+      #testScreen .sub-prompt {
+        margin-top: 8px;
+        font-size: clamp(1rem, 2vw, 1.45rem);
+      }
+
+      #testScreen .choice-row {
+        margin-top: 10px;
+        gap: 10px;
+      }
+
+      #testScreen .choice-btn {
+        min-width: 140px;
+        padding: 10px 20px;
+        font-size: clamp(1rem, 2.2vw, 1.6rem);
       }
 
       .training-decision-layout {
@@ -1374,12 +1478,15 @@
       }
 
       .reflection-card {
+        position: relative;
         margin-top: 16px;
+        min-height: 520px;
         border-radius: 34px;
         border: 3px solid rgba(185, 205, 239, 0.9);
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(244, 248, 255, 0.94) 100%);
         box-shadow: 0 14px 28px rgba(112, 140, 192, 0.18);
         padding: 24px 26px;
+        overflow: hidden;
       }
 
       .reflection-intro {
@@ -1391,14 +1498,17 @@
       }
 
       .reflection-layout {
+        position: relative;
         display: grid;
         grid-template-columns: minmax(210px, 320px) 1fr;
         gap: 24px;
         align-items: center;
+        transition: opacity 420ms ease;
       }
 
       .reflection-bot {
         text-align: center;
+        transition: transform 950ms ease;
       }
 
       .reflection-bot img {
@@ -1447,6 +1557,38 @@
         border-color: #5d90d1;
         background: #deebff;
         box-shadow: 0 0 0 3px rgba(93, 144, 209, 0.16);
+      }
+
+      .reflection-response {
+        position: absolute;
+        left: 50%;
+        bottom: 260px;
+        transform: translate(-50%, 14px);
+        margin: 0;
+        opacity: 0;
+        text-align: center;
+        font-size: clamp(1.45rem, 3vw, 2.8rem);
+        font-weight: 900;
+        color: #315f9f;
+        pointer-events: none;
+        transition: opacity 420ms ease, transform 420ms ease;
+      }
+
+      .reflection-card.is-reacting .reflection-intro,
+      .reflection-card.is-reacting .reflection-panel,
+      .reflection-card.is-reacting #nextReflectionBtn {
+        opacity: 0;
+        transition: opacity 420ms ease;
+        pointer-events: none;
+      }
+
+      .reflection-card.is-reacting .reflection-bot {
+        transform: translateX(62%);
+      }
+
+      .reflection-card.show-response .reflection-response {
+        opacity: 1;
+        transform: translate(-50%, 0);
       }
 
       .results-wrap {
@@ -2141,15 +2283,15 @@
 
       <section id="reflectionScreen" hidden>
         <div class="reflection-wrap">
-          <div class="reflection-card">
-            <p class="reflection-intro">Hey coach, I have a question...</p>
+          <div id="reflectionCard" class="reflection-card">
+            <p id="reflectionIntro" class="reflection-intro">Hey coach, I have a question...</p>
 
             <div class="reflection-layout">
-              <div class="reflection-bot">
+              <div id="reflectionBot" class="reflection-bot">
                 <img src="assets/robot-doubt.png" alt="WiseSpend AI mascot asking a question" />
               </div>
 
-              <div class="reflection-panel">
+              <div id="reflectionPanel" class="reflection-panel">
                 <h2 id="reflectionQuestion" class="reflection-question">
                   How trained do you think I am after 10 days?
                 </h2>
@@ -2158,6 +2300,7 @@
             </div>
 
             <button id="nextReflectionBtn" class="action-btn" type="button" disabled>Next</button>
+            <p id="reflectionResponse" class="reflection-response" aria-live="polite">Ohh, I see...</p>
           </div>
         </div>
       </section>
@@ -2259,8 +2402,13 @@
       const testBrainBox = document.querySelector("#testBrainBox");
       const trainingBrainNote = document.querySelector("#trainingBrainNote");
       const testBrainNote = document.querySelector("#testBrainNote");
+      const reflectionCard = document.querySelector("#reflectionCard");
+      const reflectionIntro = document.querySelector("#reflectionIntro");
+      const reflectionBot = document.querySelector("#reflectionBot");
+      const reflectionPanel = document.querySelector("#reflectionPanel");
       const reflectionQuestion = document.querySelector("#reflectionQuestion");
       const reflectionOptions = document.querySelector("#reflectionOptions");
+      const reflectionResponse = document.querySelector("#reflectionResponse");
       const nextReflectionBtn = document.querySelector("#nextReflectionBtn");
       const explainScoreBtn = document.querySelector("#explainScoreBtn");
       const playAgainBtn = document.querySelector("#playAgainBtn");
@@ -2278,66 +2426,66 @@
       const trainingBuyChoiceButtons = [trainingBuyYesBtn, trainingBuyNoBtn].filter(Boolean);
 
       const itemPool = [
-        { emoji: "🍩", name: "Donut" },
-        { emoji: "🥪", name: "Sandwich" },
-        { emoji: "🍎", name: "Apple" },
-        { emoji: "⚽️", name: "Soccer Ball" },
-        { emoji: "🛼", name: "Roller Skates" },
-        { emoji: "🛹", name: "Skateboard" },
-        { emoji: "🤿", name: "Snorkel Gear" },
-        { emoji: "🎤", name: "Microphone" },
-        { emoji: "🥁", name: "Drum" },
-        { emoji: "🎺", name: "Trumpet" },
-        { emoji: "🎸", name: "Guitar" },
-        { emoji: "🪕", name: "Banjo" },
-        { emoji: "🎷", name: "Saxophone" },
-        { emoji: "🎮", name: "Video Game Console" },
-        { emoji: "🚙", name: "SUV" },
-        { emoji: "🗺️", name: "Map" },
-        { emoji: "⌚️", name: "Watch" },
-        { emoji: "📱", name: "Smartphone" },
-        { emoji: "⌨️", name: "Keyboard" },
-        { emoji: "🖥️", name: "Desktop Monitor" },
-        { emoji: "🖨️", name: "Printer" },
-        { emoji: "🖱️", name: "Mouse" },
-        { emoji: "💻", name: "Laptop" },
-        { emoji: "📷", name: "Camera" },
-        { emoji: "🎥", name: "Video Camera" },
-        { emoji: "📞", name: "Phone" },
-        { emoji: "🔦", name: "Flashlight" },
-        { emoji: "🧯", name: "Fire Extinguisher" },
-        { emoji: "🔭", name: "Telescope" },
-        { emoji: "🧻", name: "Toilet Paper" },
-        { emoji: "🪒", name: "Razor" },
-        { emoji: "🪥", name: "Toothbrush" },
-        { emoji: "🧽", name: "Sponge" },
-        { emoji: "🩹", name: "Bandages" },
-        { emoji: "🪏", name: "Shovel" },
-        { emoji: "🔧", name: "Wrench" },
-        { emoji: "🔨", name: "Hammer" },
-        { emoji: "🪙", name: "Coin" },
-        { emoji: "💎", name: "Gemstone" },
-        { emoji: "🧴", name: "Lotion" },
-        { emoji: "🛌", name: "Bed" },
-        { emoji: "🧸", name: "Teddy Bear" },
-        { emoji: "🪑", name: "Chair" },
-        { emoji: "📓", name: "Notebook" },
-        { emoji: "✏️", name: "Pencil" },
-        { emoji: "✂️", name: "Scissors" },
-        { emoji: "🔒", name: "Padlock" },
-        { emoji: "📎", name: "Paperclip" },
-        { emoji: "🥨", name: "Pretzel" },
-        { emoji: "🧀", name: "Cheese" },
-        { emoji: "🧃", name: "Juice Box" },
-        { emoji: "🎧", name: "Headphones" },
-        { emoji: "🥁", name: "Drum Kit" },
-        { emoji: "🎲", name: "Dice" },
-        { emoji: "🎳", name: "Bowling Ball" },
-        { emoji: "🗡️", name: "Toy Sword" },
-        { emoji: "🍴", name: "Fork and Knife" },
-        { emoji: "🧁", name: "Cupcake" },
-        { emoji: "🔋", name: "Battery" },
-        { emoji: "🧹", name: "Broom" },
+        { emoji: "🍩", name: "Donut", category: "treats", trueLabel: "Want" },
+        { emoji: "🥪", name: "Sandwich", category: "meals", trueLabel: "Need" },
+        { emoji: "🍎", name: "Apple", category: "meals", trueLabel: "Need" },
+        { emoji: "⚽️", name: "Soccer Ball", category: "sports_fun", trueLabel: "Want" },
+        { emoji: "🛼", name: "Roller Skates", category: "sports_fun", trueLabel: "Want" },
+        { emoji: "🛹", name: "Skateboard", category: "sports_fun", trueLabel: "Want" },
+        { emoji: "🤿", name: "Snorkel Gear", category: "sports_fun", trueLabel: "Want" },
+        { emoji: "🎤", name: "Microphone", category: "music_audio", trueLabel: "Want" },
+        { emoji: "🥁", name: "Drum", category: "music_audio", trueLabel: "Want" },
+        { emoji: "🎺", name: "Trumpet", category: "music_audio", trueLabel: "Want" },
+        { emoji: "🎸", name: "Guitar", category: "music_audio", trueLabel: "Want" },
+        { emoji: "🪕", name: "Banjo", category: "music_audio", trueLabel: "Want" },
+        { emoji: "🎷", name: "Saxophone", category: "music_audio", trueLabel: "Want" },
+        { emoji: "🎮", name: "Video Game Console", category: "games_toys", trueLabel: "Want" },
+        { emoji: "🚙", name: "SUV", category: "big_purchases", trueLabel: "Want" },
+        { emoji: "🗺️", name: "Map", category: "navigation_time", trueLabel: "Need" },
+        { emoji: "⌚️", name: "Watch", category: "navigation_time", trueLabel: "Want" },
+        { emoji: "📱", name: "Smartphone", category: "phones", trueLabel: "Want" },
+        { emoji: "⌨️", name: "Keyboard", category: "computers", trueLabel: "Need" },
+        { emoji: "🖥️", name: "Desktop Monitor", category: "computers", trueLabel: "Want" },
+        { emoji: "🖨️", name: "Printer", category: "computers", trueLabel: "Need" },
+        { emoji: "🖱️", name: "Mouse", category: "computers", trueLabel: "Need" },
+        { emoji: "💻", name: "Laptop", category: "computers", trueLabel: "Need" },
+        { emoji: "📷", name: "Camera", category: "photo_video", trueLabel: "Want" },
+        { emoji: "🎥", name: "Video Camera", category: "photo_video", trueLabel: "Want" },
+        { emoji: "📞", name: "Phone", category: "phones", trueLabel: "Need" },
+        { emoji: "🔦", name: "Flashlight", category: "safety", trueLabel: "Need" },
+        { emoji: "🧯", name: "Fire Extinguisher", category: "safety", trueLabel: "Need" },
+        { emoji: "🔭", name: "Telescope", category: "learning_tools", trueLabel: "Want" },
+        { emoji: "🧻", name: "Toilet Paper", category: "hygiene_health", trueLabel: "Need" },
+        { emoji: "🪒", name: "Razor", category: "hygiene_health", trueLabel: "Need" },
+        { emoji: "🪥", name: "Toothbrush", category: "hygiene_health", trueLabel: "Need" },
+        { emoji: "🧽", name: "Sponge", category: "cleaning_home", trueLabel: "Need" },
+        { emoji: "🩹", name: "Bandages", category: "hygiene_health", trueLabel: "Need" },
+        { emoji: "🪏", name: "Shovel", category: "tools", trueLabel: "Need" },
+        { emoji: "🔧", name: "Wrench", category: "tools", trueLabel: "Need" },
+        { emoji: "🔨", name: "Hammer", category: "tools", trueLabel: "Need" },
+        { emoji: "🪙", name: "Coin", category: "valuables", trueLabel: "Want" },
+        { emoji: "💎", name: "Gemstone", category: "valuables", trueLabel: "Want" },
+        { emoji: "🧴", name: "Lotion", category: "hygiene_health", trueLabel: "Need" },
+        { emoji: "🛌", name: "Bed", category: "cleaning_home", trueLabel: "Need" },
+        { emoji: "🧸", name: "Teddy Bear", category: "games_toys", trueLabel: "Want" },
+        { emoji: "🪑", name: "Chair", category: "cleaning_home", trueLabel: "Need" },
+        { emoji: "📓", name: "Notebook", category: "school_supplies", trueLabel: "Need" },
+        { emoji: "✏️", name: "Pencil", category: "school_supplies", trueLabel: "Need" },
+        { emoji: "✂️", name: "Scissors", category: "school_supplies", trueLabel: "Need" },
+        { emoji: "🔒", name: "Padlock", category: "safety", trueLabel: "Need" },
+        { emoji: "📎", name: "Paperclip", category: "school_supplies", trueLabel: "Need" },
+        { emoji: "🥨", name: "Pretzel", category: "treats", trueLabel: "Want" },
+        { emoji: "🧀", name: "Cheese", category: "meals", trueLabel: "Need" },
+        { emoji: "🧃", name: "Juice Box", category: "treats", trueLabel: "Want" },
+        { emoji: "🎧", name: "Headphones", category: "music_audio", trueLabel: "Want" },
+        { emoji: "🥁", name: "Drum Kit", category: "music_audio", trueLabel: "Want" },
+        { emoji: "🎲", name: "Dice", category: "games_toys", trueLabel: "Want" },
+        { emoji: "🎳", name: "Bowling Ball", category: "sports_fun", trueLabel: "Want" },
+        { emoji: "🗡️", name: "Toy Sword", category: "games_toys", trueLabel: "Want" },
+        { emoji: "🍴", name: "Fork and Knife", category: "meals", trueLabel: "Need" },
+        { emoji: "🧁", name: "Cupcake", category: "treats", trueLabel: "Want" },
+        { emoji: "🔋", name: "Battery", category: "safety", trueLabel: "Need" },
+        { emoji: "🧹", name: "Broom", category: "cleaning_home", trueLabel: "Need" },
       ];
 
       const pricePool = [
@@ -2420,6 +2568,7 @@
       let brainHighlightTimeoutId = null;
       let phaseHighlightFollowupTimeoutId = null;
       let itemHighlightFollowupTimeoutId = null;
+      let reflectionReactionTimeouts = [];
       let hasPlayedGameStartHighlight = false;
       let hasShownFirstTestingCutscene = false;
       let testingCutsceneTimeoutId = null;
@@ -2429,14 +2578,14 @@
       const startingValues = {
         balance: 1500,
         savings: 50,
-        happiness: 80,
-        confidence: 60,
+        happiness: 50,
+        confidence: 50,
       };
 
       const SCREEN_TRANSITION_MS = 220;
       const TESTING_CUTSCENE_MS = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? 2900
-        : 3900;
+        ? 800
+        : 1000;
       const RESEARCH_DATA_KEY = "wiseSpendResearchData";
       const LATEST_SESSION_KEY = "wiseSpendLatestSession";
       const AI_CONFIDENCE_STEP = 8;
@@ -2650,7 +2799,10 @@
             if (entryB.latestResult.happinessPct !== entryA.latestResult.happinessPct) {
               return entryB.latestResult.happinessPct - entryA.latestResult.happinessPct;
             }
-            return entryB.latestResult.aiConfidencePct - entryA.latestResult.aiConfidencePct;
+            return (
+              entryB.latestResult.classificationAccuracyPct -
+              entryA.latestResult.classificationAccuracyPct
+            );
           });
       }
 
@@ -2712,6 +2864,55 @@
         }, SCREEN_TRANSITION_MS);
       }
 
+      function clearReflectionReactionTimeouts() {
+        reflectionReactionTimeouts.forEach((timeoutId) => window.clearTimeout(timeoutId));
+        reflectionReactionTimeouts = [];
+      }
+
+      function resetReflectionReactionState() {
+        clearReflectionReactionTimeouts();
+        reflectionCard?.classList.remove("is-reacting", "show-response");
+      }
+
+      function continueAfterReflection() {
+        if (!activeReflection) {
+          return;
+        }
+
+        if (activeReflection.continueDay === null) {
+          updateResults();
+          showScreen("resultsScreen");
+          return;
+        }
+
+        currentDay = activeReflection.continueDay;
+        activeReflection = null;
+        renderCurrentDay();
+      }
+
+      function playReflectionResponseBeat() {
+        if (!reflectionCard) {
+          continueAfterReflection();
+          return;
+        }
+
+        resetReflectionReactionState();
+        reflectionCard.classList.add("is-reacting");
+
+        reflectionReactionTimeouts.push(
+          window.setTimeout(() => {
+            reflectionCard.classList.add("show-response");
+          }, 1050)
+        );
+
+        reflectionReactionTimeouts.push(
+          window.setTimeout(() => {
+            resetReflectionReactionState();
+            continueAfterReflection();
+          }, 2850)
+        );
+      }
+
       function generateUUID() {
         if (crypto?.randomUUID) {
           return crypto.randomUUID();
@@ -2758,10 +2959,11 @@
         lastDecisionTimestamp = Date.now();
       }
 
-      function logClassification({ item, studentChoice, correctChoice }) {
+      function logClassification({ item, actor, studentChoice, correctChoice }) {
         classificationLog.push({
           sessionID: sessionId,
           itemID: item?.id || "",
+          actor: actor || "student",
           studentChoice,
           correctChoice: correctChoice ?? null,
           responseTimeMs: Date.now() - lastDecisionTimestamp,
@@ -2792,10 +2994,19 @@
 
       function buildStudentSessionSummary() {
         const studentProfile = getCurrentStudentProfile();
-        const totalFeedbackCount = gameplayStats.aiRightCount + gameplayStats.aiWrongCount;
+        const aiClassifications = classificationLog.filter(
+          (entry) =>
+            entry.actor === "ai" &&
+            entry.studentChoice &&
+            entry.correctChoice
+        );
         const totalAccuracy =
-          totalFeedbackCount > 0
-            ? Math.round((gameplayStats.aiRightCount / totalFeedbackCount) * 100)
+          aiClassifications.length > 0
+            ? Math.round(
+                (aiClassifications.filter((entry) => entry.studentChoice === entry.correctChoice).length /
+                  aiClassifications.length) *
+                  100
+              )
             : null;
 
         const avgResponseTimeMs =
@@ -3036,36 +3247,45 @@
       }
 
       function getItemCategory(item) {
-        const name = (item?.name || "").toLowerCase();
-        const categoryChecks = [
-          ["meal", ["sandwich", "apple", "cheese", "juice box", "fork and knife"]],
-          ["treat", ["donut", "pretzel", "cupcake"]],
-          [
-            "school",
-            ["notebook", "pencil", "scissors", "paperclip", "printer", "mouse", "keyboard", "monitor", "laptop", "map"],
-          ],
-          ["care", ["toilet paper", "razor", "toothbrush", "sponge", "bandages", "lotion"]],
-          ["home", ["flashlight", "fire extinguisher", "battery", "broom", "bed", "chair", "padlock"]],
-          ["tools", ["shovel", "wrench", "hammer"]],
-          ["fun", ["soccer ball", "roller skates", "skateboard", "snorkel gear", "dice", "bowling ball", "toy sword", "teddy bear"]],
-          ["music", ["microphone", "drum", "drum kit", "trumpet", "guitar", "banjo", "saxophone", "headphones"]],
-          ["tech", ["watch", "smartphone", "phone", "camera", "video camera", "video game console"]],
-          ["big purchase", ["suv", "desktop monitor", "telescope"]],
-        ];
+        return item?.category || "general";
+      }
 
-        const match = categoryChecks.find(([, keywords]) =>
-          keywords.some((keyword) => name.includes(keyword))
-        );
-
-        return match?.[0] || "general";
+      function formatCategoryLabel(category) {
+        return (category || "general")
+          .split("_")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
       }
 
       function getDefaultCategoryBias(category) {
-        if (["meal", "school", "care", "home", "tools"].includes(category)) {
+        if (
+          [
+            "meals",
+            "school_supplies",
+            "hygiene_health",
+            "cleaning_home",
+            "tools",
+            "safety",
+            "phones",
+            "navigation_time",
+          ].includes(category)
+        ) {
           return 0.55;
         }
 
-        if (["treat", "fun", "music", "tech", "big purchase"].includes(category)) {
+        if (
+          [
+            "treats",
+            "sports_fun",
+            "music_audio",
+            "games_toys",
+            "big_purchases",
+            "photo_video",
+            "learning_tools",
+            "valuables",
+            "computers",
+          ].includes(category)
+        ) {
           return -0.55;
         }
 
@@ -3073,11 +3293,11 @@
       }
 
       function getDefaultWantBuyBias(category) {
-        if (["treat", "fun", "music"].includes(category)) {
+        if (["treats", "sports_fun", "music_audio", "games_toys"].includes(category)) {
           return 0.3;
         }
 
-        if (["tech", "big purchase"].includes(category)) {
+        if (["computers", "big_purchases", "photo_video", "valuables"].includes(category)) {
           return -0.35;
         }
 
@@ -3128,6 +3348,32 @@
         }
 
         return (counts.yes - counts.no) / total;
+      }
+
+      function getMajorityDecision(counts) {
+        if (!counts) {
+          return null;
+        }
+
+        const total = counts.need + counts.want;
+        if (!total) {
+          return null;
+        }
+
+        if (counts.need === counts.want) {
+          return {
+            label: null,
+            confidencePct: 50,
+            totalSeen: total,
+          };
+        }
+
+        const winningCount = Math.max(counts.need, counts.want);
+        return {
+          label: counts.need > counts.want ? "Need" : "Want",
+          confidencePct: Math.round((winningCount / total) * 100),
+          totalSeen: total,
+        };
       }
 
       function buildTrainingModel() {
@@ -3192,8 +3438,10 @@
 
         const [categoryName, counts] = strongestCategory;
         const categoryTrend = counts.need >= counts.want ? "Needs" : "Wants";
+        const majorityView = getMajorityDecision(counts);
+        const confidenceText = majorityView ? `${majorityView.confidencePct}% confidence` : "low confidence";
 
-        return `You have taught me ${model.totals.need} Needs and ${model.totals.want} Wants. Right now, ${categoryName} items lean ${categoryTrend}. ${buyPatternText}`;
+        return `You have taught me ${model.totals.need} Needs and ${model.totals.want} Wants. Right now, ${formatCategoryLabel(categoryName)} items lean ${categoryTrend} with ${confidenceText}. ${buyPatternText}`;
       }
 
       function buildDecisionNote(result) {
@@ -3213,54 +3461,59 @@
         const category = getItemCategory(item);
         const priceBucket = getPriceBucket(item.priceValue);
         const categoryCounts = model.byCategory[category];
-        const priceCounts = model.byPriceBucket[priceBucket];
-        const overallBias = getLabelBias(model.totals);
-        const categoryBias = categoryCounts ? getLabelBias(categoryCounts) : getDefaultCategoryBias(category);
-        const priceBias = priceCounts ? getLabelBias(priceCounts) : 0;
+        const categoryMajority = getMajorityDecision(categoryCounts);
+        const overallMajority = getMajorityDecision(model.totals);
         const canComfortablyAfford = state.balanceAmount >= item.priceValue * 1.4;
         const isTightPurchase = item.priceValue > state.balanceAmount * 0.35;
 
         const path = [
-          "Have I seen this kind of item in training?",
-          "In this price range, did you lean Need or Want?",
-          "Would this cost a big chunk of the balance?",
+          "Have I trained on this category before?",
+          "What label is winning in this category?",
+          "If this category is unclear, what label is winning overall?",
         ];
 
         const answers = [
-          categoryCounts
-            ? `Yes - ${categoryCounts.need >= categoryCounts.want ? "mostly Need" : "mostly Want"}`
-            : "Not yet - using my starter rule",
-          priceCounts
-            ? `${priceCounts.need >= priceCounts.want ? "Mostly Need" : "Mostly Want"}`
-            : "Not enough price examples yet",
-          isTightPurchase ? "Yes" : "No",
+          categoryMajority ? `Yes - ${categoryMajority.totalSeen} example(s)` : "No - category is new",
+          categoryMajority?.label
+            ? `${categoryMajority.label} is ahead`
+            : categoryMajority
+              ? "This category is tied"
+              : "No category winner yet",
+          overallMajority?.label
+            ? `${overallMajority.label} is ahead overall`
+            : overallMajority
+              ? "Overall labels are tied"
+              : "No overall winner yet",
         ];
 
         const reasoning = [];
-        let labelScore = categoryBias * 2.2 + priceBias * 1.4 + overallBias * 0.8;
+        let finalClassification;
+        let confidencePct;
 
-        reasoning.push(
-          categoryBias >= 0
-            ? `Your training usually treats ${category} items more like Needs.`
-            : `Your training usually treats ${category} items more like Wants.`
-        );
-
-        if (priceCounts) {
+        if (categoryMajority?.label) {
+          finalClassification = categoryMajority.label;
+          confidencePct = categoryMajority.confidencePct;
           reasoning.push(
-            priceBias >= 0
-              ? `In the ${priceBucket} price range, you leaned Need.`
-              : `In the ${priceBucket} price range, you leaned Want.`
+            `${formatCategoryLabel(category)} has been trained ${categoryMajority.totalSeen} time${categoryMajority.totalSeen === 1 ? "" : "s"}, and ${finalClassification} is winning there.`
+          );
+        } else if (overallMajority?.label) {
+          finalClassification = overallMajority.label;
+          confidencePct = Math.max(55, overallMajority.confidencePct - 10);
+          reasoning.push(
+            `I have not learned a clear rule for ${formatCategoryLabel(category)} yet, so I used the overall pattern from all training examples.`
           );
         } else {
-          reasoning.push(`I do not know this price range well yet, so category matters more.`);
+          finalClassification = getDefaultCategoryBias(category) >= 0 ? "Need" : "Want";
+          confidencePct = 50;
+          reasoning.push(
+            `I have not seen enough training examples yet, so I used my starter rule for ${formatCategoryLabel(category)} items.`
+          );
         }
 
-        if (isTightPurchase) {
-          labelScore -= 1.1;
-          reasoning.push(`This item takes a big bite out of the balance.`);
-        }
+        reasoning.push(
+          `This item is in the ${priceBucket} price range, so I am using price only as a small context clue.`
+        );
 
-        const finalClassification = labelScore >= 0 ? "Need" : "Want";
         let buyDecision = finalClassification === "Need";
 
         if (finalClassification === "Want") {
@@ -3310,6 +3563,7 @@
           buyDecision,
           category,
           priceBucket,
+          confidencePct,
           reasoning,
         };
 
@@ -3373,14 +3627,14 @@
       }
 
       function calculateScoreBreakdown() {
-        const aiConfidence = Math.round(aiConfidencePct);
+        const classificationAccuracy = buildStudentSessionSummary().totalClassificationAccuracy ?? 0;
         const happiness = clampPercent(currentHappinessPct);
         const balanceLeft = roundMoney(currentBalance);
         const balanceScore = clampPercent((Math.max(balanceLeft, 0) / startingValues.balance) * 100);
-        const totalScore = aiConfidence + happiness + balanceScore;
+        const totalScore = classificationAccuracy + happiness + balanceScore;
 
         return {
-          aiConfidencePct: aiConfidence,
+          classificationAccuracyPct: classificationAccuracy,
           happinessPct: happiness,
           balanceLeft,
           balanceScore,
@@ -3391,7 +3645,7 @@
 
       function buildDecisionSummaryLines(scoreBreakdown) {
         return [
-          `Your AI confidence finished at ${scoreBreakdown.aiConfidencePct}% because you marked it right ${gameplayStats.aiRightCount} time${gameplayStats.aiRightCount === 1 ? "" : "s"} and wrong ${gameplayStats.aiWrongCount} time${gameplayStats.aiWrongCount === 1 ? "" : "s"}.`,
+          `Your AI classification accuracy finished at ${scoreBreakdown.classificationAccuracyPct}% based on the true item labels. You marked the AI right ${gameplayStats.aiRightCount} time${gameplayStats.aiRightCount === 1 ? "" : "s"} and wrong ${gameplayStats.aiWrongCount} time${gameplayStats.aiWrongCount === 1 ? "" : "s"}.`,
           `Happiness finished at ${scoreBreakdown.happinessPct}% after buying ${gameplayStats.needsBought} Need${gameplayStats.needsBought === 1 ? "" : "s"}, buying ${gameplayStats.wantsBought} Want${gameplayStats.wantsBought === 1 ? "" : "s"}, and skipping ${gameplayStats.wantsRejected} Want${gameplayStats.wantsRejected === 1 ? "" : "s"}.`,
           `You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)} left.`,
           `The AI learned from ${trainingExamples.length} training example${trainingExamples.length === 1 ? "" : "s"} across the three training periods.`,
@@ -3404,7 +3658,7 @@
         }
 
         const breakdownRows = [
-          ["AI confidence", `${currentScoreBreakdown.aiConfidencePct} pts`],
+          ["AI accuracy", `${currentScoreBreakdown.classificationAccuracyPct} pts`],
           ["Happiness", `${currentScoreBreakdown.happinessPct} pts`],
           ["Balance left score", `${currentScoreBreakdown.balanceScore} pts`],
           ["Total score", `${currentScoreBreakdown.totalScore} / ${currentScoreBreakdown.maxScore}`],
@@ -3422,7 +3676,7 @@
           )
           .join("");
         scoreExplainFormula.textContent =
-          "Final score = AI confidence + happiness + balance-left score. The balance-left score turns your remaining budget into a 0-100 score so money, happiness, and confidence all matter.";
+          "Final score = AI accuracy + happiness + balance-left score. The balance-left score turns your remaining budget into a 0-100 score so money, happiness, and correct AI decisions all matter.";
         scoreDecisionList.innerHTML = buildDecisionSummaryLines(currentScoreBreakdown)
           .map((line) => `<div class="score-decision-item">${line}</div>`)
           .join("");
@@ -3516,7 +3770,7 @@
           balanceLeft: currentScoreBreakdown.balanceLeft,
           balanceScore: currentScoreBreakdown.balanceScore,
           happinessPct: currentScoreBreakdown.happinessPct,
-          aiConfidencePct: currentScoreBreakdown.aiConfidencePct,
+          classificationAccuracyPct: currentScoreBreakdown.classificationAccuracyPct,
           completedAt: summary.endTimestamp,
         };
 
@@ -3687,9 +3941,7 @@
         setText("#testItemEmoji", data.item.emoji);
         setText("#testItemName", data.item.name);
         setText("#testItemPrice", data.item.price);
-        setText("#testMatchPct", `${data.matchPct}%`);
         setText("#testHappinessPct", `${data.happinessPct}%`);
-        setBar("#testMatchBar", data.matchPct);
         setBar("#testHappinessBar", data.happinessPct);
 
         const decision = evaluateDecisionTree(data.item, {
@@ -3699,6 +3951,9 @@
           confidence: data.matchPct,
         });
         activeDecision = decision;
+
+        setText("#testMatchPct", `${decision.confidencePct}%`);
+        setBar("#testMatchBar", decision.confidencePct);
 
         aiChoicePill.textContent =
           decision.finalClassification === "Need"
@@ -3751,6 +4006,7 @@
           return;
         }
 
+        resetReflectionReactionState();
         activeReflection = reflection;
         selectedReflectionAnswer = "";
         reflectionStartTimestamp = Date.now();
@@ -3831,8 +4087,9 @@
         });
         logClassification({
           item: activeDayData?.item || null,
+          actor: "ai",
           studentChoice: activeDecision?.finalClassification || "",
-          correctChoice: feedback === "Yes" ? activeDecision?.finalClassification || null : null,
+          correctChoice: activeDayData?.item?.trueLabel || null,
         });
 
         if ([10, 20, 30].includes(currentDay)) {
@@ -3877,6 +4134,8 @@
         activeDecision = null;
         activeReflection = null;
         reflectionStartTimestamp = 0;
+        clearReflectionReactionTimeouts();
+        reflectionCard?.classList.remove("is-reacting", "show-response");
         sessionItemOrder = [];
         hasPlayedGameStartHighlight = false;
         hasShownFirstTestingCutscene = false;
@@ -4105,8 +4364,9 @@
         });
         logClassification({
           item,
+          actor: "student",
           studentChoice: selectedTrainingLabel,
-          correctChoice: null,
+          correctChoice: item?.trueLabel || null,
         });
         applyDayOutcome({
           phase: "training",
@@ -4134,6 +4394,7 @@
           return;
         }
 
+        nextReflectionBtn.disabled = true;
         const timeSpentMs = Date.now() - reflectionStartTimestamp;
         logReflection({
           questionId: activeReflection.id,
@@ -4146,16 +4407,7 @@
           selectedAnswer: selectedReflectionAnswer,
           timeSpentMs,
         });
-
-        if (activeReflection.continueDay === null) {
-          updateResults();
-          showScreen("resultsScreen");
-          return;
-        }
-
-        currentDay = activeReflection.continueDay;
-        activeReflection = null;
-        renderCurrentDay();
+        playReflectionResponseBeat();
       });
 
       explainScoreBtn?.addEventListener("click", () => {
