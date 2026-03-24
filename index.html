@@ -2490,7 +2490,7 @@
 
       const pricePool = [
         3, 6, 2, 18, 45, 65, 38, 25, 55, 90,
-        140, 95, 160, 400, 28000, 10, 60, 700, 39, 200,
+        140, 95, 160, 400, 3, 10, 60, 700, 39, 200,
         130, 25, 600, 320, 640, 40, 3, 55, 220, 1,
         6, 5, 4, 9, 28, 15, 18, 2, 90, 7,
         25, 120, 5, 3, 12, 9, 2, 4, 7, 110,
@@ -3952,8 +3952,8 @@
         });
         activeDecision = decision;
 
-        setText("#testMatchPct", `${decision.confidencePct}%`);
-        setBar("#testMatchBar", decision.confidencePct);
+        setText("#testMatchPct", `${Math.round(aiConfidencePct)}%`);
+        setBar("#testMatchBar", Math.round(aiConfidencePct));
 
         aiChoicePill.textContent =
           decision.finalClassification === "Need"
