@@ -2091,7 +2091,7 @@
             </article>
           </div>
 
-          <button class="setup-next-btn" type="button" disabled>Next</button>
+          <button class="setup-next-btn" type="button" disabled>Start Tutorial</button>
         </div>
       </section>
 
@@ -3621,23 +3621,29 @@
         const happiness = clampPercent(currentHappinessPct);
         const balanceLeft = roundMoney(currentBalance);
         const balanceScore = clampPercent((Math.max(balanceLeft, 0) / startingValues.balance) * 100);
-        const totalScore = classificationAccuracy + happiness + balanceScore;
+        const accuracyPoints = Math.round(classificationAccuracy * 0.4);
+        const balancePoints = Math.round(balanceScore * 0.35);
+        const happinessPoints = Math.round(happiness * 0.25);
+        const totalScore = accuracyPoints + balancePoints + happinessPoints;
 
         return {
           classificationAccuracyPct: classificationAccuracy,
           happinessPct: happiness,
           balanceLeft,
           balanceScore,
+          accuracyPoints,
+          balancePoints,
+          happinessPoints,
           totalScore,
-          maxScore: 300,
+          maxScore: 100,
         };
       }
 
       function buildDecisionSummaryLines(scoreBreakdown) {
         return [
-          `Your AI classification accuracy finished at ${scoreBreakdown.classificationAccuracyPct}% based on the true item labels. You marked the AI right ${gameplayStats.aiRightCount} time${gameplayStats.aiRightCount === 1 ? "" : "s"} and wrong ${gameplayStats.aiWrongCount} time${gameplayStats.aiWrongCount === 1 ? "" : "s"}.`,
-          `Happiness finished at ${scoreBreakdown.happinessPct}% after buying ${gameplayStats.needsBought} Need${gameplayStats.needsBought === 1 ? "" : "s"}, buying ${gameplayStats.wantsBought} Want${gameplayStats.wantsBought === 1 ? "" : "s"}, and skipping ${gameplayStats.wantsRejected} Want${gameplayStats.wantsRejected === 1 ? "" : "s"}.`,
-          `You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)} left.`,
+          `AI accuracy finished at ${scoreBreakdown.classificationAccuracyPct}%, which gave ${scoreBreakdown.accuracyPoints} of the 40 possible accuracy points. You marked the AI right ${gameplayStats.aiRightCount} time${gameplayStats.aiRightCount === 1 ? "" : "s"} and wrong ${gameplayStats.aiWrongCount} time${gameplayStats.aiWrongCount === 1 ? "" : "s"}.`,
+          `Happiness finished at ${scoreBreakdown.happinessPct}%, which gave ${scoreBreakdown.happinessPoints} of the 25 possible happiness points after buying ${gameplayStats.needsBought} Need${gameplayStats.needsBought === 1 ? "" : "s"}, buying ${gameplayStats.wantsBought} Want${gameplayStats.wantsBought === 1 ? "" : "s"}, and skipping ${gameplayStats.wantsRejected} Want${gameplayStats.wantsRejected === 1 ? "" : "s"}.`,
+          `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the 35 possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)} left.`,
           `The AI learned from ${trainingExamples.length} training example${trainingExamples.length === 1 ? "" : "s"} across the three training periods.`,
         ];
       }
@@ -3648,9 +3654,9 @@
         }
 
         const breakdownRows = [
-          ["AI accuracy", `${currentScoreBreakdown.classificationAccuracyPct} pts`],
-          ["Happiness", `${currentScoreBreakdown.happinessPct} pts`],
-          ["Balance left score", `${currentScoreBreakdown.balanceScore} pts`],
+          ["AI accuracy (40%)", `${currentScoreBreakdown.accuracyPoints} pts`],
+          ["Balance left (35%)", `${currentScoreBreakdown.balancePoints} pts`],
+          ["Happiness (25%)", `${currentScoreBreakdown.happinessPoints} pts`],
           ["Total score", `${currentScoreBreakdown.totalScore} / ${currentScoreBreakdown.maxScore}`],
         ];
 
@@ -3666,7 +3672,7 @@
           )
           .join("");
         scoreExplainFormula.textContent =
-          "Final score = AI accuracy + happiness + balance-left score. The balance-left score turns your remaining budget into a 0-100 score so money, happiness, and correct AI decisions all matter.";
+          "Final score = 40% AI accuracy + 35% balance left score + 25% happiness. This keeps correct AI decisions most important, while still rewarding smart money choices and emotional balance.";
         scoreDecisionList.innerHTML = buildDecisionSummaryLines(currentScoreBreakdown)
           .map((line) => `<div class="score-decision-item">${line}</div>`)
           .join("");
