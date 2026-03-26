@@ -2565,6 +2565,7 @@
       let testingCutsceneTimeoutId = null;
       let welcomeStatusTimeoutId = null;
       let resultsScreenMode = "session";
+      let hasCheckedStorageMigration = false;
 
       const startingValues = {
         balance: 1500,
@@ -2577,7 +2578,9 @@
       const TESTING_CUTSCENE_MS = window.matchMedia("(prefers-reduced-motion: reduce)").matches
         ? 800
         : 1000;
-      const RESEARCH_DATA_KEY = "wiseSpendResearchData";
+      const LEGACY_RESEARCH_DATA_KEY = "wiseSpendResearchData";
+      const LEADERBOARD_DATA_KEY = "wiseSpendLeaderboardData";
+      const PLAYER_DATA_KEY_PREFIX = "wiseSpendPlayerData::";
       const LATEST_SESSION_KEY = "wiseSpendLatestSession";
       const AI_CONFIDENCE_STEP = 8;
       const AI_CONFIDENCE_MIN = 15;
@@ -2658,6 +2661,120 @@
           .join("|");
       }
 
+      function createEmptyLeaderboardData() {
+        return {
+          version: 1,
+          updatedAt: new Date().toISOString(),
+          entries: [],
+        };
+      }
+
+      function getPlayerDataKey(playerKey) {
+        return `${PLAYER_DATA_KEY_PREFIX}${playerKey}`;
+      }
+
+      function listStoredPlayerDataKeys() {
+        const keys = [];
+
+        for (let index = 0; index < localStorage.length; index += 1) {
+          const storageKey = localStorage.key(index);
+          if (storageKey?.startsWith(PLAYER_DATA_KEY_PREFIX)) {
+            keys.push(storageKey);
+          }
+        }
+
+        return keys;
+      }
+
+      function normalizePlayerRecord(playerRecord) {
+        return {
+          version: 1,
+          updatedAt: new Date().toISOString(),
+          playerKey: playerRecord?.playerKey || "",
+          studentProfile: playerRecord?.studentProfile || {},
+          latestResult: playerRecord?.latestResult || null,
+          sessions: Array.isArray(playerRecord?.sessions) ? playerRecord.sessions : [],
+        };
+      }
+
+      function buildLeaderboardEntry(playerRecord) {
+        return {
+          playerKey: playerRecord?.playerKey || "",
+          displayName:
+            playerRecord?.studentProfile?.displayName ||
+            formatDisplayName(playerRecord?.studentProfile),
+          avatar: playerRecord?.studentProfile?.avatar || "assets/avatar1.png",
+          latestResult: playerRecord?.latestResult || null,
+        };
+      }
+
+      function normalizeLeaderboardEntry(entry) {
+        return {
+          playerKey: entry?.playerKey || "",
+          displayName: entry?.displayName || "Player",
+          avatar: entry?.avatar || "assets/avatar1.png",
+          latestResult: entry?.latestResult || null,
+        };
+      }
+
+      function ensureSplitStorageMigration() {
+        if (hasCheckedStorageMigration) {
+          return;
+        }
+
+        hasCheckedStorageMigration = true;
+
+        const leaderboardRaw = localStorage.getItem(LEADERBOARD_DATA_KEY);
+        const legacyRaw = localStorage.getItem(LEGACY_RESEARCH_DATA_KEY);
+
+        if (leaderboardRaw) {
+          if (legacyRaw) {
+            localStorage.removeItem(LEGACY_RESEARCH_DATA_KEY);
+          }
+          return;
+        }
+
+        if (!legacyRaw) {
+          return;
+        }
+
+        try {
+          const parsed = JSON.parse(legacyRaw);
+          if (!parsed || !Array.isArray(parsed.players)) {
+            localStorage.removeItem(LEGACY_RESEARCH_DATA_KEY);
+            return;
+          }
+
+          const migratedLeaderboard = createEmptyLeaderboardData();
+          migratedLeaderboard.updatedAt = parsed.updatedAt || migratedLeaderboard.updatedAt;
+
+          parsed.players.forEach((player) => {
+            if (!player?.playerKey) {
+              return;
+            }
+
+            const normalizedPlayer = normalizePlayerRecord({
+              ...player,
+              updatedAt: parsed.updatedAt || new Date().toISOString(),
+            });
+
+            localStorage.setItem(
+              getPlayerDataKey(normalizedPlayer.playerKey),
+              JSON.stringify(normalizedPlayer)
+            );
+
+            if (normalizedPlayer.latestResult) {
+              migratedLeaderboard.entries.push(buildLeaderboardEntry(normalizedPlayer));
+            }
+          });
+
+          localStorage.setItem(LEADERBOARD_DATA_KEY, JSON.stringify(migratedLeaderboard));
+          localStorage.removeItem(LEGACY_RESEARCH_DATA_KEY);
+        } catch {
+          localStorage.removeItem(LEGACY_RESEARCH_DATA_KEY);
+        }
+      }
+
       function isResetCodeEntered(profile) {
         return (
           (profile?.firstName || "").trim().toLowerCase() === RESET_CODE.firstName &&
@@ -2680,53 +2797,99 @@
           return false;
         }
 
-        return (loadResearchData().players || []).some((player) => {
-          if (!player?.latestResult) {
-            return false;
-          }
-
-          const playerDisplayName = (
-            player.studentProfile?.displayName || formatDisplayName(player.studentProfile)
-          )
-            .trim()
-            .toLowerCase();
-
-          return playerDisplayName === displayName;
-        });
+        return getLeaderboardEntries().some(
+          (entry) => entry.displayName.trim().toLowerCase() === displayName
+        );
       }
 
-      function loadResearchData() {
+      function loadLeaderboardData() {
+        ensureSplitStorageMigration();
+
         try {
-          const raw = localStorage.getItem(RESEARCH_DATA_KEY);
+          const raw = localStorage.getItem(LEADERBOARD_DATA_KEY);
           if (!raw) {
-            return { version: 1, players: [] };
+            return createEmptyLeaderboardData();
           }
 
           const parsed = JSON.parse(raw);
-          if (!parsed || !Array.isArray(parsed.players)) {
-            return { version: 1, players: [] };
+          if (!parsed || !Array.isArray(parsed.entries)) {
+            return createEmptyLeaderboardData();
           }
 
-          return parsed;
+          return {
+            version: 1,
+            updatedAt: parsed.updatedAt || new Date().toISOString(),
+            entries: parsed.entries.map(normalizeLeaderboardEntry).filter((entry) => entry.playerKey),
+          };
         } catch {
-          return { version: 1, players: [] };
+          return createEmptyLeaderboardData();
         }
       }
 
-      function saveResearchData(data) {
+      function saveLeaderboardData(data) {
+        ensureSplitStorageMigration();
+
         localStorage.setItem(
-          RESEARCH_DATA_KEY,
+          LEADERBOARD_DATA_KEY,
           JSON.stringify({
             version: 1,
             updatedAt: new Date().toISOString(),
-            players: Array.isArray(data?.players) ? data.players : [],
+            entries: Array.isArray(data?.entries)
+              ? data.entries
+                  .map(normalizeLeaderboardEntry)
+                  .filter((entry) => entry.playerKey && entry.latestResult)
+              : [],
           })
         );
       }
 
+      function loadPlayerData(playerKey) {
+        ensureSplitStorageMigration();
+
+        if (!playerKey) {
+          return null;
+        }
+
+        try {
+          const raw = localStorage.getItem(getPlayerDataKey(playerKey));
+          if (!raw) {
+            return null;
+          }
+
+          const parsed = JSON.parse(raw);
+          if (!parsed || parsed.playerKey !== playerKey) {
+            return null;
+          }
+
+          return normalizePlayerRecord(parsed);
+        } catch {
+          return null;
+        }
+      }
+
+      function savePlayerData(playerRecord) {
+        ensureSplitStorageMigration();
+
+        const normalizedPlayer = normalizePlayerRecord(playerRecord);
+        if (!normalizedPlayer.playerKey) {
+          return null;
+        }
+
+        localStorage.setItem(
+          getPlayerDataKey(normalizedPlayer.playerKey),
+          JSON.stringify(normalizedPlayer)
+        );
+
+        return normalizedPlayer;
+      }
+
       function clearStoredLeaderboardData() {
-        localStorage.removeItem(RESEARCH_DATA_KEY);
+        localStorage.removeItem(LEGACY_RESEARCH_DATA_KEY);
+        localStorage.removeItem(LEADERBOARD_DATA_KEY);
         localStorage.removeItem(LATEST_SESSION_KEY);
+        listStoredPlayerDataKeys().forEach((storageKey) => {
+          localStorage.removeItem(storageKey);
+        });
         renderLeaderboard();
       }
 
@@ -2771,15 +2934,10 @@
         showScreen("resultsScreen");
       }
 
-      function getLeaderboardEntries(data = loadResearchData()) {
-        return (data.players || [])
-          .filter((player) => player?.latestResult)
-          .map((player) => ({
-            playerKey: player.playerKey,
-            displayName: player.studentProfile?.displayName || "Player",
-            avatar: player.studentProfile?.avatar || "assets/avatar1.png",
-            latestResult: player.latestResult,
-          }))
+      function getLeaderboardEntries(data = loadLeaderboardData()) {
+        return (data.entries || [])
+          .filter((entry) => entry?.latestResult)
+          .map(normalizeLeaderboardEntry)
           .sort((entryA, entryB) => {
             if (entryB.latestResult.totalScore !== entryA.latestResult.totalScore) {
               return entryB.latestResult.totalScore - entryA.latestResult.totalScore;
@@ -3737,18 +3895,25 @@
           events: sessionLog,
         };
 
-        const researchData = loadResearchData();
-        let playerRecord = researchData.players.find((player) => player.playerKey === playerKey);
-
+        let playerRecord = loadPlayerData(playerKey);
         if (!playerRecord) {
-          playerRecord = {
+          playerRecord = normalizePlayerRecord({
             playerKey,
             studentProfile: summary.studentProfile,
             latestResult: null,
             sessions: [],
-          };
-          researchData.players.push(playerRecord);
+          });
         }
+
+        const latestResult = {
+          sessionID: summary.sessionID,
+          totalScore: currentScoreBreakdown.totalScore,
+          balanceLeft: currentScoreBreakdown.balanceLeft,
+          balanceScore: currentScoreBreakdown.balanceScore,
+          happinessPct: currentScoreBreakdown.happinessPct,
+          classificationAccuracyPct: currentScoreBreakdown.classificationAccuracyPct,
+          completedAt: summary.endTimestamp,
+        };
 
         playerRecord.studentProfile = summary.studentProfile;
         playerRecord.sessions = Array.isArray(playerRecord.sessions) ? playerRecord.sessions : [];
@@ -3760,17 +3925,22 @@
         } else {
           playerRecord.sessions.push(currentSessionRecord);
         }
-        playerRecord.latestResult = {
-          sessionID: summary.sessionID,
-          totalScore: currentScoreBreakdown.totalScore,
-          balanceLeft: currentScoreBreakdown.balanceLeft,
-          balanceScore: currentScoreBreakdown.balanceScore,
-          happinessPct: currentScoreBreakdown.happinessPct,
-          classificationAccuracyPct: currentScoreBreakdown.classificationAccuracyPct,
-          completedAt: summary.endTimestamp,
-        };
+        playerRecord.latestResult = latestResult;
 
-        saveResearchData(researchData);
+        const savedPlayerRecord = savePlayerData(playerRecord);
+        const leaderboardData = loadLeaderboardData();
+        const leaderboardEntry = buildLeaderboardEntry(savedPlayerRecord);
+        const existingEntryIndex = leaderboardData.entries.findIndex(
+          (entry) => entry.playerKey === playerKey
+        );
+
+        if (existingEntryIndex >= 0) {
+          leaderboardData.entries[existingEntryIndex] = leaderboardEntry;
+        } else {
+          leaderboardData.entries.push(leaderboardEntry);
+        }
+
+        saveLeaderboardData(leaderboardData);
         localStorage.setItem(LATEST_SESSION_KEY, JSON.stringify(currentSessionRecord));
         renderLeaderboard(playerKey);
 
@@ -3778,16 +3948,62 @@
         resultsSummary.textContent = `${profileName} finished with ${currentScoreBreakdown.totalScore} points, ${formatCurrency(currentScoreBreakdown.balanceLeft)} left, and rank #${currentLeaderboardRank || "?"}.`;
       }
 
-      function exportSessionData() {
-        const blob = new Blob([JSON.stringify(loadResearchData(), null, 2)], {
+      function downloadJsonFile(filename, data) {
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
           type: "application/json",
         });
         const url = URL.createObjectURL(blob);
         const anchor = document.createElement("a");
         anchor.href = url;
-        anchor.download = "wisespend-research-data.json";
+        anchor.download = filename;
         anchor.click();
         URL.revokeObjectURL(url);
+      }
+
+      function slugifyFilenameSegment(value) {
+        const slug = (value || "student")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+
+        return slug || "student";
+      }
+
+      function getCurrentPlayerKeyForExport() {
+        const profile =
+          currentSessionRecord?.studentSession?.studentProfile || getCurrentStudentProfile();
+        return profile ? getPlayerKey(profile) : "";
+      }
+
+      function exportLeaderboardData() {
+        downloadJsonFile("wisespend-leaderboard.json", loadLeaderboardData());
+      }
+
+      function exportCurrentPlayerData(playerKey = getCurrentPlayerKeyForExport()) {
+        if (!playerKey) {
+          return false;
+        }
+
+        const playerRecord = loadPlayerData(playerKey);
+        if (!playerRecord) {
+          return false;
+        }
+
+        const fileLabel =
+          playerRecord.studentProfile?.displayName ||
+          playerRecord.studentProfile?.firstName ||
+          playerKey;
+
+        downloadJsonFile(
+          `wisespend-${slugifyFilenameSegment(fileLabel)}.json`,
+          playerRecord
+        );
+
+        return true;
+      }
+
+      function exportSessionData() {
+        return exportCurrentPlayerData();
       }
 
       function getRound(day) {
