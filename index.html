@@ -2527,6 +2527,21 @@
         },
       ];
 
+      const ROUND_CATEGORY_PLAN = [
+        {
+          training: ["meals", "treats", "school_supplies", "games_toys", "safety"],
+          testing: ["meals", "treats", "school_supplies", "games_toys", "sports_fun"],
+        },
+        {
+          training: ["sports_fun", "music_audio", "hygiene_health", "computers", "learning_tools"],
+          testing: ["sports_fun", "music_audio", "computers", "games_toys", "photo_video"],
+        },
+        {
+          training: ["phones", "photo_video", "tools", "valuables", "cleaning_home"],
+          testing: ["phones", "cleaning_home", "computers", "games_toys", "navigation_time"],
+        },
+      ];
+
       let selectedAvatar = "";
       let currentDay = 1;
       let selectedTrainingLabel = "";
@@ -3087,13 +3102,81 @@
         return copy;
       }
 
-      function buildSessionItemOrder() {
-        const combinedItems = itemPool.map((item, index) => ({
-          ...item,
-          id: `item_${index + 1}`,
-        }));
+      function buildCategoryBuckets() {
+        const buckets = {};
 
-        sessionItemOrder = shuffleArray(combinedItems).slice(0, 30);
+        itemPool.forEach((item, index) => {
+          const enrichedItem = {
+            ...item,
+            id: `item_${index + 1}`,
+          };
+          if (!buckets[item.category]) {
+            buckets[item.category] = [];
+          }
+          buckets[item.category].push(enrichedItem);
+        });
+
+        Object.keys(buckets).forEach((category) => {
+          buckets[category] = shuffleArray(buckets[category]);
+        });
+
+        return buckets;
+      }
+
+      function takeItemFromCategory(categoryBuckets, category, usedIds) {
+        const bucket = categoryBuckets[category] || [];
+
+        while (bucket.length > 0) {
+          const item = bucket.pop();
+          if (!usedIds.has(item.id)) {
+            usedIds.add(item.id);
+            return item;
+          }
+        }
+
+        return null;
+      }
+
+      function takeAnyRemainingItem(categoryBuckets, usedIds) {
+        const categories = shuffleArray(Object.keys(categoryBuckets));
+
+        for (const category of categories) {
+          const item = takeItemFromCategory(categoryBuckets, category, usedIds);
+          if (item) {
+            return item;
+          }
+        }
+
+        return null;
+      }
+
+      function buildPhaseItems(categories, categoryBuckets, usedIds) {
+        const phaseItems = categories
+          .map((category) => takeItemFromCategory(categoryBuckets, category, usedIds))
+          .filter(Boolean);
+
+        while (phaseItems.length < categories.length) {
+          const fallbackItem = takeAnyRemainingItem(categoryBuckets, usedIds);
+          if (!fallbackItem) {
+            break;
+          }
+          phaseItems.push(fallbackItem);
+        }
+
+        return shuffleArray(phaseItems);
+      }
+
+      function buildSessionItemOrder() {
+        const categoryBuckets = buildCategoryBuckets();
+        const usedIds = new Set();
+        const orderedItems = [];
+
+        ROUND_CATEGORY_PLAN.forEach((roundPlan) => {
+          orderedItems.push(...buildPhaseItems(roundPlan.training, categoryBuckets, usedIds));
+          orderedItems.push(...buildPhaseItems(roundPlan.testing, categoryBuckets, usedIds));
+        });
+
+        sessionItemOrder = orderedItems.slice(0, 30);
       }
 
       function logEvent(type, payload = {}) {
