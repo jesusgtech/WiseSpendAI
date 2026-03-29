@@ -3959,19 +3959,25 @@
         const happiness = clampPercent(currentHappinessPct);
         const balanceLeft = roundMoney(currentBalance);
         const balanceScore = clampPercent((Math.max(balanceLeft, 0) / startingValues.balance) * 100);
-        const accuracyPoints = Math.round(classificationAccuracy * 0.4);
-        const balancePoints = Math.round(balanceScore * 0.35);
-        const happinessPoints = Math.round(happiness * 0.25);
-        const totalScore = accuracyPoints + balancePoints + happinessPoints;
+        const overdraftRatio =
+          balanceLeft < 0 ? Math.min(Math.abs(balanceLeft) / startingValues.balance, 1) : 0;
+        const overdraftPenalty = Math.round(overdraftRatio * 25);
+        const accuracyPoints = Math.round(classificationAccuracy * 0.45);
+        const balancePoints = Math.round(balanceScore * 0.4);
+        const happinessPoints = Math.round(happiness * 0.15);
+        const rawTotalScore = accuracyPoints + balancePoints + happinessPoints;
+        const totalScore = Math.max(0, rawTotalScore - overdraftPenalty);
 
         return {
           classificationAccuracyPct: classificationAccuracy,
           happinessPct: happiness,
           balanceLeft,
           balanceScore,
+          overdraftPenalty,
           accuracyPoints,
           balancePoints,
           happinessPoints,
+          rawTotalScore,
           totalScore,
           maxScore: 100,
         };
@@ -3979,9 +3985,11 @@
 
       function buildDecisionSummaryLines(scoreBreakdown) {
         return [
-          `AI accuracy finished at ${scoreBreakdown.classificationAccuracyPct}%, which gave ${scoreBreakdown.accuracyPoints} of the 40 possible accuracy points. You marked the AI right ${gameplayStats.aiRightCount} time${gameplayStats.aiRightCount === 1 ? "" : "s"} and wrong ${gameplayStats.aiWrongCount} time${gameplayStats.aiWrongCount === 1 ? "" : "s"}.`,
-          `Happiness finished at ${scoreBreakdown.happinessPct}%, which gave ${scoreBreakdown.happinessPoints} of the 25 possible happiness points after buying ${gameplayStats.needsBought} Need${gameplayStats.needsBought === 1 ? "" : "s"}, buying ${gameplayStats.wantsBought} Want${gameplayStats.wantsBought === 1 ? "" : "s"}, and skipping ${gameplayStats.wantsRejected} Want${gameplayStats.wantsRejected === 1 ? "" : "s"}.`,
-          `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the 35 possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)} left.`,
+          `AI accuracy finished at ${scoreBreakdown.classificationAccuracyPct}%, which gave ${scoreBreakdown.accuracyPoints} of the 45 possible accuracy points. You marked the AI right ${gameplayStats.aiRightCount} time${gameplayStats.aiRightCount === 1 ? "" : "s"} and wrong ${gameplayStats.aiWrongCount} time${gameplayStats.aiWrongCount === 1 ? "" : "s"}.`,
+          `Happiness finished at ${scoreBreakdown.happinessPct}%, which gave ${scoreBreakdown.happinessPoints} of the 15 possible happiness points after buying ${gameplayStats.needsBought} Need${gameplayStats.needsBought === 1 ? "" : "s"}, buying ${gameplayStats.wantsBought} Want${gameplayStats.wantsBought === 1 ? "" : "s"}, and skipping ${gameplayStats.wantsRejected} Want${gameplayStats.wantsRejected === 1 ? "" : "s"}.`,
+          scoreBreakdown.overdraftPenalty > 0
+            ? `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the 40 possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)}, so an overdraft penalty of ${scoreBreakdown.overdraftPenalty} points was applied.`
+            : `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the 40 possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)} left.`,
           `The AI learned from ${trainingExamples.length} training example${trainingExamples.length === 1 ? "" : "s"} across the three training periods.`,
         ];
       }
@@ -3992,9 +4000,12 @@
         }
 
         const breakdownRows = [
-          ["AI accuracy (40%)", `${currentScoreBreakdown.accuracyPoints} pts`],
-          ["Balance left (35%)", `${currentScoreBreakdown.balancePoints} pts`],
-          ["Happiness (25%)", `${currentScoreBreakdown.happinessPoints} pts`],
+          ["AI accuracy (45%)", `${currentScoreBreakdown.accuracyPoints} pts`],
+          ["Balance left (40%)", `${currentScoreBreakdown.balancePoints} pts`],
+          ["Happiness (15%)", `${currentScoreBreakdown.happinessPoints} pts`],
+          ...(currentScoreBreakdown.overdraftPenalty > 0
+            ? [["Overdraft penalty", `-${currentScoreBreakdown.overdraftPenalty} pts`]]
+            : []),
           ["Total score", `${currentScoreBreakdown.totalScore} / ${currentScoreBreakdown.maxScore}`],
         ];
 
@@ -4010,7 +4021,7 @@
           )
           .join("");
         scoreExplainFormula.textContent =
-          "Final score = 40% AI accuracy + 35% balance left score + 25% happiness. This keeps correct AI decisions most important, while still rewarding smart money choices and emotional balance.";
+          "Final score = 45% AI accuracy + 40% balance left score + 15% happiness. If the run ends below $0, an overdraft penalty is subtracted so negative balances cannot rank too highly.";
         scoreDecisionList.innerHTML = buildDecisionSummaryLines(currentScoreBreakdown)
           .map((line) => `<div class="score-decision-item">${line}</div>`)
           .join("");
