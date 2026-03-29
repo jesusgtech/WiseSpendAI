@@ -2531,13 +2531,13 @@
         { emoji: "🎮", name: "Video Game Console", category: "games", trueLabel: "Want", priceValue: 200 },
         { emoji: "🚙", name: "Toy Car", category: "games", trueLabel: "Want", priceValue: 3 },
         { emoji: "🧸", name: "Teddy Bear", category: "games", trueLabel: "Want", priceValue: 15 },
-        { emoji: "🎲", name: "Dice", category: "games", trueLabel: "Want", priceValue: 8 },
+        { emoji: "🎲", name: "Dice", category: "games", trueLabel: "Want", priceValue: 3 },
         { emoji: "🗡️", name: "Toy Sword", category: "games", trueLabel: "Want", priceValue: 10 },
         { emoji: "🃏", name: "Playing Cards", category: "games", trueLabel: "Want", priceValue: 12 },
         { emoji: "🗺️", name: "Bus Route Map", category: "travel", trueLabel: "Need", priceValue: 2 },
         { emoji: "⌚️", name: "Watch", category: "travel", trueLabel: "Want", priceValue: 45 },
         { emoji: "📱", name: "Smartphone", category: "phones", trueLabel: "Want", priceValue: 100 },
-        { emoji: "🥛", name: "Smoothie", category: "drinks", trueLabel: "Want", priceValue: 6 },
+        { emoji: "🥛", name: "Smoothie", category: "drinks", trueLabel: "Want", priceValue: 5 },
         { emoji: "⌨️", name: "Keyboard", category: "computers", trueLabel: "Need", priceValue: 30 },
         { emoji: "🖱️", name: "Mouse", category: "computers", trueLabel: "Need", priceValue: 15 },
         { emoji: "💻", name: "Laptop", category: "computers", trueLabel: "Need", priceValue: 150 },
@@ -2560,7 +2560,7 @@
         { emoji: "📎", name: "Paper Clips", category: "supplies", trueLabel: "Need", priceValue: 6 },
         { emoji: "📿", name: "Jewelry", category: "accessories", trueLabel: "Want", priceValue: 20 },
         { emoji: "🧿", name: "Frisbee", category: "sports", trueLabel: "Want", priceValue: 18 },
-        { emoji: "🚰", name: "Water Bottle", category: "drinks", trueLabel: "Need", priceValue: 15 },
+        { emoji: "🥤", name: "Iced Coffee", category: "drinks", trueLabel: "Need", priceValue: 5 },
         { emoji: "🛏️", name: "Blanket", category: "room", trueLabel: "Need", priceValue: 25 },
         { emoji: "🛋️", name: "Desk Lamp", category: "room", trueLabel: "Need", priceValue: 22 },
         { emoji: "🧺", name: "Laundry Basket", category: "room", trueLabel: "Need", priceValue: 14 },
@@ -3784,6 +3784,8 @@
         const priceBucket = getPriceBucket(item.priceValue);
         const categoryCounts = model.byCategory[category];
         const categoryMajority = getMajorityDecision(categoryCounts);
+        const canTrustCategoryRule =
+          categoryMajority?.label && categoryMajority.totalSeen >= 2;
         const overallMajority = getMajorityDecision(model.totals);
         const canComfortablyAfford = state.balanceAmount >= item.priceValue * 1.4;
         const isTightPurchase = item.priceValue > state.balanceAmount * 0.35;
@@ -3796,10 +3798,12 @@
 
         const answers = [
           categoryMajority ? `Yes - ${categoryMajority.totalSeen} example(s)` : "No - category is new",
-          categoryMajority?.label
+          canTrustCategoryRule
             ? `${categoryMajority.label} is ahead`
             : categoryMajority
-              ? "This category is tied"
+              ? categoryMajority.label
+                ? "Too little category evidence yet"
+                : "This category is tied"
               : "No category winner yet",
           overallMajority?.label
             ? `${overallMajority.label} is ahead overall`
@@ -3812,7 +3816,7 @@
         let finalClassification;
         let confidencePct;
 
-        if (categoryMajority?.label) {
+        if (canTrustCategoryRule) {
           finalClassification = categoryMajority.label;
           confidencePct = categoryMajority.confidencePct;
           reasoning.push(
@@ -3822,7 +3826,9 @@
           finalClassification = overallMajority.label;
           confidencePct = Math.max(55, overallMajority.confidencePct - 10);
           reasoning.push(
-            `I have not learned a clear rule for ${formatCategoryLabel(category)} yet, so I used the overall pattern from all training examples.`
+            categoryMajority?.label
+              ? `I have only seen ${categoryMajority.totalSeen} ${formatCategoryLabel(category)} example${categoryMajority.totalSeen === 1 ? "" : "s"} so far, so I used the overall pattern from all training examples instead of trusting that category yet.`
+              : `I have not learned a clear rule for ${formatCategoryLabel(category)} yet, so I used the overall pattern from all training examples.`
           );
         } else {
           finalClassification = getDefaultCategoryBias(category) >= 0 ? "Need" : "Want";
