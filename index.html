@@ -2588,6 +2588,7 @@
       const CLEAR_ITEM_WEIGHT = 1;
       const AMBIGUOUS_ITEM_WEIGHT = 0;
       const NEED_TO_WANT_PENALTY_POINTS = 3;
+      const CLEAR_NEED_TO_WANT_PENALTY_POINTS = 1;
       const WANT_TO_NEED_PENALTY_POINTS = 1;
       const CRITICAL_NEED_ITEM_NAMES = new Set([
         "Sandwich",
@@ -3325,6 +3326,7 @@
         let weightedCorrectTotal = 0;
         let weightedPossibleTotal = 0;
         let dangerousNeedMistakes = 0;
+        let clearNeedMistakes = 0;
         let falseNeedMistakes = 0;
         let ambiguousItemsSeen = 0;
 
@@ -3347,6 +3349,16 @@
 
           if (isCriticalNeed && entry.studentChoice === "Want") {
             dangerousNeedMistakes += 1;
+          }
+
+          const isClearNonCriticalNeed =
+            entry.correctChoice === "Need" &&
+            item &&
+            accuracyWeight === CLEAR_ITEM_WEIGHT &&
+            !CRITICAL_NEED_ITEM_NAMES.has(item.name);
+
+          if (isClearNonCriticalNeed && entry.studentChoice === "Want") {
+            clearNeedMistakes += 1;
           }
 
           const isClearWant =
@@ -3378,6 +3390,7 @@
           endTimestamp: new Date().toISOString(),
           totalClassificationAccuracy: totalAccuracy,
           dangerousNeedMistakes,
+          clearNeedMistakes,
           falseNeedMistakes,
           ambiguousItemsSeen,
           avgResponseTimeMs,
@@ -3880,6 +3893,7 @@
         const sessionSummary = buildStudentSessionSummary();
         const classificationAccuracy = sessionSummary.totalClassificationAccuracy ?? 0;
         const dangerousNeedMistakes = sessionSummary.dangerousNeedMistakes ?? 0;
+        const clearNeedMistakes = sessionSummary.clearNeedMistakes ?? 0;
         const falseNeedMistakes = sessionSummary.falseNeedMistakes ?? 0;
         const ambiguousItemsSeen = sessionSummary.ambiguousItemsSeen ?? 0;
         const balanceLeft = roundMoney(currentBalance);
@@ -3889,13 +3903,18 @@
           balanceLeft < 0 ? Math.min(Math.abs(balanceLeft) / startingValues.balance, 1) : 0;
         const overdraftPenalty = Math.round(overdraftRatio * 25);
         const dangerousNeedPenalty = dangerousNeedMistakes * NEED_TO_WANT_PENALTY_POINTS;
+        const clearNeedPenalty = clearNeedMistakes * CLEAR_NEED_TO_WANT_PENALTY_POINTS;
         const falseNeedPenalty = falseNeedMistakes * WANT_TO_NEED_PENALTY_POINTS;
         const accuracyPoints = Math.round(classificationAccuracy * 0.6);
         const balancePoints = Math.round(balanceScore * 0.4);
         const rawTotalScore = accuracyPoints + balancePoints;
         const totalScore = Math.max(
           0,
-          rawTotalScore - overdraftPenalty - dangerousNeedPenalty - falseNeedPenalty
+          rawTotalScore -
+            overdraftPenalty -
+            dangerousNeedPenalty -
+            clearNeedPenalty -
+            falseNeedPenalty
         );
 
         return {
@@ -3904,6 +3923,8 @@
           balanceScore,
           dangerousNeedMistakes,
           dangerousNeedPenalty,
+          clearNeedMistakes,
+          clearNeedPenalty,
           falseNeedMistakes,
           falseNeedPenalty,
           overdraftPenalty,
@@ -3928,6 +3949,9 @@
           scoreBreakdown.dangerousNeedPenalty > 0
             ? `The AI mislabeled ${scoreBreakdown.dangerousNeedMistakes} critical Need${scoreBreakdown.dangerousNeedMistakes === 1 ? "" : "s"} as Want, so a safety penalty of ${scoreBreakdown.dangerousNeedPenalty} points was applied.`
             : "The AI avoided critical Need-to-Want mistakes, so no safety penalty was applied.",
+          scoreBreakdown.clearNeedPenalty > 0
+            ? `The AI also mislabeled ${scoreBreakdown.clearNeedMistakes} clear Need${scoreBreakdown.clearNeedMistakes === 1 ? "" : "s"} as Want, so a missed-need penalty of ${scoreBreakdown.clearNeedPenalty} point${scoreBreakdown.clearNeedPenalty === 1 ? "" : "s"} was applied.`
+            : "The AI avoided clear non-critical Need-to-Want mistakes, so no missed-need penalty was applied.",
           scoreBreakdown.falseNeedPenalty > 0
             ? `The AI also mislabeled ${scoreBreakdown.falseNeedMistakes} clear Want${scoreBreakdown.falseNeedMistakes === 1 ? "" : "s"} as Need, so a spending penalty of ${scoreBreakdown.falseNeedPenalty} point${scoreBreakdown.falseNeedPenalty === 1 ? "" : "s"} was applied.`
             : "The AI avoided clear Want-to-Need spending mistakes, so no extra spending penalty was applied.",
@@ -3945,6 +3969,9 @@
           ["Balance left (40%)", `${currentScoreBreakdown.balancePoints} pts`],
           ...(currentScoreBreakdown.dangerousNeedPenalty > 0
             ? [["Need safety penalty", `-${currentScoreBreakdown.dangerousNeedPenalty} pts`]]
+            : []),
+          ...(currentScoreBreakdown.clearNeedPenalty > 0
+            ? [["Missed-need penalty", `-${currentScoreBreakdown.clearNeedPenalty} pts`]]
             : []),
           ...(currentScoreBreakdown.falseNeedPenalty > 0
             ? [["Want spending penalty", `-${currentScoreBreakdown.falseNeedPenalty} pts`]]
@@ -3967,7 +3994,7 @@
           )
           .join("");
         scoreExplainFormula.textContent =
-          "Final score = 60% AI accuracy + 40% balance left score. Balance uses a softer curve near the bottom so low money still hurts without collapsing the whole score. Only clear teacher-guide items count toward AI accuracy, critical Needs trigger the stronger safety penalty, and clear Wants mislabeled as Needs trigger a lighter spending penalty.";
+          "Final score = 60% AI accuracy + 40% balance left score. Balance uses a softer curve near the bottom so low money still hurts without collapsing the whole score. Only clear teacher-guide items count toward AI accuracy, critical Needs trigger the stronger safety penalty, clear non-critical Needs trigger a lighter missed-need penalty, and clear Wants mislabeled as Needs trigger a lighter spending penalty.";
         scoreDecisionList.innerHTML = buildDecisionSummaryLines(currentScoreBreakdown)
           .map((line) => `<div class="score-decision-item">${line}</div>`)
           .join("");
