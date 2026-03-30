@@ -2588,6 +2588,15 @@
       const CLEAR_ITEM_WEIGHT = 1;
       const AMBIGUOUS_ITEM_WEIGHT = 0;
       const NEED_TO_WANT_PENALTY_POINTS = 3;
+      const CRITICAL_NEED_ITEM_NAMES = new Set([
+        "Sandwich",
+        "Apple",
+        "Toothbrush",
+        "Bandages",
+        "First Aid Kit",
+        "Backpack",
+        "Notebook",
+      ]);
 
       const ROUND_CATEGORY_PLAN = [
         {
@@ -3331,7 +3340,10 @@
             weightedCorrectTotal += accuracyWeight;
           }
 
-          if (entry.correctChoice === "Need" && entry.studentChoice === "Want") {
+          const isCriticalNeed =
+            entry.correctChoice === "Need" && item && CRITICAL_NEED_ITEM_NAMES.has(item.name);
+
+          if (isCriticalNeed && entry.studentChoice === "Want") {
             dangerousNeedMistakes += 1;
           }
         });
@@ -3897,8 +3909,8 @@
             ? `${scoreBreakdown.ambiguousItemsSeen} debatable item${scoreBreakdown.ambiguousItemsSeen === 1 ? "" : "s"} still appeared during the run for gameplay and discussion, but those items were not counted toward the final training score.`
             : "Only clear teacher-guide items counted toward the final training score in this run.",
           scoreBreakdown.dangerousNeedPenalty > 0
-            ? `The AI mislabeled ${scoreBreakdown.dangerousNeedMistakes} true Need${scoreBreakdown.dangerousNeedMistakes === 1 ? "" : "s"} as Want, so a safety penalty of ${scoreBreakdown.dangerousNeedPenalty} points was applied.`
-            : "The AI avoided dangerous Need-to-Want mistakes, so no safety penalty was applied.",
+            ? `The AI mislabeled ${scoreBreakdown.dangerousNeedMistakes} critical Need${scoreBreakdown.dangerousNeedMistakes === 1 ? "" : "s"} as Want, so a safety penalty of ${scoreBreakdown.dangerousNeedPenalty} points was applied.`
+            : "The AI avoided critical Need-to-Want mistakes, so no safety penalty was applied.",
           `The AI learned from ${trainingExamples.length} training example${trainingExamples.length === 1 ? "" : "s"} across the three training periods.`,
         ];
       }
@@ -3932,7 +3944,7 @@
           )
           .join("");
         scoreExplainFormula.textContent =
-          "Final score = 60% AI accuracy + 40% balance left score. Balance uses a softer curve near the bottom so low money still hurts without collapsing the whole score. Only clear teacher-guide items count toward AI accuracy, and dangerous Need-to-Want mistakes lose extra points.";
+          "Final score = 60% AI accuracy + 40% balance left score. Balance uses a softer curve near the bottom so low money still hurts without collapsing the whole score. Only clear teacher-guide items count toward AI accuracy, and only critical Needs trigger the extra safety penalty.";
         scoreDecisionList.innerHTML = buildDecisionSummaryLines(currentScoreBreakdown)
           .map((line) => `<div class="score-decision-item">${line}</div>`)
           .join("");
