@@ -2588,20 +2588,19 @@
       const CLEAR_ITEM_WEIGHT = 1;
       const AMBIGUOUS_ITEM_WEIGHT = 0;
       const NEED_TO_WANT_PENALTY_POINTS = 3;
-      const TOP_RANK_ACCURACY_FLOOR = 75;
 
       const ROUND_CATEGORY_PLAN = [
         {
           training: ["food", "treats", "school", "games", "drinks"],
-          testing: ["food", "treats", "school", "games", "sports"],
+          testing: ["food", "games", "sports", "computers", "safety"],
         },
         {
           training: ["sports", "music", "hygiene", "computers", "learning"],
-          testing: ["sports", "music", "computers", "drinks", "media"],
+          testing: ["sports", "music", "computers", "media", "travel"],
         },
         {
           training: ["phones", "media", "supplies", "accessories", "room"],
-          testing: ["phones", "room", "safety", "games", "travel"],
+          testing: ["phones", "media", "room", "school", "sports"],
         },
       ];
 
@@ -3011,9 +3010,6 @@
           .filter((entry) => entry?.latestResult)
           .map(normalizeLeaderboardEntry)
           .sort((entryA, entryB) => {
-            if (entryB.latestResult.isTopRankEligible !== entryA.latestResult.isTopRankEligible) {
-              return Number(entryB.latestResult.isTopRankEligible) - Number(entryA.latestResult.isTopRankEligible);
-            }
             if (entryB.latestResult.totalScore !== entryA.latestResult.totalScore) {
               return entryB.latestResult.totalScore - entryA.latestResult.totalScore;
             }
@@ -3870,7 +3866,8 @@
         const dangerousNeedMistakes = sessionSummary.dangerousNeedMistakes ?? 0;
         const ambiguousItemsSeen = sessionSummary.ambiguousItemsSeen ?? 0;
         const balanceLeft = roundMoney(currentBalance);
-        const balanceScore = clampPercent((Math.max(balanceLeft, 0) / startingValues.balance) * 100);
+        const normalizedBalance = Math.max(balanceLeft, 0) / startingValues.balance;
+        const balanceScore = clampPercent(Math.sqrt(normalizedBalance) * 100);
         const overdraftRatio =
           balanceLeft < 0 ? Math.min(Math.abs(balanceLeft) / startingValues.balance, 1) : 0;
         const overdraftPenalty = Math.round(overdraftRatio * 25);
@@ -3893,7 +3890,6 @@
           rawTotalScore,
           totalScore,
           maxScore: 100,
-          isTopRankEligible: classificationAccuracy >= TOP_RANK_ACCURACY_FLOOR,
         };
       }
 
@@ -3909,9 +3905,6 @@
           scoreBreakdown.dangerousNeedPenalty > 0
             ? `The AI mislabeled ${scoreBreakdown.dangerousNeedMistakes} true Need${scoreBreakdown.dangerousNeedMistakes === 1 ? "" : "s"} as Want, so a safety penalty of ${scoreBreakdown.dangerousNeedPenalty} points was applied.`
             : "The AI avoided dangerous Need-to-Want mistakes, so no safety penalty was applied.",
-          scoreBreakdown.isTopRankEligible
-            ? `This run stayed eligible for first place because AI accuracy finished at or above ${TOP_RANK_ACCURACY_FLOOR}%.`
-            : `This run cannot take first place because AI accuracy finished below the ${TOP_RANK_ACCURACY_FLOOR}% accuracy floor.`,
           `The AI learned from ${trainingExamples.length} training example${trainingExamples.length === 1 ? "" : "s"} across the three training periods.`,
         ];
       }
@@ -3930,7 +3923,6 @@
           ...(currentScoreBreakdown.overdraftPenalty > 0
             ? [["Overdraft penalty", `-${currentScoreBreakdown.overdraftPenalty} pts`]]
             : []),
-          ["First-place eligible", currentScoreBreakdown.isTopRankEligible ? "Yes" : "No"],
           ["Total score", `${currentScoreBreakdown.totalScore} / ${currentScoreBreakdown.maxScore}`],
         ];
 
@@ -3946,7 +3938,7 @@
           )
           .join("");
         scoreExplainFormula.textContent =
-          `Final score = 60% AI accuracy + 40% balance left score. Only clear teacher-guide items count toward AI accuracy, dangerous Need-to-Want mistakes lose extra points, and runs below ${TOP_RANK_ACCURACY_FLOOR}% AI accuracy cannot take first place.`;
+          "Final score = 60% AI accuracy + 40% balance left score. Balance uses a softer curve near the bottom so low money still hurts without collapsing the whole score. Only clear teacher-guide items count toward AI accuracy, and dangerous Need-to-Want mistakes lose extra points.";
         scoreDecisionList.innerHTML = buildDecisionSummaryLines(currentScoreBreakdown)
           .map((line) => `<div class="score-decision-item">${line}</div>`)
           .join("");
@@ -4027,7 +4019,6 @@
           balanceScore: currentScoreBreakdown.balanceScore,
           classificationAccuracyPct: currentScoreBreakdown.classificationAccuracyPct,
           dangerousNeedMistakes: currentScoreBreakdown.dangerousNeedMistakes,
-          isTopRankEligible: currentScoreBreakdown.isTopRankEligible,
           completedAt: summary.endTimestamp,
         };
 
@@ -4061,9 +4052,7 @@
         renderLeaderboard(playerKey);
 
         const profileName = summary.studentProfile.displayName;
-        resultsSummary.textContent = currentScoreBreakdown.isTopRankEligible
-          ? `${profileName} finished with ${currentScoreBreakdown.totalScore} points, ${formatCurrency(currentScoreBreakdown.balanceLeft)} left, and rank #${currentLeaderboardRank || "?"}.`
-          : `${profileName} finished with ${currentScoreBreakdown.totalScore} points and ${formatCurrency(currentScoreBreakdown.balanceLeft)} left, but this run is not eligible for first place because AI accuracy stayed below ${TOP_RANK_ACCURACY_FLOOR}%.`;
+        resultsSummary.textContent = `${profileName} finished with ${currentScoreBreakdown.totalScore} points, ${formatCurrency(currentScoreBreakdown.balanceLeft)} left, and rank #${currentLeaderboardRank || "?"}.`;
       }
 
       function downloadJsonFile(filename, data) {
