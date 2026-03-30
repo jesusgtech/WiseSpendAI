@@ -2206,16 +2206,16 @@
             <h3 class="definition-title">Key Concepts</h3>
             <div class="definition-grid">
               <div class="definition-card">
-                <strong>Happiness</strong>
-                Tracks the AI's mental wellness. Low happiness increases risky choices.
-              </div>
-              <div class="definition-card">
                 <strong>Confidence</strong>
                 How sure the AI is about its choice based on training.
               </div>
               <div class="definition-card">
-                <strong>Balance Health</strong>
-                How safe the AI's money level is right now.
+                <strong>Balance</strong>
+                Shows how much money the AI has left to survive the challenge.
+              </div>
+              <div class="definition-card">
+                <strong>Needs Rule</strong>
+                In this challenge, the AI should buy Needs and skip Wants.
               </div>
             </div>
           </div>
@@ -2240,7 +2240,7 @@
               <span class="phase-card-divider">·</span>
               Day 3
               <span class="phase-card-divider">·</span>
-              <span class="phase-card-balance">Balance: $1,500</span>
+              <span class="phase-card-balance">Balance: $1,000</span>
             </div>
             <div class="phase-card-body">
               <div id="trainingItemBox" class="item-box">
@@ -2253,10 +2253,6 @@
                 <div class="metric">
                   <div class="metric-label"><span>AI Label Confidence</span><span id="trainConf">60%</span></div>
                   <div class="meter"><span id="trainConfBar" style="width: 60%"></span></div>
-                </div>
-                <div class="metric">
-                  <div class="metric-label"><span>Happiness</span><span id="trainHappinessPct">70%</span></div>
-                  <div class="meter happy"><span id="trainHappinessBar" style="width: 70%"></span></div>
                 </div>
                 <p id="trainingBrainNote" class="brain-note">
                   I am waiting for your first labels so I can learn your patterns.
@@ -2273,17 +2269,6 @@
                 <button class="choice-btn want" type="button" data-label="Want">Want</button>
               </div>
             </div>
-            <div id="trainingWantFollowup" class="training-choice-panel training-followup" hidden>
-              <p class="sub-prompt">Buy this item anyways?</p>
-              <div class="choice-row">
-                <button id="trainingBuyYesBtn" class="choice-btn yes" type="button" data-buy-choice="Yes">
-                  Yes
-                </button>
-                <button id="trainingBuyNoBtn" class="choice-btn no" type="button" data-buy-choice="No">
-                  No
-                </button>
-              </div>
-            </div>
           </div>
           <button id="nextTrainingDayBtn" class="action-btn" type="button" disabled>Next Day</button>
         </div>
@@ -2294,7 +2279,7 @@
           <div class="cutscene-card">
             <p class="cutscene-kicker">Round 1</p>
             <h2 class="cutscene-title">Testing Time!</h2>
-            <p class="cutscene-copy">Your AI is making choices on its own now.</p>
+            <p class="cutscene-copy">Your AI is making labels on its own now. It will buy Needs and skip Wants.</p>
           </div>
         </div>
       </section>
@@ -2315,24 +2300,20 @@
               <span class="phase-card-divider">·</span>
               Day 8
               <span class="phase-card-divider">·</span>
-              <span class="phase-card-balance">Balance: $1,200</span>
+              <span class="phase-card-balance">Balance: $800</span>
             </div>
             <div class="phase-card-body">
               <div id="testItemBox" class="item-box">
                 <div id="testItemEmoji" class="item-emoji">🎮</div>
                 <p id="testItemName" class="item-name">Video Game Console</p>
                 <p id="testItemPrice" class="item-price">$449.99</p>
-                <p id="aiChoicePill" class="pill-label need">AI Chose: Need and bought it</p>
+                <p id="aiChoicePill" class="pill-label need">AI Chose: Need</p>
               </div>
               <div id="testBrainBox" class="brain-box">
                 <p class="brain-title">AI Brain View</p>
                 <div class="metric">
                   <div class="metric-label"><span>AI Label Confidence</span><span id="testMatchPct">60%</span></div>
                   <div class="meter"><span id="testMatchBar" style="width: 60%"></span></div>
-                </div>
-                <div class="metric">
-                  <div class="metric-label"><span>Happiness</span><span id="testHappinessPct">10%</span></div>
-                  <div class="meter happy"><span id="testHappinessBar" style="width: 10%"></span></div>
                 </div>
                 <p id="testBrainNote" class="brain-note">
                   I am using your training to decide whether this looks like a need or a want.
@@ -2345,17 +2326,6 @@
           <div class="choice-row">
             <button id="testNoBtn" class="choice-btn no" type="button">No ✕</button>
             <button id="testYesBtn" class="choice-btn yes" type="button">Yes ✓</button>
-          </div>
-          <div id="testWantFollowup" class="training-choice-panel training-followup" hidden>
-            <p class="sub-prompt">Should the AI buy this want?</p>
-            <div class="choice-row">
-              <button id="testBuyYesBtn" class="choice-btn yes" type="button" data-test-buy-choice="Yes">
-                Buy
-              </button>
-              <button id="testBuyNoBtn" class="choice-btn no" type="button" data-test-buy-choice="No">
-                Skip
-              </button>
-            </div>
           </div>
         </div>
       </section>
@@ -2465,15 +2435,9 @@
         "#trainingScreen .choice-btn[data-label]"
       );
       const trainingDecisionLayout = document.querySelector("#trainingDecisionLayout");
-      const trainingWantFollowup = document.querySelector("#trainingWantFollowup");
-      const trainingBuyYesBtn = document.querySelector("#trainingBuyYesBtn");
-      const trainingBuyNoBtn = document.querySelector("#trainingBuyNoBtn");
       const nextTrainingDayBtn = document.querySelector("#nextTrainingDayBtn");
       const testNoBtn = document.querySelector("#testNoBtn");
       const testYesBtn = document.querySelector("#testYesBtn");
-      const testWantFollowup = document.querySelector("#testWantFollowup");
-      const testBuyYesBtn = document.querySelector("#testBuyYesBtn");
-      const testBuyNoBtn = document.querySelector("#testBuyNoBtn");
       const trainingHudAvatar = document.querySelector("#trainingHudAvatar");
       const trainingHudName = document.querySelector("#trainingHudName");
       const testHudAvatar = document.querySelector("#testHudAvatar");
@@ -2505,8 +2469,6 @@
       const aiChoicePill = document.querySelector("#aiChoicePill");
       const avatarPreviewWrap = document.querySelector("#avatarPreviewWrap");
       const avatarPreviewImage = document.querySelector("#avatarPreviewImage");
-      const trainingBuyChoiceButtons = [trainingBuyYesBtn, trainingBuyNoBtn].filter(Boolean);
-      const testBuyChoiceButtons = [testBuyYesBtn, testBuyNoBtn].filter(Boolean);
 
       const itemPool = [
         { emoji: "🍩", name: "Donut", category: "treats", trueLabel: "Want", priceValue: 3 },
@@ -2610,6 +2572,24 @@
         },
       ];
 
+      const AMBIGUOUS_SCORING_ITEM_NAMES = new Set([
+        "Juice Box",
+        "Sports Drink",
+        "Smoothie",
+        "Iced Coffee",
+        "Watch",
+        "Smartphone",
+        "Headphones",
+        "Tablet",
+        "Science Kit",
+        "Jewelry",
+        "Sunglasses",
+      ]);
+      const CLEAR_ITEM_WEIGHT = 1;
+      const AMBIGUOUS_ITEM_WEIGHT = 0;
+      const NEED_TO_WANT_PENALTY_POINTS = 3;
+      const TOP_RANK_ACCURACY_FLOOR = 75;
+
       const ROUND_CATEGORY_PLAN = [
         {
           training: ["food", "treats", "school", "games", "drinks"],
@@ -2633,8 +2613,7 @@
       let selectedTestBuyChoice = "";
       let selectedReflectionAnswer = "";
       let aiConfidencePct = 60;
-      let currentBalance = 1500;
-      let currentHappinessPct = 80;
+      let currentBalance = 1000;
       let trainingExamples = [];
       let gameplayStats = createGameplayStats();
       let currentScoreBreakdown = null;
@@ -2667,9 +2646,8 @@
       let hasCheckedStorageMigration = false;
 
       const startingValues = {
-        balance: 1500,
+        balance: 1000,
         savings: 50,
-        happiness: 50,
         confidence: 50,
       };
 
@@ -2684,9 +2662,6 @@
       const AI_CONFIDENCE_STEP = 8;
       const AI_CONFIDENCE_MIN = 15;
       const AI_CONFIDENCE_MAX = 95;
-      const NEED_HAPPINESS_DELTA = 0;
-      const WANT_BUY_HAPPINESS_DELTA = 6;
-      const WANT_SKIP_HAPPINESS_DELTA = -5;
       const RESET_CODE = {
         firstName: "reset",
         lastInitial: "t",
@@ -2701,13 +2676,10 @@
         return {
           totalSpent: 0,
           needsBought: 0,
-          wantsBought: 0,
           wantsRejected: 0,
           trainingNeedsBought: 0,
-          trainingWantsBought: 0,
           trainingWantsRejected: 0,
           testNeedsBought: 0,
-          testWantsBought: 0,
           testWantsRejected: 0,
           aiRightCount: 0,
           aiWrongCount: 0,
@@ -3038,19 +3010,25 @@
           .filter((entry) => entry?.latestResult)
           .map(normalizeLeaderboardEntry)
           .sort((entryA, entryB) => {
+            if (entryB.latestResult.isTopRankEligible !== entryA.latestResult.isTopRankEligible) {
+              return Number(entryB.latestResult.isTopRankEligible) - Number(entryA.latestResult.isTopRankEligible);
+            }
             if (entryB.latestResult.totalScore !== entryA.latestResult.totalScore) {
               return entryB.latestResult.totalScore - entryA.latestResult.totalScore;
+            }
+            if (
+              entryB.latestResult.classificationAccuracyPct !==
+              entryA.latestResult.classificationAccuracyPct
+            ) {
+              return (
+                entryB.latestResult.classificationAccuracyPct -
+                entryA.latestResult.classificationAccuracyPct
+              );
             }
             if (entryB.latestResult.balanceLeft !== entryA.latestResult.balanceLeft) {
               return entryB.latestResult.balanceLeft - entryA.latestResult.balanceLeft;
             }
-            if (entryB.latestResult.happinessPct !== entryA.latestResult.happinessPct) {
-              return entryB.latestResult.happinessPct - entryA.latestResult.happinessPct;
-            }
-            return (
-              entryB.latestResult.classificationAccuracyPct -
-              entryA.latestResult.classificationAccuracyPct
-            );
+            return entryA.displayName.localeCompare(entryB.displayName);
           });
       }
 
@@ -3263,6 +3241,28 @@
         sessionItemOrder = orderedItems.slice(0, 30);
       }
 
+      function getItemById(itemId) {
+        if (!itemId) {
+          return null;
+        }
+
+        return (
+          sessionItemOrder.find((item) => item.id === itemId) ||
+          itemPool.find((item, index) => `item_${index + 1}` === itemId) ||
+          null
+        );
+      }
+
+      function getAccuracyWeightForItem(item) {
+        if (!item) {
+          return CLEAR_ITEM_WEIGHT;
+        }
+
+        return AMBIGUOUS_SCORING_ITEM_NAMES.has(item.name)
+          ? AMBIGUOUS_ITEM_WEIGHT
+          : CLEAR_ITEM_WEIGHT;
+      }
+
       function logEvent(type, payload = {}) {
         sessionLog.push({
           type,
@@ -3315,13 +3315,33 @@
             entry.studentChoice &&
             entry.correctChoice
         );
+        let weightedCorrectTotal = 0;
+        let weightedPossibleTotal = 0;
+        let dangerousNeedMistakes = 0;
+        let ambiguousItemsSeen = 0;
+
+        aiClassifications.forEach((entry) => {
+          const item = getItemById(entry.itemID);
+          const accuracyWeight = getAccuracyWeightForItem(item);
+
+          if (accuracyWeight < CLEAR_ITEM_WEIGHT) {
+            ambiguousItemsSeen += 1;
+          } else {
+            weightedPossibleTotal += accuracyWeight;
+          }
+
+          if (accuracyWeight > 0 && entry.studentChoice === entry.correctChoice) {
+            weightedCorrectTotal += accuracyWeight;
+          }
+
+          if (entry.correctChoice === "Need" && entry.studentChoice === "Want") {
+            dangerousNeedMistakes += 1;
+          }
+        });
+
         const totalAccuracy =
-          aiClassifications.length > 0
-            ? Math.round(
-                (aiClassifications.filter((entry) => entry.studentChoice === entry.correctChoice).length /
-                  aiClassifications.length) *
-                  100
-              )
+          weightedPossibleTotal > 0
+            ? Math.round((weightedCorrectTotal / weightedPossibleTotal) * 100)
             : null;
 
         const avgResponseTimeMs =
@@ -3339,6 +3359,8 @@
           startTimestamp: new Date(sessionStartTime).toISOString(),
           endTimestamp: new Date().toISOString(),
           totalClassificationAccuracy: totalAccuracy,
+          dangerousNeedMistakes,
+          ambiguousItemsSeen,
           avgResponseTimeMs,
           startingValues,
         };
@@ -3509,39 +3531,7 @@
       }
 
       function updateTrainingNextDayState() {
-        const requiresBuyChoice = selectedTrainingLabel === "Want";
-        nextTrainingDayBtn.disabled =
-          !selectedTrainingLabel || (requiresBuyChoice && !selectedTrainingBuyChoice);
-      }
-
-      function resetTrainingWantFollowup() {
-        selectedTrainingBuyChoice = "";
-        clearSelection(trainingBuyChoiceButtons);
-        trainingDecisionLayout?.classList.remove("has-followup");
-        if (trainingWantFollowup) {
-          trainingWantFollowup.hidden = true;
-        }
-      }
-
-      function showTrainingWantFollowup() {
-        trainingDecisionLayout?.classList.add("has-followup");
-        if (trainingWantFollowup) {
-          trainingWantFollowup.hidden = false;
-        }
-      }
-
-      function resetTestWantFollowup() {
-        selectedTestBuyChoice = "";
-        clearSelection(testBuyChoiceButtons);
-        if (testWantFollowup) {
-          testWantFollowup.hidden = true;
-        }
-      }
-
-      function showTestWantFollowup() {
-        if (testWantFollowup) {
-          testWantFollowup.hidden = false;
-        }
+        nextTrainingDayBtn.disabled = !selectedTrainingLabel;
       }
 
       function updateAvatarPreview(avatarSrc, altText = "Selected avatar") {
@@ -3707,9 +3697,6 @@
           totals: { need: 0, want: 0 },
           byCategory: {},
           byPriceBucket: {},
-          wantBuyTotals: { yes: 0, no: 0 },
-          wantBuyByCategory: {},
-          wantBuyByPriceBucket: {},
         };
 
         trainingExamples.forEach((example) => {
@@ -3720,16 +3707,6 @@
           model.totals[labelKey] += 1;
           categoryCounts[labelKey] += 1;
           priceCounts[labelKey] += 1;
-
-          if (example.label === "Want") {
-            const buyKey = example.buyChoice === "Yes" ? "yes" : "no";
-            const categoryBuyCounts = getBuyCounts(model.wantBuyByCategory, example.category);
-            const priceBuyCounts = getBuyCounts(model.wantBuyByPriceBucket, example.priceBucket);
-
-            model.wantBuyTotals[buyKey] += 1;
-            categoryBuyCounts[buyKey] += 1;
-            priceBuyCounts[buyKey] += 1;
-          }
         });
 
         return model;
@@ -3743,27 +3720,20 @@
         const model = buildTrainingModel();
         const currentCategory = getItemCategory(item);
         const currentCategoryCounts = currentCategory ? model.byCategory[currentCategory] : null;
-        const buyBias = getBuyBias(model.wantBuyTotals);
-        const buyPatternText =
-          model.wantBuyTotals.yes + model.wantBuyTotals.no > 0
-            ? buyBias >= 0
-              ? "You usually still buy some wants."
-              : "You usually skip wants to protect the budget."
-            : "You have not coached me on want purchases yet.";
 
         if (!currentCategory) {
-          return `You have taught me ${trainingExamples.length} example${trainingExamples.length === 1 ? "" : "s"}. ${buyPatternText}`;
+          return `You have taught me ${trainingExamples.length} example${trainingExamples.length === 1 ? "" : "s"}. I am learning which categories should be bought as Needs and which should be skipped as Wants.`;
         }
 
         if (!currentCategoryCounts) {
-          return `You have taught me ${model.totals.need} Needs and ${model.totals.want} Wants. I have not seen enough training in the ${formatCategoryLabel(currentCategory)} category yet. ${buyPatternText}`;
+          return `You have taught me ${model.totals.need} Needs and ${model.totals.want} Wants. I have not seen enough training in the ${formatCategoryLabel(currentCategory)} category yet.`;
         }
 
         const categoryTrend = currentCategoryCounts.need >= currentCategoryCounts.want ? "Needs" : "Wants";
         const majorityView = getMajorityDecision(currentCategoryCounts);
         const confidenceText = majorityView ? `${majorityView.confidencePct}% confidence` : "low confidence";
 
-        return `You have taught me ${model.totals.need} Needs and ${model.totals.want} Wants. Items in the ${formatCategoryLabel(currentCategory)} category lean ${categoryTrend} with ${confidenceText}. ${buyPatternText}`;
+        return `You have taught me ${model.totals.need} Needs and ${model.totals.want} Wants. Items in the ${formatCategoryLabel(currentCategory)} category lean ${categoryTrend} with ${confidenceText}.`;
       }
 
       function buildDecisionNote(result) {
@@ -3771,9 +3741,7 @@
         const actionText =
           result.finalClassification === "Need"
             ? "That made this a Need, so I bought it."
-            : result.buyDecision
-              ? "I labeled it a Want, but I bought it to protect happiness."
-              : "I labeled it a Want, so I skipped it to protect the budget.";
+            : "I labeled it a Want, so I skipped it to protect the budget.";
 
         return `${reasonBits.join(" ")} ${actionText}`.trim();
       }
@@ -3842,46 +3810,10 @@
           `This item is in the ${priceBucket} price range, so I am using price only as a small context clue.`
         );
 
-        let buyDecision = finalClassification === "Need";
+        const buyDecision = finalClassification === "Need";
 
-        if (finalClassification === "Want") {
-          const wantBuyCategoryCounts = model.wantBuyByCategory[category];
-          const wantBuyPriceCounts = model.wantBuyByPriceBucket[priceBucket];
-          const wantBuyOverallBias = getBuyBias(model.wantBuyTotals);
-          const wantBuyCategoryBias = wantBuyCategoryCounts
-            ? getBuyBias(wantBuyCategoryCounts)
-            : getDefaultWantBuyBias(category);
-          const wantBuyPriceBias = wantBuyPriceCounts ? getBuyBias(wantBuyPriceCounts) : 0;
-
-          path.push("When you call Wants like this, do you usually still buy them?");
-          path.push("Is happiness low enough to need a boost?");
-
-          answers.push(
-            wantBuyCategoryCounts || wantBuyPriceCounts
-              ? wantBuyCategoryBias + wantBuyPriceBias + wantBuyOverallBias >= 0
-                ? "Usually yes"
-                : "Usually no"
-              : getDefaultWantBuyChoice(category) === "Yes"
-                ? "Maybe yes"
-                : "Usually no"
-          );
-          answers.push(state.happinessPct <= 35 ? "Yes" : "No");
-
-          let buyScore = wantBuyCategoryBias * 1.8 + wantBuyPriceBias * 1.2 + wantBuyOverallBias * 0.8;
-
-          if (state.happinessPct <= 35) {
-            buyScore += 1.6;
-            reasoning.push(`Happiness is getting low, so a Want could help.`);
-          } else {
-            reasoning.push(`Happiness is stable enough that I can be picky.`);
-          }
-
-          if (!canComfortablyAfford) {
-            buyScore -= 1.9;
-            reasoning.push(`The balance is too tight for an easy Want purchase.`);
-          }
-
-          buyDecision = buyScore > 0;
+        if (finalClassification === "Want" && !canComfortablyAfford) {
+          reasoning.push(`The balance is too tight, so skipping this Want protects the budget.`);
         }
 
         const result = {
@@ -3901,22 +3833,12 @@
 
       function applyDayOutcome({ phase, item, classification, buyDecision }) {
         const bought = classification === "Need" || buyDecision;
-        const happinessDelta =
-          classification === "Need"
-            ? NEED_HAPPINESS_DELTA
-            : buyDecision
-              ? WANT_BUY_HAPPINESS_DELTA
-              : WANT_SKIP_HAPPINESS_DELTA;
-
         const balanceBefore = currentBalance;
-        const happinessBefore = currentHappinessPct;
 
         if (bought) {
           currentBalance = roundMoney(currentBalance - item.priceValue);
           gameplayStats.totalSpent = roundMoney(gameplayStats.totalSpent + item.priceValue);
         }
-
-        currentHappinessPct = clampPercent(currentHappinessPct + happinessDelta);
 
         if (classification === "Need") {
           gameplayStats.needsBought += 1;
@@ -3924,13 +3846,6 @@
             gameplayStats.trainingNeedsBought += 1;
           } else {
             gameplayStats.testNeedsBought += 1;
-          }
-        } else if (buyDecision) {
-          gameplayStats.wantsBought += 1;
-          if (phase === "training") {
-            gameplayStats.trainingWantsBought += 1;
-          } else {
-            gameplayStats.testWantsBought += 1;
           }
         } else {
           gameplayStats.wantsRejected += 1;
@@ -3948,48 +3863,57 @@
           buyDecision,
           balanceBefore,
           balanceAfter: currentBalance,
-          happinessBefore,
-          happinessAfter: currentHappinessPct,
-          happinessDelta,
         });
       }
 
       function calculateScoreBreakdown() {
-        const classificationAccuracy = buildStudentSessionSummary().totalClassificationAccuracy ?? 0;
-        const happiness = clampPercent(currentHappinessPct);
+        const sessionSummary = buildStudentSessionSummary();
+        const classificationAccuracy = sessionSummary.totalClassificationAccuracy ?? 0;
+        const dangerousNeedMistakes = sessionSummary.dangerousNeedMistakes ?? 0;
+        const ambiguousItemsSeen = sessionSummary.ambiguousItemsSeen ?? 0;
         const balanceLeft = roundMoney(currentBalance);
         const balanceScore = clampPercent((Math.max(balanceLeft, 0) / startingValues.balance) * 100);
         const overdraftRatio =
           balanceLeft < 0 ? Math.min(Math.abs(balanceLeft) / startingValues.balance, 1) : 0;
         const overdraftPenalty = Math.round(overdraftRatio * 25);
-        const accuracyPoints = Math.round(classificationAccuracy * 0.45);
+        const dangerousNeedPenalty = dangerousNeedMistakes * NEED_TO_WANT_PENALTY_POINTS;
+        const accuracyPoints = Math.round(classificationAccuracy * 0.6);
         const balancePoints = Math.round(balanceScore * 0.4);
-        const happinessPoints = Math.round(happiness * 0.15);
-        const rawTotalScore = accuracyPoints + balancePoints + happinessPoints;
-        const totalScore = Math.max(0, rawTotalScore - overdraftPenalty);
+        const rawTotalScore = accuracyPoints + balancePoints;
+        const totalScore = Math.max(0, rawTotalScore - overdraftPenalty - dangerousNeedPenalty);
 
         return {
           classificationAccuracyPct: classificationAccuracy,
-          happinessPct: happiness,
           balanceLeft,
           balanceScore,
+          dangerousNeedMistakes,
+          dangerousNeedPenalty,
           overdraftPenalty,
+          ambiguousItemsSeen,
           accuracyPoints,
           balancePoints,
-          happinessPoints,
           rawTotalScore,
           totalScore,
           maxScore: 100,
+          isTopRankEligible: classificationAccuracy >= TOP_RANK_ACCURACY_FLOOR,
         };
       }
 
       function buildDecisionSummaryLines(scoreBreakdown) {
         return [
-          `AI accuracy finished at ${scoreBreakdown.classificationAccuracyPct}%, which gave ${scoreBreakdown.accuracyPoints} of the 45 possible accuracy points. You marked the AI right ${gameplayStats.aiRightCount} time${gameplayStats.aiRightCount === 1 ? "" : "s"} and wrong ${gameplayStats.aiWrongCount} time${gameplayStats.aiWrongCount === 1 ? "" : "s"}.`,
-          `Happiness finished at ${scoreBreakdown.happinessPct}%, which gave ${scoreBreakdown.happinessPoints} of the 15 possible happiness points after buying ${gameplayStats.needsBought} Need${gameplayStats.needsBought === 1 ? "" : "s"}, buying ${gameplayStats.wantsBought} Want${gameplayStats.wantsBought === 1 ? "" : "s"}, and skipping ${gameplayStats.wantsRejected} Want${gameplayStats.wantsRejected === 1 ? "" : "s"}.`,
+          `AI accuracy finished at ${scoreBreakdown.classificationAccuracyPct}%, which gave ${scoreBreakdown.accuracyPoints} of the 60 possible accuracy points. You marked the AI right ${gameplayStats.aiRightCount} time${gameplayStats.aiRightCount === 1 ? "" : "s"} and wrong ${gameplayStats.aiWrongCount} time${gameplayStats.aiWrongCount === 1 ? "" : "s"}.`,
           scoreBreakdown.overdraftPenalty > 0
             ? `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the 40 possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)}, so an overdraft penalty of ${scoreBreakdown.overdraftPenalty} points was applied.`
             : `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the 40 possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)} left.`,
+          scoreBreakdown.ambiguousItemsSeen > 0
+            ? `${scoreBreakdown.ambiguousItemsSeen} debatable item${scoreBreakdown.ambiguousItemsSeen === 1 ? "" : "s"} still appeared during the run for gameplay and discussion, but those items were not counted toward the final training score.`
+            : "Only clear teacher-guide items counted toward the final training score in this run.",
+          scoreBreakdown.dangerousNeedPenalty > 0
+            ? `The AI mislabeled ${scoreBreakdown.dangerousNeedMistakes} true Need${scoreBreakdown.dangerousNeedMistakes === 1 ? "" : "s"} as Want, so a safety penalty of ${scoreBreakdown.dangerousNeedPenalty} points was applied.`
+            : "The AI avoided dangerous Need-to-Want mistakes, so no safety penalty was applied.",
+          scoreBreakdown.isTopRankEligible
+            ? `This run stayed eligible for first place because AI accuracy finished at or above ${TOP_RANK_ACCURACY_FLOOR}%.`
+            : `This run cannot take first place because AI accuracy finished below the ${TOP_RANK_ACCURACY_FLOOR}% accuracy floor.`,
           `The AI learned from ${trainingExamples.length} training example${trainingExamples.length === 1 ? "" : "s"} across the three training periods.`,
         ];
       }
@@ -4000,12 +3924,15 @@
         }
 
         const breakdownRows = [
-          ["AI accuracy (45%)", `${currentScoreBreakdown.accuracyPoints} pts`],
+          ["AI accuracy (60%)", `${currentScoreBreakdown.accuracyPoints} pts`],
           ["Balance left (40%)", `${currentScoreBreakdown.balancePoints} pts`],
-          ["Happiness (15%)", `${currentScoreBreakdown.happinessPoints} pts`],
+          ...(currentScoreBreakdown.dangerousNeedPenalty > 0
+            ? [["Need safety penalty", `-${currentScoreBreakdown.dangerousNeedPenalty} pts`]]
+            : []),
           ...(currentScoreBreakdown.overdraftPenalty > 0
             ? [["Overdraft penalty", `-${currentScoreBreakdown.overdraftPenalty} pts`]]
             : []),
+          ["First-place eligible", currentScoreBreakdown.isTopRankEligible ? "Yes" : "No"],
           ["Total score", `${currentScoreBreakdown.totalScore} / ${currentScoreBreakdown.maxScore}`],
         ];
 
@@ -4021,7 +3948,7 @@
           )
           .join("");
         scoreExplainFormula.textContent =
-          "Final score = 45% AI accuracy + 40% balance left score + 15% happiness. If the run ends below $0, an overdraft penalty is subtracted so negative balances cannot rank too highly.";
+          `Final score = 60% AI accuracy + 40% balance left score. Only clear teacher-guide items count toward AI accuracy, dangerous Need-to-Want mistakes lose extra points, and runs below ${TOP_RANK_ACCURACY_FLOOR}% AI accuracy cannot take first place.`;
         scoreDecisionList.innerHTML = buildDecisionSummaryLines(currentScoreBreakdown)
           .map((line) => `<div class="score-decision-item">${line}</div>`)
           .join("");
@@ -4074,7 +4001,6 @@
             ...summary,
             endingValues: {
               balance: roundMoney(currentBalance),
-              happiness: clampPercent(currentHappinessPct),
               confidence: Math.round(aiConfidencePct),
             },
             gameplayStats,
@@ -4101,8 +4027,9 @@
           totalScore: currentScoreBreakdown.totalScore,
           balanceLeft: currentScoreBreakdown.balanceLeft,
           balanceScore: currentScoreBreakdown.balanceScore,
-          happinessPct: currentScoreBreakdown.happinessPct,
           classificationAccuracyPct: currentScoreBreakdown.classificationAccuracyPct,
+          dangerousNeedMistakes: currentScoreBreakdown.dangerousNeedMistakes,
+          isTopRankEligible: currentScoreBreakdown.isTopRankEligible,
           completedAt: summary.endTimestamp,
         };
 
@@ -4136,7 +4063,9 @@
         renderLeaderboard(playerKey);
 
         const profileName = summary.studentProfile.displayName;
-        resultsSummary.textContent = `${profileName} finished with ${currentScoreBreakdown.totalScore} points, ${formatCurrency(currentScoreBreakdown.balanceLeft)} left, and rank #${currentLeaderboardRank || "?"}.`;
+        resultsSummary.textContent = currentScoreBreakdown.isTopRankEligible
+          ? `${profileName} finished with ${currentScoreBreakdown.totalScore} points, ${formatCurrency(currentScoreBreakdown.balanceLeft)} left, and rank #${currentLeaderboardRank || "?"}.`
+          : `${profileName} finished with ${currentScoreBreakdown.totalScore} points and ${formatCurrency(currentScoreBreakdown.balanceLeft)} left, but this run is not eligible for first place because AI accuracy stayed below ${TOP_RANK_ACCURACY_FLOOR}%.`;
       }
 
       function downloadJsonFile(filename, data) {
@@ -4212,7 +4141,6 @@
         const dayInBlock = ((day - 1) % 10) + 1;
 
         const confidence = Math.round(aiConfidencePct);
-        const happinessPct = clampPercent(currentHappinessPct);
         const balanceAmount = roundMoney(currentBalance);
         const savingsAmount = startingValues.savings;
         if (sessionItemOrder.length === 0) {
@@ -4230,7 +4158,6 @@
             dayInBlock,
             item: { ...item, price, priceValue },
             confidence,
-            happinessPct,
             balanceText: `Balance: ${formatCurrency(balanceAmount)}`,
             savingsText: `Savings: ${formatCurrency(savingsAmount)}`,
             balanceAmount,
@@ -4249,7 +4176,6 @@
             priceValue,
           },
           matchPct: confidence,
-          happinessPct,
           balanceText: `Balance: ${formatCurrency(balanceAmount)}`,
           savingsText: `Savings: ${formatCurrency(savingsAmount)}`,
           balanceAmount,
@@ -4327,14 +4253,11 @@
         setText("#trainingItemName", data.item.name);
         setText("#trainingItemPrice", data.item.price);
         setText("#trainConf", `${data.confidence}%`);
-        setText("#trainHappinessPct", `${data.happinessPct}%`);
         setBar("#trainConfBar", data.confidence);
-        setBar("#trainHappinessBar", data.happinessPct);
         setText("#trainingBrainNote", buildTrainingBrainNote(data.item));
 
         clearSelection(trainingChoiceButtons);
         selectedTrainingLabel = "";
-        resetTrainingWantFollowup();
         updateTrainingNextDayState();
       }
 
@@ -4344,13 +4267,10 @@
         setText("#testItemEmoji", data.item.emoji);
         setText("#testItemName", data.item.name);
         setText("#testItemPrice", data.item.price);
-        setText("#testHappinessPct", `${data.happinessPct}%`);
-        setBar("#testHappinessBar", data.happinessPct);
 
         const decision = evaluateDecisionTree(data.item, {
           balanceAmount: data.balanceAmount,
           savingsAmount: data.savingsAmount,
-          happinessPct: data.happinessPct,
           confidence: data.matchPct,
         });
         activeDecision = decision;
@@ -4368,7 +4288,6 @@
 
         clearSelection([testNoBtn, testYesBtn]);
         selectedTestFeedback = "";
-        resetTestWantFollowup();
 
         logDecisionTree({
           item: data.item,
@@ -4511,12 +4430,7 @@
           correctChoice: activeDayData?.item?.trueLabel || null,
         });
 
-        if ((activeDecision?.finalClassification || "") === "Want") {
-          showTestWantFollowup();
-          return;
-        }
-
-        finalizeTestOutcome(true);
+        finalizeTestOutcome((activeDecision?.finalClassification || "") === "Need");
       }
 
       function updateResults() {
@@ -4536,7 +4450,6 @@
         selectedAvatar = "";
         aiConfidencePct = startingValues.confidence;
         currentBalance = startingValues.balance;
-        currentHappinessPct = startingValues.happiness;
         trainingExamples = [];
         gameplayStats = createGameplayStats();
         currentScoreBreakdown = null;
@@ -4581,8 +4494,6 @@
         testItemBox?.classList.remove("is-highlighted");
         trainingBrainBox?.classList.remove("is-highlighted");
         testBrainBox?.classList.remove("is-highlighted");
-        resetTrainingWantFollowup();
-        resetTestWantFollowup();
         if (resultsSummary) {
           resultsSummary.textContent = "";
         }
@@ -4694,7 +4605,6 @@
         hasShownFirstTestingCutscene = false;
         aiConfidencePct = startingValues.confidence;
         currentBalance = startingValues.balance;
-        currentHappinessPct = startingValues.happiness;
         trainingExamples = [];
         gameplayStats = createGameplayStats();
         currentScoreBreakdown = null;
@@ -4703,7 +4613,6 @@
         buildSessionItemOrder();
         logEvent("challenge_start", {
           balance: currentBalance,
-          happiness: currentHappinessPct,
           confidence: aiConfidencePct,
         });
         renderCurrentDay();
@@ -4712,21 +4621,10 @@
       trainingChoiceButtons.forEach((button) => {
         button.addEventListener("click", () => {
           const nextLabel = button.dataset.label || "";
-          const labelChanged = selectedTrainingLabel !== nextLabel;
 
           clearSelection(trainingChoiceButtons);
           button.classList.add("is-selected");
           selectedTrainingLabel = nextLabel;
-
-          if (selectedTrainingLabel === "Want") {
-            showTrainingWantFollowup();
-            if (labelChanged) {
-              selectedTrainingBuyChoice = "";
-              clearSelection(trainingBuyChoiceButtons);
-            }
-          } else {
-            resetTrainingWantFollowup();
-          }
 
           updateTrainingNextDayState();
           logEvent("training_choice", {
@@ -4737,34 +4635,15 @@
         });
       });
 
-      trainingBuyChoiceButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          if (selectedTrainingLabel !== "Want") {
-            return;
-          }
-
-          clearSelection(trainingBuyChoiceButtons);
-          button.classList.add("is-selected");
-          selectedTrainingBuyChoice = button.dataset.buyChoice || "";
-          updateTrainingNextDayState();
-          logEvent("training_buy_choice", {
-            label: selectedTrainingLabel,
-            buyChoice: selectedTrainingBuyChoice,
-            item: activeDayData?.item || null,
-            phase: "training",
-          });
-        });
-      });
-
       nextTrainingDayBtn?.addEventListener("click", () => {
-        if (!selectedTrainingLabel || (selectedTrainingLabel === "Want" && !selectedTrainingBuyChoice)) {
+        if (!selectedTrainingLabel) {
           return;
         }
 
         const item = activeDayData?.item || null;
         const category = getItemCategory(item);
         const priceBucket = getPriceBucket(item?.priceValue || 0);
-        const buyChoice = selectedTrainingLabel === "Want" ? selectedTrainingBuyChoice : "Auto";
+        const buyChoice = selectedTrainingLabel === "Need" ? "Auto Buy" : "Auto Skip";
 
         trainingExamples.push({
           day: currentDay,
@@ -4793,7 +4672,7 @@
           phase: "training",
           item,
           classification: selectedTrainingLabel,
-          buyDecision: selectedTrainingLabel === "Need" ? true : selectedTrainingBuyChoice === "Yes",
+          buyDecision: selectedTrainingLabel === "Need",
         });
         goToNextDay();
       });
@@ -4808,28 +4687,6 @@
         clearSelection([testNoBtn, testYesBtn]);
         testYesBtn.classList.add("is-selected");
         resolveTestFeedback("Yes");
-      });
-
-      testBuyChoiceButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          if ((activeDecision?.finalClassification || "") !== "Want") {
-            return;
-          }
-
-          clearSelection(testBuyChoiceButtons);
-          button.classList.add("is-selected");
-          selectedTestBuyChoice = button.dataset.testBuyChoice || "";
-
-          const buyDecision = selectedTestBuyChoice === "Yes";
-          logEvent("test_buy_choice", {
-            buyChoice: selectedTestBuyChoice,
-            aiChoice: activeDecision?.finalClassification || "",
-            item: activeDayData?.item || null,
-            phase: "test",
-          });
-
-          finalizeTestOutcome(buyDecision);
-        });
       });
 
       nextReflectionBtn?.addEventListener("click", () => {
