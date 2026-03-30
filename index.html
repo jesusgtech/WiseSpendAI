@@ -2612,7 +2612,7 @@
       let selectedTestFeedback = "";
       let selectedTestBuyChoice = "";
       let selectedReflectionAnswer = "";
-      let aiConfidencePct = 60;
+      let aiConfidencePct = 25;
       let currentBalance = 1000;
       let trainingExamples = [];
       let gameplayStats = createGameplayStats();
@@ -2648,7 +2648,7 @@
       const startingValues = {
         balance: 1000,
         savings: 50,
-        confidence: 50,
+        confidence: 25,
       };
 
       const SCREEN_TRANSITION_MS = 220;
@@ -2659,7 +2659,8 @@
       const LEADERBOARD_DATA_KEY = "wiseSpendLeaderboardData";
       const PLAYER_DATA_KEY_PREFIX = "wiseSpendPlayerData::";
       const LATEST_SESSION_KEY = "wiseSpendLatestSession";
-      const AI_CONFIDENCE_STEP = 8;
+      const AI_CONFIDENCE_STEP = 4;
+      const TRAINING_CONFIDENCE_STEP = 3;
       const AI_CONFIDENCE_MIN = 15;
       const AI_CONFIDENCE_MAX = 95;
       const RESET_CODE = {
@@ -3731,7 +3732,9 @@
 
         const categoryTrend = currentCategoryCounts.need >= currentCategoryCounts.want ? "Needs" : "Wants";
         const majorityView = getMajorityDecision(currentCategoryCounts);
-        const confidenceText = majorityView ? `${majorityView.confidencePct}% confidence` : "low confidence";
+        const confidenceText = majorityView
+          ? `${Math.min(majorityView.confidencePct, Math.round(aiConfidencePct))}% confidence`
+          : "low confidence";
 
         return `You have taught me ${model.totals.need} Needs and ${model.totals.want} Wants. Items in the ${formatCategoryLabel(currentCategory)} category lean ${categoryTrend} with ${confidenceText}.`;
       }
@@ -3752,8 +3755,7 @@
         const priceBucket = getPriceBucket(item.priceValue);
         const categoryCounts = model.byCategory[category];
         const categoryMajority = getMajorityDecision(categoryCounts);
-        const canTrustCategoryRule =
-          categoryMajority?.label && categoryMajority.totalSeen >= 2;
+        const canTrustCategoryRule = Boolean(categoryMajority?.label);
         const overallMajority = getMajorityDecision(model.totals);
         const canComfortablyAfford = state.balanceAmount >= item.priceValue * 1.4;
         const isTightPurchase = item.priceValue > state.balanceAmount * 0.35;
@@ -3769,9 +3771,7 @@
           canTrustCategoryRule
             ? `${categoryMajority.label} is ahead`
             : categoryMajority
-              ? categoryMajority.label
-                ? "Too little category evidence yet"
-                : "This category is tied"
+              ? "This category is tied"
               : "No category winner yet",
           overallMajority?.label
             ? `${overallMajority.label} is ahead overall`
@@ -3794,9 +3794,7 @@
           finalClassification = overallMajority.label;
           confidencePct = Math.max(55, overallMajority.confidencePct - 10);
           reasoning.push(
-            categoryMajority?.label
-              ? `I have only seen ${categoryMajority.totalSeen} ${formatCategoryLabel(category)} example${categoryMajority.totalSeen === 1 ? "" : "s"} so far, so I used the overall pattern from all training examples instead of trusting that category yet.`
-              : `I have not learned a clear rule for ${formatCategoryLabel(category)} yet, so I used the overall pattern from all training examples.`
+            `I have not learned a clear rule for ${formatCategoryLabel(category)} yet, so I used the overall pattern from all training examples.`
           );
         } else {
           finalClassification = getDefaultCategoryBias(category) >= 0 ? "Need" : "Want";
@@ -4653,6 +4651,7 @@
           category,
           priceBucket,
         });
+        adjustAIConfidence(TRAINING_CONFIDENCE_STEP);
 
         logEvent("training_choice_confirmed", {
           label: selectedTrainingLabel,
