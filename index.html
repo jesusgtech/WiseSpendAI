@@ -425,7 +425,7 @@
       }
 
       .tutorial-wrap {
-        max-width: 1180px;
+        max-width: 980px;
         margin: 0 auto;
       }
 
@@ -463,11 +463,150 @@
         border-radius: 999px;
       }
 
-      .tutorial-grid {
+      .tutorial-shell {
         margin-top: 18px;
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 14px;
+      }
+
+      .tutorial-progress-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 0 4px;
+      }
+
+      .tutorial-step-count {
+        font-size: 0.98rem;
+        font-weight: 800;
+        color: #386db6;
+        letter-spacing: 0.01em;
+      }
+
+      .tutorial-progress-track {
+        flex: 1;
+        height: 14px;
+        border-radius: 999px;
+        background: #d4e7fb;
+        overflow: hidden;
+      }
+
+      .tutorial-progress-fill {
+        height: 100%;
+        width: 16.66%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #58c5f3 0%, #5b8ee8 100%);
+        transition: width 220ms ease;
+      }
+
+      .tutorial-card {
+        display: grid;
+        grid-template-columns: minmax(190px, 260px) minmax(0, 1fr);
+        gap: 18px;
+        align-items: stretch;
+        border-radius: 28px;
+        border: 4px solid #9bcff4;
+        background: linear-gradient(180deg, #ffffff 0%, #f3f9ff 100%);
+        box-shadow: 0 12px 30px rgba(92, 149, 194, 0.14);
+        padding: 18px;
+      }
+
+      .tutorial-visual-panel {
+        border-radius: 24px;
+        background: linear-gradient(160deg, #dff3ff 0%, #bedfff 100%);
+        display: grid;
+        place-items: center;
+        min-height: 290px;
+        padding: 16px;
+      }
+
+      .tutorial-visual-panel img {
+        width: min(100%, 190px);
+        height: auto;
+      }
+
+      .tutorial-body-panel {
+        display: grid;
+        gap: 12px;
+        align-content: start;
+      }
+
+      .tutorial-kicker {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #4c83d6;
+      }
+
+      .tutorial-step-title {
+        margin: 0;
+        font-size: clamp(1.55rem, 3vw, 2.3rem);
+        line-height: 1.08;
+        font-weight: 800;
+        color: #183a66;
+      }
+
+      .tutorial-step-copy {
+        margin: 0;
+        font-size: 1.02rem;
+        line-height: 1.5;
+        color: #2d4765;
+      }
+
+      .tutorial-points {
+        margin: 0;
+        padding-left: 1.15rem;
+        display: grid;
+        gap: 8px;
+        color: #24425f;
+        font-size: 0.98rem;
+        line-height: 1.45;
+      }
+
+      .tutorial-callout {
+        border-radius: 20px;
+        background: #e8f4ff;
+        border: 2px solid #b9daf7;
+        padding: 12px 14px;
+        color: #214666;
+        font-size: 0.96rem;
+        line-height: 1.45;
+        font-weight: 700;
+      }
+
+      .tutorial-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .tutorial-nav-btn {
+        min-width: 152px;
+        height: 60px;
+        border-radius: 999px;
+        border: 2px solid #b5cadf;
+        background: #ffffff;
+        color: #31506f;
+        font-size: 1rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: transform 120ms ease, box-shadow 180ms ease, filter 180ms ease;
+      }
+
+      .tutorial-nav-btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 24px rgba(67, 111, 154, 0.16);
+        filter: brightness(1.02);
+      }
+
+      .tutorial-nav-btn:disabled {
+        opacity: 0.48;
+        cursor: not-allowed;
+        box-shadow: none;
       }
 
       .step-card { 
@@ -2004,10 +2143,29 @@
           padding: 12px 10px 18px;
         }
 
-        .tutorial-grid {
+        .tutorial-card {
           grid-template-columns: 1fr;
-          gap: 12px;
-          margin-top: 14px;
+          gap: 14px;
+          padding: 14px;
+        }
+
+        .tutorial-progress-row {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 8px;
+        }
+
+        .tutorial-visual-panel {
+          min-height: 180px;
+        }
+
+        .tutorial-actions {
+          flex-wrap: wrap;
+        }
+
+        .tutorial-nav-btn,
+        .challenge-btn {
+          width: 100%;
         }
 
         .step-visual {
@@ -2213,56 +2371,34 @@
             without going <span class="highlight underline">BROKE?</span>
           </h2>
 
-          <div class="tutorial-grid">
-            <article class="step-card">
-              <header class="step-head">1. TRAINING PERIOD</header>
-              <div class="step-visual">
-                <img src="assets/robot-money.png" alt="Robot for training step" />
-              </div>
-              <p class="step-copy">Teach it Wants vs. Needs for 5 Days</p>
-              <div class="progress-track" aria-hidden="true">
-                <div class="progress-fill"></div>
-              </div>
-            </article>
-
-            <article class="step-card">
-              <header class="step-head">2. AI SURVIVAL CHALLENGE</header>
-              <div class="step-visual sim">
-                <div class="market-strip">
-                  <span class="market-robot">🤖</span>
-                </div>
-              </div>
-              <p class="step-copy">Let it run for 5 days.<br />See its choices! After that, REPEAT!</p>
-            </article>
-
-            <article class="step-card">
-              <header class="step-head">3. RESULTS + LEADERBOARD</header>
-              <div class="step-visual result">
-                <span class="trophy">🏆</span>
-              </div>
-              <p class="step-copy">Did it go broke? Is it rich?<br />Compare with classmates!</p>
-            </article>
-          </div>
-
-          <div class="definition-box" aria-label="Key definitions">
-            <h3 class="definition-title">Key Concepts</h3>
-            <div class="definition-grid">
-              <div class="definition-card">
-                <strong>Confidence</strong>
-                How sure the AI is about its choice based on training.
-              </div>
-              <div class="definition-card">
-                <strong>Balance</strong>
-                Shows how much money the AI has left to survive the challenge.
-              </div>
-              <div class="definition-card">
-                <strong>Needs Rule</strong>
-                In this challenge, the AI should buy Needs and skip Wants.
+          <div class="tutorial-shell">
+            <div class="tutorial-progress-row" aria-label="Tutorial progress">
+              <span id="tutorialStepCount" class="tutorial-step-count">Step 1 of 6</span>
+              <div class="tutorial-progress-track" aria-hidden="true">
+                <div id="tutorialProgressFill" class="tutorial-progress-fill"></div>
               </div>
             </div>
-          </div>
 
-          <button id="startChallengeBtn" class="challenge-btn" type="button">Start the Challenge</button>
+            <article class="tutorial-card">
+              <div class="tutorial-visual-panel">
+                <img id="tutorialStepImage" src="assets/robot-money.png" alt="Tutorial robot" />
+              </div>
+
+              <div class="tutorial-body-panel">
+                <p id="tutorialKicker" class="tutorial-kicker">How the game works</p>
+                <h3 id="tutorialStepTitle" class="tutorial-step-title">Teach the AI first</h3>
+                <p id="tutorialStepCopy" class="tutorial-step-copy"></p>
+                <ul id="tutorialPoints" class="tutorial-points"></ul>
+                <div id="tutorialCallout" class="tutorial-callout"></div>
+              </div>
+            </article>
+
+            <div class="tutorial-actions">
+              <button id="tutorialBackBtn" class="tutorial-nav-btn" type="button">Back</button>
+              <button id="tutorialNextBtn" class="tutorial-nav-btn" type="button">Next</button>
+              <button id="startChallengeBtn" class="challenge-btn" type="button" hidden>Start the Challenge</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -2467,6 +2603,16 @@
       const startButton = document.querySelector(".start-btn");
       const setupNextButton = document.querySelector(".setup-next-btn");
       const startChallengeBtn = document.querySelector("#startChallengeBtn");
+      const tutorialBackBtn = document.querySelector("#tutorialBackBtn");
+      const tutorialNextBtn = document.querySelector("#tutorialNextBtn");
+      const tutorialStepCount = document.querySelector("#tutorialStepCount");
+      const tutorialProgressFill = document.querySelector("#tutorialProgressFill");
+      const tutorialKicker = document.querySelector("#tutorialKicker");
+      const tutorialStepTitle = document.querySelector("#tutorialStepTitle");
+      const tutorialStepCopy = document.querySelector("#tutorialStepCopy");
+      const tutorialPoints = document.querySelector("#tutorialPoints");
+      const tutorialCallout = document.querySelector("#tutorialCallout");
+      const tutorialStepImage = document.querySelector("#tutorialStepImage");
       const welcomeStatusMessage = document.querySelector("#welcomeStatusMessage");
       const firstNameInput = document.querySelector("#firstNameInput");
       const lastInitialInput = document.querySelector("#lastInitialInput");
@@ -2614,6 +2760,99 @@
         },
       ];
 
+      const tutorialSteps = [
+        {
+          kicker: "How the game works",
+          title: "You will train the AI in rounds",
+          copy:
+            "This game has 3 training periods and 3 testing periods. In training, you teach the AI how to label items. In testing, the AI uses your training on its own.",
+          points: [
+            "Each training period gives you 5 days to teach the AI.",
+            "Each testing period gives the AI 5 days to make its own labels.",
+            "Your goal is to help the AI survive 30 days without wasting money.",
+          ],
+          callout:
+            "Think like the AI's coach. What you teach early affects what it does later.",
+          image: "assets/robot-money.png",
+          imageAlt: "Robot ready to learn",
+        },
+        {
+          kicker: "Categories",
+          title: "The AI learns by category",
+          copy:
+            "Items belong to categories like food, treats, drinks, activities, devices, media, personal, safety, and school. The AI looks for patterns inside those categories.",
+          points: [
+            "If you label school items as Needs, the AI may start expecting other school items to be Needs too.",
+            "If a category has not been trained yet, the AI has to guess using what it learned in other places.",
+            "That is why category patterns matter so much in this game.",
+          ],
+          callout:
+            "Example: teaching a lunchbox as a Need can help with food items, but it should not decide treats like donuts.",
+          image: "assets/robot-money.png",
+          imageAlt: "Robot thinking about categories",
+        },
+        {
+          kicker: "Needs vs wants",
+          title: "Focus on daily necessities first",
+          copy:
+            "When you are choosing Need or Want, think about what someone really needs in daily life. If you are not sure, it is usually safer to treat it as a Want.",
+          points: [
+            "Needs are the obviously necessary items.",
+            "Wants are the items that are nice to have but not truly required.",
+            "Training everything as Need or everything as Want usually teaches the AI the wrong lesson.",
+          ],
+          callout:
+            "A good rule: if you have to argue hard for it, it probably is not a clear Need in this game.",
+          image: "assets/robot-doubt.png",
+          imageAlt: "Robot asking about needs and wants",
+        },
+        {
+          kicker: "Score",
+          title: "Balance still matters",
+          copy:
+            "The score is based on two big things: how accurate the AI becomes and how much balance it keeps. A low balance can pull the score down even if the AI learned some categories well.",
+          points: [
+            "Needs get bought automatically, so wrong Need labels can drain money fast.",
+            "Wants get skipped automatically, so too many Wants can leave important things unbought.",
+            "The best scores usually come from accurate training and smart money protection together.",
+          ],
+          callout:
+            "Only the clearest, obviously necessary items count toward the main training score. Some debatable items still appear, but they are there more for discussion and learning.",
+          image: "assets/robot-money.png",
+          imageAlt: "Robot watching the balance",
+        },
+        {
+          kicker: "When the AI guesses",
+          title: "Untrained categories can still lead to predictions",
+          copy:
+            "Sometimes the AI will see a category it has barely seen before. When that happens, it still has to make a choice. It uses the patterns you taught in other categories and its starter rules.",
+          points: [
+            "Correct play can still look wrong at first if the AI has not learned enough yet.",
+            "Wrong play can also look right at first by accident.",
+            "That is why later rounds matter more than first impressions.",
+          ],
+          callout:
+            "If the current category is not trained yet, ask yourself: what overall pattern did I teach the AI so far?",
+          image: "assets/robot-doubt.png",
+          imageAlt: "Robot making an early guess",
+        },
+        {
+          kicker: "Final tip",
+          title: "Good training should win over time",
+          copy:
+            "At the beginning, the AI may still be shaky. By the last testing period, strong training should make it feel more accurate. If you train it in the wrong direction, the mistakes usually grow later too.",
+          points: [
+            "Do not just try to game the system with all Needs or all Wants.",
+            "Teach the AI what is clearly necessary first.",
+            "Watch the AI Brain View to see how your training is shaping its decisions.",
+          ],
+          callout:
+            "Your best strategy is simple: train clearly, protect the balance, and let the AI learn honest patterns.",
+          image: "assets/robot-money.png",
+          imageAlt: "Robot ready for the challenge",
+        },
+      ];
+
       const AMBIGUOUS_SCORING_ITEM_NAMES = new Set([
         "Juice Box",
         "Sports Drink",
@@ -2700,6 +2939,7 @@
       let reflectionReactionTimeouts = [];
       let hasPlayedGameStartHighlight = false;
       let hasShownFirstTestingCutscene = false;
+      let currentTutorialStep = 0;
       let testingCutsceneTimeoutId = null;
       let welcomeStatusTimeoutId = null;
       let resultsScreenMode = "session";
@@ -3151,6 +3391,61 @@
       function clearReflectionReactionTimeouts() {
         reflectionReactionTimeouts.forEach((timeoutId) => window.clearTimeout(timeoutId));
         reflectionReactionTimeouts = [];
+      }
+
+      function renderTutorialStep() {
+        const step = tutorialSteps[currentTutorialStep];
+
+        if (!step) {
+          return;
+        }
+
+        if (tutorialStepCount) {
+          tutorialStepCount.textContent = `Step ${currentTutorialStep + 1} of ${tutorialSteps.length}`;
+        }
+
+        if (tutorialProgressFill) {
+          tutorialProgressFill.style.width = `${((currentTutorialStep + 1) / tutorialSteps.length) * 100}%`;
+        }
+
+        if (tutorialKicker) {
+          tutorialKicker.textContent = step.kicker;
+        }
+
+        if (tutorialStepTitle) {
+          tutorialStepTitle.textContent = step.title;
+        }
+
+        if (tutorialStepCopy) {
+          tutorialStepCopy.textContent = step.copy;
+        }
+
+        if (tutorialPoints) {
+          tutorialPoints.innerHTML = step.points
+            .map((point) => `<li>${point}</li>`)
+            .join("");
+        }
+
+        if (tutorialCallout) {
+          tutorialCallout.textContent = step.callout;
+        }
+
+        if (tutorialStepImage) {
+          tutorialStepImage.src = step.image;
+          tutorialStepImage.alt = step.imageAlt;
+        }
+
+        if (tutorialBackBtn) {
+          tutorialBackBtn.disabled = currentTutorialStep === 0;
+        }
+
+        if (tutorialNextBtn) {
+          tutorialNextBtn.hidden = currentTutorialStep === tutorialSteps.length - 1;
+        }
+
+        if (startChallengeBtn) {
+          startChallengeBtn.hidden = currentTutorialStep !== tutorialSteps.length - 1;
+        }
       }
 
       function resetReflectionReactionState() {
@@ -4655,6 +4950,8 @@
         if (testBrainNote) {
           testBrainNote.textContent = "I am using your training to decide whether this looks like a need or a want.";
         }
+        currentTutorialStep = 0;
+        renderTutorialStep();
         firstNameInput.value = "";
         lastInitialInput.value = "";
         gradeSelect.value = "";
@@ -4727,8 +5024,28 @@
             avatar: selectedAvatar || "",
           });
           updateGameplayHud();
+          currentTutorialStep = 0;
+          renderTutorialStep();
           showScreen("tutorialScreen");
         }
+      });
+
+      tutorialBackBtn?.addEventListener("click", () => {
+        if (currentTutorialStep === 0) {
+          return;
+        }
+
+        currentTutorialStep -= 1;
+        renderTutorialStep();
+      });
+
+      tutorialNextBtn?.addEventListener("click", () => {
+        if (currentTutorialStep >= tutorialSteps.length - 1) {
+          return;
+        }
+
+        currentTutorialStep += 1;
+        renderTutorialStep();
       });
 
       startChallengeBtn?.addEventListener("click", () => {
