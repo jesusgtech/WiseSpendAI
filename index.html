@@ -70,6 +70,7 @@
       }
 
       #welcomeScreen {
+        position: relative;
         min-height: 100vh;
         padding: 20px 18px 24px;
         display: flex;
@@ -200,6 +201,17 @@
       .start-btn:focus-visible {
         outline: 3px solid #9bc0ff;
         outline-offset: 3px;
+      }
+
+      .welcome-version {
+        position: absolute;
+        right: 18px;
+        bottom: 14px;
+        margin: 0;
+        font-size: 0.88rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        color: rgba(44, 78, 121, 0.78);
       }
 
       #setupScreen {
@@ -2218,6 +2230,12 @@
           gap: 8px;
         }
 
+        .welcome-version {
+          right: 12px;
+          bottom: 10px;
+          font-size: 0.78rem;
+        }
+
         .welcome-hero {
           flex-direction: column;
           gap: 8px;
@@ -2429,6 +2447,7 @@
           <p id="welcomeStatusMessage" class="welcome-status-message" hidden></p>
         </div>
         <button class="start-btn" type="button">Start</button>
+        <p class="welcome-version">Version 1.0.0</p>
       </section>
 
       <section id="setupScreen" hidden>
