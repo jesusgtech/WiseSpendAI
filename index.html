@@ -2946,92 +2946,47 @@
 
       const tutorialSteps = [
         {
-          kicker: "How the game works",
-          title: "You will train the AI in rounds",
+          kicker: "How to play",
+          title: "Train first. Test second.",
           copy:
-            "This game has 3 training periods and 3 testing periods. In training, you teach the AI how to label items. In testing, the AI uses your training on its own.",
+            "You will go through 3 training periods and 3 testing periods. First you teach the AI. Then the AI tries on its own.",
           points: [
-            "Each training period gives you 5 days to teach the AI.",
-            "Each testing period gives the AI 5 days to make its own labels.",
-            "Your goal is to help the AI survive 30 days without wasting money.",
+            "Training = you choose Need or Want.",
+            "Testing = the AI chooses by itself.",
+            "What you teach early affects what the AI does later.",
           ],
           callout:
-            "Think like the AI's coach. What you teach early affects what it does later.",
+            "You are the AI's coach.",
           image: "assets/robot-money.png",
           imageAlt: "Robot ready to learn",
         },
         {
-          kicker: "Categories",
-          title: "The AI learns by category",
+          kicker: "Need or want",
+          title: "Think about daily life",
           copy:
-            "Items belong to categories like food, treats, drinks, activities, devices, media, personal, safety, and school. The AI looks for patterns inside those categories.",
+            "When you choose, think about what someone really needs every day. If you are not sure, it is usually safer to call it a Want.",
           points: [
-            "If you label school items as Needs, the AI may start expecting other school items to be Needs too.",
-            "If a category has not been trained yet, the AI has to guess using what it learned in other places.",
-            "That is why category patterns matter so much in this game.",
+            "Needs are the clearly necessary items.",
+            "Wants are nice to have, but not required.",
+            "The AI learns patterns by category, so one choice can affect similar items later.",
           ],
           callout:
-            "Example: teaching a lunchbox as a Need can help with food items, but it should not decide treats like donuts.",
-          image: "assets/robot-money.png",
-          imageAlt: "Robot thinking about categories",
-        },
-        {
-          kicker: "Needs vs wants",
-          title: "Focus on daily necessities first",
-          copy:
-            "When you are choosing Need or Want, think about what someone really needs in daily life. If you are not sure, it is usually safer to treat it as a Want.",
-          points: [
-            "Needs are the obviously necessary items.",
-            "Wants are the items that are nice to have but not truly required.",
-            "Training everything as Need or everything as Want usually teaches the AI the wrong lesson.",
-          ],
-          callout:
-            "A good rule: if you have to argue hard for it, it probably is not a clear Need in this game.",
+            "If a category is not trained yet, the AI may still guess using patterns from other categories.",
           image: "assets/robot-doubt.png",
           imageAlt: "Robot asking about needs and wants",
         },
         {
           kicker: "Score",
-          title: "Balance still matters",
+          title: "Protect the balance",
           copy:
-            "The score is based on two big things: how accurate the AI becomes and how much balance it keeps. A low balance can pull the score down even if the AI learned some categories well.",
+            "A good score comes from training the AI well and keeping money left. Low balance lowers the score.",
           points: [
-            "Needs get bought automatically, so wrong Need labels can drain money fast.",
-            "Wants get skipped automatically, so too many Wants can leave important things unbought.",
-            "The best scores usually come from accurate training and smart money protection together.",
+            "Needs get bought automatically.",
+            "Wants get skipped automatically.",
+            "Only the clearest score items count toward the main training score.",
           ],
           callout:
-            "Only the clearest, obviously necessary items count toward the main training score. Some debatable items still appear, but they are there more for discussion and learning.",
-          image: "assets/robot-money.png",
-          imageAlt: "Robot watching the balance",
-        },
-        {
-          kicker: "When the AI guesses",
-          title: "Untrained categories can still lead to predictions",
-          copy:
-            "Sometimes the AI will see a category it has barely seen before. When that happens, it still has to make a choice. It uses the patterns you taught in other categories and its starter rules.",
-          points: [
-            "Correct play can still look wrong at first if the AI has not learned enough yet.",
-            "Wrong play can also look right at first by accident.",
-            "That is why later rounds matter more than first impressions.",
-          ],
-          callout:
-            "If the current category is not trained yet, ask yourself: what overall pattern did I teach the AI so far?",
-          image: "assets/robot-doubt.png",
-          imageAlt: "Robot making an early guess",
-        },
-        {
-          kicker: "Final tip",
-          title: "Good training should win over time",
-          copy:
-            "At the beginning, the AI may still be shaky. By the last testing period, strong training should make it feel more accurate. If you train it in the wrong direction, the mistakes usually grow later too.",
-          points: [
-            "Do not just try to game the system with all Needs or all Wants.",
-            "Teach the AI what is clearly necessary first.",
-            "Watch the AI Brain View to see how your training is shaping its decisions.",
-          ],
-          callout:
-            "Your best strategy is simple: train clearly, protect the balance, and let the AI learn honest patterns.",
+            "Good training may look shaky at first, but it should work better later. Wrong training can also look right at the start, then fall apart.",
           image: "assets/robot-money.png",
           imageAlt: "Robot ready for the challenge",
         },
