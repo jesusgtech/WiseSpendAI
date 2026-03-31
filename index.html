@@ -2874,8 +2874,8 @@
         { emoji: "🥛", name: "Smoothie", category: "drinks", trueLabel: "Want", priceValue: 5 },
         { emoji: "⌨️", name: "Keyboard", category: "devices", trueLabel: "Need", priceValue: 30 },
         { emoji: "🖱️", name: "Mouse", category: "devices", trueLabel: "Need", priceValue: 15 },
-        { emoji: "💻", name: "Laptop", category: "devices", trueLabel: "Need", priceValue: 150 },
-        { emoji: "📱", name: "Tablet", category: "devices", trueLabel: "Need", priceValue: 100 },
+        { emoji: "💻", name: "Gaming Laptop", category: "devices", trueLabel: "Want", priceValue: 150 },
+        { emoji: "📺", name: "4K TV", category: "devices", trueLabel: "Want", priceValue: 100 },
         { emoji: "🖥️", name: "HD Desktop Monitor", category: "media", trueLabel: "Want", priceValue: 150 },
         { emoji: "📷", name: "Camera", category: "media", trueLabel: "Want", priceValue: 250 },
         { emoji: "💡", name: "Ring Light", category: "media", trueLabel: "Want", priceValue: 25 },
@@ -2892,7 +2892,7 @@
         { emoji: "🖍️", name: "Crayons", category: "school", trueLabel: "Need", priceValue: 3 },
         { emoji: "🖊️", name: "Pen", category: "school", trueLabel: "Need", priceValue: 3 },
         { emoji: "📎", name: "Paper Clips", category: "school", trueLabel: "Need", priceValue: 6 },
-        { emoji: "📿", name: "Jewelry", category: "personal", trueLabel: "Want", priceValue: 20 },
+        { emoji: "🧼", name: "Soap", category: "personal", trueLabel: "Need", priceValue: 5 },
         { emoji: "🧿", name: "Frisbee", category: "activities", trueLabel: "Want", priceValue: 18 },
         { emoji: "🧋", name: "Iced Latte Coffee", category: "drinks", trueLabel: "Want", priceValue: 5 },
         { emoji: "🛏️", name: "Blanket", category: "personal", trueLabel: "Need", priceValue: 25 },
@@ -3037,21 +3037,20 @@
         },
       ];
 
-      const AMBIGUOUS_SCORING_ITEM_NAMES = new Set([
-        "Juice Box",
-        "Sports Drink",
-        "Smoothie",
-        "Iced Coffee",
-        "Watch",
-        "Smartphone",
-        "Headphones",
-        "Tablet",
-        "Science Kit",
-        "Jewelry",
-        "Sunglasses",
+      const SCORING_ITEM_NAMES = new Set([
+        "Sandwich",
+        "Apple",
+        "Toothbrush",
+        "Bandages",
+        "First Aid Kit",
+        "Notebook",
+        "Backpack",
+        "Video Game Console",
+        "Science Class Kit",
+        "4K TV",
       ]);
-      const CLEAR_ITEM_WEIGHT = 1;
-      const AMBIGUOUS_ITEM_WEIGHT = 0;
+      const SCORING_ITEM_WEIGHT = 1;
+      const NON_SCORING_ITEM_WEIGHT = 0;
       const NEED_TO_WANT_PENALTY_POINTS = 3;
       const CLEAR_NEED_TO_WANT_PENALTY_POINTS = 1;
       const WANT_TO_NEED_PENALTY_POINTS = 1;
@@ -3792,12 +3791,12 @@
 
       function getAccuracyWeightForItem(item) {
         if (!item) {
-          return CLEAR_ITEM_WEIGHT;
+          return NON_SCORING_ITEM_WEIGHT;
         }
 
-        return AMBIGUOUS_SCORING_ITEM_NAMES.has(item.name)
-          ? AMBIGUOUS_ITEM_WEIGHT
-          : CLEAR_ITEM_WEIGHT;
+        return SCORING_ITEM_NAMES.has(item.name)
+          ? SCORING_ITEM_WEIGHT
+          : NON_SCORING_ITEM_WEIGHT;
       }
 
       function logEvent(type, payload = {}) {
@@ -3863,7 +3862,7 @@
           const item = getItemById(entry.itemID);
           const accuracyWeight = getAccuracyWeightForItem(item);
 
-          if (accuracyWeight < CLEAR_ITEM_WEIGHT) {
+          if (accuracyWeight < SCORING_ITEM_WEIGHT) {
             ambiguousItemsSeen += 1;
           } else {
             weightedPossibleTotal += accuracyWeight;
@@ -3883,7 +3882,7 @@
           const isClearNonCriticalNeed =
             entry.correctChoice === "Need" &&
             item &&
-            accuracyWeight === CLEAR_ITEM_WEIGHT &&
+            accuracyWeight === SCORING_ITEM_WEIGHT &&
             !CRITICAL_NEED_ITEM_NAMES.has(item.name);
 
           if (isClearNonCriticalNeed && entry.studentChoice === "Want") {
@@ -3891,7 +3890,7 @@
           }
 
           const isClearWant =
-            entry.correctChoice === "Want" && item && accuracyWeight === CLEAR_ITEM_WEIGHT;
+            entry.correctChoice === "Want" && item && accuracyWeight === SCORING_ITEM_WEIGHT;
 
           if (isClearWant && entry.studentChoice === "Need") {
             falseNeedMistakes += 1;
@@ -4523,8 +4522,8 @@
             ? `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the ${SCORE_BALANCE_MAX_POINTS} possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)}, so an overdraft penalty of ${scoreBreakdown.overdraftPenalty} points was applied.`
             : `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the ${SCORE_BALANCE_MAX_POINTS} possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)} left.`,
           scoreBreakdown.ambiguousItemsSeen > 0
-            ? `${scoreBreakdown.ambiguousItemsSeen} debatable item${scoreBreakdown.ambiguousItemsSeen === 1 ? "" : "s"} still appeared during the run for gameplay and discussion, but those items were not counted toward the final training score.`
-            : "Only clear teacher-guide items counted toward the final training score in this run.",
+            ? `${scoreBreakdown.ambiguousItemsSeen} non-core item${scoreBreakdown.ambiguousItemsSeen === 1 ? "" : "s"} still appeared during the run for gameplay and discussion, but only the 10 core teacher-guide items counted toward the final training score.`
+            : "Only the 10 core teacher-guide items counted toward the final training score in this run.",
           scoreBreakdown.needCoveragePenalty > 0
             ? `The AI was trained with too few Need labels across the checkpoints, so an emergency penalty of ${scoreBreakdown.needCoveragePenalty} point${scoreBreakdown.needCoveragePenalty === 1 ? "" : "s"} was applied.`
             : "The training kept a healthy enough number of Need labels, so no emergency low-need penalty was applied.",
@@ -4580,7 +4579,7 @@
           )
           .join("");
         scoreExplainFormula.textContent =
-          "Final score starts with a 40-point base, then adds up to 35 points for AI accuracy and up to 25 points for balance left. Balance uses a softer curve near the bottom so low money still hurts without collapsing the whole score. Training that stays too far away from Need labels across the three checkpoints triggers an emergency penalty. Only clear teacher-guide items count toward AI accuracy, critical Needs trigger the stronger safety penalty, clear non-critical Needs trigger a lighter missed-need penalty, and clear Wants mislabeled as Needs trigger a lighter spending penalty.";
+          "Final score starts with a 40-point base, then adds up to 35 points for AI accuracy and up to 25 points for balance left. Balance uses a softer curve near the bottom so low money still hurts without collapsing the whole score. Training that stays too far away from Need labels across the three checkpoints triggers an emergency penalty. Only 10 core teacher-guide items count toward AI accuracy, critical Needs trigger the stronger safety penalty, clear non-critical Needs trigger a lighter missed-need penalty, and clear Wants mislabeled as Needs trigger a lighter spending penalty.";
         scoreDecisionList.innerHTML = buildDecisionSummaryLines(currentScoreBreakdown)
           .map((line) => `<div class="score-decision-item">${line}</div>`)
           .join("");
