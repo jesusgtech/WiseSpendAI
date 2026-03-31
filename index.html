@@ -2515,11 +2515,11 @@
       const itemPool = [
         { emoji: "🍩", name: "Donut", category: "treats", trueLabel: "Want", priceValue: 3 },
         { emoji: "🥨", name: "Pretzel", category: "treats", trueLabel: "Want", priceValue: 3 },
-        { emoji: "🧃", name: "Juice Box", category: "drinks", trueLabel: "Want", priceValue: 4 },
+        { emoji: "🧃", name: "Apple Juice", category: "drinks", trueLabel: "Want", priceValue: 4 },
         { emoji: "🧁", name: "Cupcake", category: "treats", trueLabel: "Want", priceValue: 4 },
         { emoji: "🥪", name: "Sandwich", category: "food", trueLabel: "Need", priceValue: 6 },
         { emoji: "🍎", name: "Apple", category: "food", trueLabel: "Need", priceValue: 2 },
-        { emoji: "🧀", name: "Cheese", category: "food", trueLabel: "Need", priceValue: 3 },
+        { emoji: "🧀", name: "Cheese", category: "food", trueLabel: "Need", priceValue: 2 },
         { emoji: "🍱", name: "Lunchbox", category: "food", trueLabel: "Need", priceValue: 12 },
         { emoji: "⚽️", name: "Soccer Ball", category: "activities", trueLabel: "Want", priceValue: 18 },
         { emoji: "🛼", name: "Roller Skates", category: "activities", trueLabel: "Want", priceValue: 45 },
@@ -2529,7 +2529,7 @@
         { emoji: "🥁", name: "Drum Pad", category: "music", trueLabel: "Want", priceValue: 45 },
         { emoji: "🎺", name: "Trumpet", category: "music", trueLabel: "Want", priceValue: 90 },
         { emoji: "🎸", name: "Guitar", category: "music", trueLabel: "Want", priceValue: 130 },
-        { emoji: "🥤", name: "Sports Drink", category: "drinks", trueLabel: "Want", priceValue: 4 },
+        { emoji: "🥤", name: "Sports Drink", category: "drinks", trueLabel: "Want", priceValue: 5 },
         { emoji: "🎷", name: "Saxophone", category: "music", trueLabel: "Want", priceValue: 150 },
         { emoji: "🎧", name: "Headphones", category: "music", trueLabel: "Want", priceValue: 35 },
         { emoji: "🎮", name: "Video Game Console", category: "games", trueLabel: "Want", priceValue: 200 },
@@ -2553,18 +2553,18 @@
         { emoji: "🩹", name: "First Aid Kit", category: "safety", trueLabel: "Need", priceValue: 8 },
         { emoji: "🔒", name: "Padlock", category: "safety", trueLabel: "Need", priceValue: 6 },
         { emoji: "🔋", name: "Battery Pack", category: "safety", trueLabel: "Need", priceValue: 15 },
-        { emoji: "🧪", name: "Science Kit", category: "school", trueLabel: "Want", priceValue: 28 },
+        { emoji: "🧪", name: "Science Class Kit", category: "school", trueLabel: "Want", priceValue: 28 },
         { emoji: "🧮", name: "Calculator", category: "school", trueLabel: "Need", priceValue: 12 },
         { emoji: "🪥", name: "Toothbrush", category: "personal", trueLabel: "Need", priceValue: 4 },
         { emoji: "🪮", name: "Hair Brush", category: "personal", trueLabel: "Need", priceValue: 8 },
-        { emoji: "🧴", name: "Lotion", category: "personal", trueLabel: "Need", priceValue: 7 },
+        { emoji: "🧴", name: "Lotion", category: "personal", trueLabel: "Need", priceValue: 5 },
         { emoji: "🩹", name: "Bandages", category: "personal", trueLabel: "Need", priceValue: 5 },
         { emoji: "🖍️", name: "Crayons", category: "school", trueLabel: "Need", priceValue: 3 },
         { emoji: "🖊️", name: "Pen", category: "school", trueLabel: "Need", priceValue: 3 },
         { emoji: "📎", name: "Paper Clips", category: "school", trueLabel: "Need", priceValue: 6 },
         { emoji: "📿", name: "Jewelry", category: "personal", trueLabel: "Want", priceValue: 20 },
         { emoji: "🧿", name: "Frisbee", category: "activities", trueLabel: "Want", priceValue: 18 },
-        { emoji: "🥤", name: "Iced Coffee", category: "drinks", trueLabel: "Want", priceValue: 5 },
+        { emoji: "🧋", name: "Iced Latte Coffee", category: "drinks", trueLabel: "Want", priceValue: 5 },
         { emoji: "🛏️", name: "Blanket", category: "personal", trueLabel: "Need", priceValue: 25 },
         { emoji: "🛋️", name: "Desk Lamp", category: "personal", trueLabel: "Need", priceValue: 22 },
         { emoji: "🧺", name: "Laundry Basket", category: "personal", trueLabel: "Need", priceValue: 14 },
@@ -2590,11 +2590,11 @@
         },
         {
           id: "reflection_2",
-          prompt: "Why do you think I have still made mistakes?",
+          prompt: "Why do you think I can still made mistakes at this point?",
           triggerDay: 20,
           continueDay: 21,
           choices: [
-            "The rules in the decision tree are incomplete",
+            "The rules in the decision tree may be incomplete",
             "The AI is broken and cannot learn",
             "The AI always makes mistakes",
             "The item cannot be classified",
@@ -2632,6 +2632,14 @@
       const NEED_TO_WANT_PENALTY_POINTS = 3;
       const CLEAR_NEED_TO_WANT_PENALTY_POINTS = 1;
       const WANT_TO_NEED_PENALTY_POINTS = 1;
+      const NEED_COVERAGE_CHECKPOINTS = [
+        { examples: 5, minimumNeeds: 2, penalty: 3 },
+        { examples: 10, minimumNeeds: 4, penalty: 7 },
+        { examples: 15, minimumNeeds: 6, penalty: 20 },
+      ];
+      const SCORE_BASE_POINTS = 40;
+      const SCORE_ACCURACY_MAX_POINTS = 35;
+      const SCORE_BALANCE_MAX_POINTS = 25;
       const CRITICAL_NEED_ITEM_NAMES = new Set([
         "Sandwich",
         "Apple",
@@ -3931,6 +3939,29 @@
         });
       }
 
+      function calculateNeedCoveragePenalty() {
+        const triggeredCheckpoints = NEED_COVERAGE_CHECKPOINTS.map((checkpoint) => {
+          const seenExamples = trainingExamples.slice(0, checkpoint.examples);
+          const needCount = seenExamples.filter((example) => example.label === "Need").length;
+          const applies =
+            seenExamples.length >= checkpoint.examples && needCount < checkpoint.minimumNeeds;
+
+          return {
+            ...checkpoint,
+            needCount,
+            applies,
+          };
+        }).filter((checkpoint) => checkpoint.applies);
+
+        return {
+          totalPenalty: triggeredCheckpoints.reduce(
+            (sum, checkpoint) => sum + checkpoint.penalty,
+            0
+          ),
+          triggeredCheckpoints,
+        };
+      }
+
       function calculateScoreBreakdown() {
         const sessionSummary = buildStudentSessionSummary();
         const classificationAccuracy = sessionSummary.totalClassificationAccuracy ?? 0;
@@ -3941,18 +3972,23 @@
         const balanceLeft = roundMoney(currentBalance);
         const normalizedBalance = Math.max(balanceLeft, 0) / startingValues.balance;
         const balanceScore = clampPercent(Math.sqrt(normalizedBalance) * 100);
+        const needCoverage = calculateNeedCoveragePenalty();
         const overdraftRatio =
           balanceLeft < 0 ? Math.min(Math.abs(balanceLeft) / startingValues.balance, 1) : 0;
         const overdraftPenalty = Math.round(overdraftRatio * 25);
         const dangerousNeedPenalty = dangerousNeedMistakes * NEED_TO_WANT_PENALTY_POINTS;
         const clearNeedPenalty = clearNeedMistakes * CLEAR_NEED_TO_WANT_PENALTY_POINTS;
         const falseNeedPenalty = falseNeedMistakes * WANT_TO_NEED_PENALTY_POINTS;
-        const accuracyPoints = Math.round(classificationAccuracy * 0.6);
-        const balancePoints = Math.round(balanceScore * 0.4);
-        const rawTotalScore = accuracyPoints + balancePoints;
+        const basePoints = SCORE_BASE_POINTS;
+        const accuracyPoints = Math.round(
+          (classificationAccuracy / 100) * SCORE_ACCURACY_MAX_POINTS
+        );
+        const balancePoints = Math.round((balanceScore / 100) * SCORE_BALANCE_MAX_POINTS);
+        const rawTotalScore = basePoints + accuracyPoints + balancePoints;
         const totalScore = Math.max(
           0,
           rawTotalScore -
+            needCoverage.totalPenalty -
             overdraftPenalty -
             dangerousNeedPenalty -
             clearNeedPenalty -
@@ -3969,8 +4005,11 @@
           clearNeedPenalty,
           falseNeedMistakes,
           falseNeedPenalty,
+          needCoveragePenalty: needCoverage.totalPenalty,
+          needCoverageTriggeredCheckpoints: needCoverage.triggeredCheckpoints,
           overdraftPenalty,
           ambiguousItemsSeen,
+          basePoints,
           accuracyPoints,
           balancePoints,
           rawTotalScore,
@@ -3981,13 +4020,16 @@
 
       function buildDecisionSummaryLines(scoreBreakdown) {
         return [
-          `AI accuracy finished at ${scoreBreakdown.classificationAccuracyPct}%, which gave ${scoreBreakdown.accuracyPoints} of the 60 possible accuracy points. You marked the AI right ${gameplayStats.aiRightCount} time${gameplayStats.aiRightCount === 1 ? "" : "s"} and wrong ${gameplayStats.aiWrongCount} time${gameplayStats.aiWrongCount === 1 ? "" : "s"}.`,
+          `AI accuracy finished at ${scoreBreakdown.classificationAccuracyPct}%, which gave ${scoreBreakdown.accuracyPoints} of the ${SCORE_ACCURACY_MAX_POINTS} possible accuracy points. You marked the AI right ${gameplayStats.aiRightCount} time${gameplayStats.aiRightCount === 1 ? "" : "s"} and wrong ${gameplayStats.aiWrongCount} time${gameplayStats.aiWrongCount === 1 ? "" : "s"}.`,
           scoreBreakdown.overdraftPenalty > 0
-            ? `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the 40 possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)}, so an overdraft penalty of ${scoreBreakdown.overdraftPenalty} points was applied.`
-            : `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the 40 possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)} left.`,
+            ? `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the ${SCORE_BALANCE_MAX_POINTS} possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)}, so an overdraft penalty of ${scoreBreakdown.overdraftPenalty} points was applied.`
+            : `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the ${SCORE_BALANCE_MAX_POINTS} possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)} left.`,
           scoreBreakdown.ambiguousItemsSeen > 0
             ? `${scoreBreakdown.ambiguousItemsSeen} debatable item${scoreBreakdown.ambiguousItemsSeen === 1 ? "" : "s"} still appeared during the run for gameplay and discussion, but those items were not counted toward the final training score.`
             : "Only clear teacher-guide items counted toward the final training score in this run.",
+          scoreBreakdown.needCoveragePenalty > 0
+            ? `The AI was trained with too few Need labels across the checkpoints, so an emergency penalty of ${scoreBreakdown.needCoveragePenalty} point${scoreBreakdown.needCoveragePenalty === 1 ? "" : "s"} was applied.`
+            : "The training kept a healthy enough number of Need labels, so no emergency low-need penalty was applied.",
           scoreBreakdown.dangerousNeedPenalty > 0
             ? `The AI mislabeled ${scoreBreakdown.dangerousNeedMistakes} critical Need${scoreBreakdown.dangerousNeedMistakes === 1 ? "" : "s"} as Want, so a safety penalty of ${scoreBreakdown.dangerousNeedPenalty} points was applied.`
             : "The AI avoided critical Need-to-Want mistakes, so no safety penalty was applied.",
@@ -4007,8 +4049,12 @@
         }
 
         const breakdownRows = [
-          ["AI accuracy (60%)", `${currentScoreBreakdown.accuracyPoints} pts`],
-          ["Balance left (40%)", `${currentScoreBreakdown.balancePoints} pts`],
+          ["Base score", `${currentScoreBreakdown.basePoints} pts`],
+          ["AI accuracy", `${currentScoreBreakdown.accuracyPoints} pts`],
+          ["Balance left", `${currentScoreBreakdown.balancePoints} pts`],
+          ...(currentScoreBreakdown.needCoveragePenalty > 0
+            ? [["Low-need emergency penalty", `-${currentScoreBreakdown.needCoveragePenalty} pts`]]
+            : []),
           ...(currentScoreBreakdown.dangerousNeedPenalty > 0
             ? [["Need safety penalty", `-${currentScoreBreakdown.dangerousNeedPenalty} pts`]]
             : []),
@@ -4036,7 +4082,7 @@
           )
           .join("");
         scoreExplainFormula.textContent =
-          "Final score = 60% AI accuracy + 40% balance left score. Balance uses a softer curve near the bottom so low money still hurts without collapsing the whole score. Only clear teacher-guide items count toward AI accuracy, critical Needs trigger the stronger safety penalty, clear non-critical Needs trigger a lighter missed-need penalty, and clear Wants mislabeled as Needs trigger a lighter spending penalty.";
+          "Final score starts with a 40-point base, then adds up to 35 points for AI accuracy and up to 25 points for balance left. Balance uses a softer curve near the bottom so low money still hurts without collapsing the whole score. Training that stays too far away from Need labels across the three checkpoints triggers an emergency penalty. Only clear teacher-guide items count toward AI accuracy, critical Needs trigger the stronger safety penalty, clear non-critical Needs trigger a lighter missed-need penalty, and clear Wants mislabeled as Needs trigger a lighter spending penalty.";
         scoreDecisionList.innerHTML = buildDecisionSummaryLines(currentScoreBreakdown)
           .map((line) => `<div class="score-decision-item">${line}</div>`)
           .join("");
