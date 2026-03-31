@@ -425,7 +425,7 @@
       }
 
       .tutorial-wrap {
-        max-width: 1180px;
+        max-width: 980px;
         margin: 0 auto;
       }
 
@@ -463,11 +463,150 @@
         border-radius: 999px;
       }
 
-      .tutorial-grid {
+      .tutorial-shell {
         margin-top: 18px;
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 14px;
+      }
+
+      .tutorial-progress-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 0 4px;
+      }
+
+      .tutorial-step-count {
+        font-size: 0.98rem;
+        font-weight: 800;
+        color: #386db6;
+        letter-spacing: 0.01em;
+      }
+
+      .tutorial-progress-track {
+        flex: 1;
+        height: 14px;
+        border-radius: 999px;
+        background: #d4e7fb;
+        overflow: hidden;
+      }
+
+      .tutorial-progress-fill {
+        height: 100%;
+        width: 16.66%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #58c5f3 0%, #5b8ee8 100%);
+        transition: width 220ms ease;
+      }
+
+      .tutorial-card {
+        display: grid;
+        grid-template-columns: minmax(190px, 260px) minmax(0, 1fr);
+        gap: 18px;
+        align-items: stretch;
+        border-radius: 28px;
+        border: 4px solid #9bcff4;
+        background: linear-gradient(180deg, #ffffff 0%, #f3f9ff 100%);
+        box-shadow: 0 12px 30px rgba(92, 149, 194, 0.14);
+        padding: 18px;
+      }
+
+      .tutorial-visual-panel {
+        border-radius: 24px;
+        background: linear-gradient(160deg, #dff3ff 0%, #bedfff 100%);
+        display: grid;
+        place-items: center;
+        min-height: 290px;
+        padding: 16px;
+      }
+
+      .tutorial-visual-panel img {
+        width: min(100%, 190px);
+        height: auto;
+      }
+
+      .tutorial-body-panel {
+        display: grid;
+        gap: 12px;
+        align-content: start;
+      }
+
+      .tutorial-kicker {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #4c83d6;
+      }
+
+      .tutorial-step-title {
+        margin: 0;
+        font-size: clamp(1.55rem, 3vw, 2.3rem);
+        line-height: 1.08;
+        font-weight: 800;
+        color: #183a66;
+      }
+
+      .tutorial-step-copy {
+        margin: 0;
+        font-size: 1.02rem;
+        line-height: 1.5;
+        color: #2d4765;
+      }
+
+      .tutorial-points {
+        margin: 0;
+        padding-left: 1.15rem;
+        display: grid;
+        gap: 8px;
+        color: #24425f;
+        font-size: 0.98rem;
+        line-height: 1.45;
+      }
+
+      .tutorial-callout {
+        border-radius: 20px;
+        background: #e8f4ff;
+        border: 2px solid #b9daf7;
+        padding: 12px 14px;
+        color: #214666;
+        font-size: 0.96rem;
+        line-height: 1.45;
+        font-weight: 700;
+      }
+
+      .tutorial-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .tutorial-nav-btn {
+        min-width: 152px;
+        height: 60px;
+        border-radius: 999px;
+        border: 2px solid #b5cadf;
+        background: #ffffff;
+        color: #31506f;
+        font-size: 1rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: transform 120ms ease, box-shadow 180ms ease, filter 180ms ease;
+      }
+
+      .tutorial-nav-btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 24px rgba(67, 111, 154, 0.16);
+        filter: brightness(1.02);
+      }
+
+      .tutorial-nav-btn:disabled {
+        opacity: 0.48;
+        cursor: not-allowed;
+        box-shadow: none;
       }
 
       .step-card { 
@@ -2157,10 +2296,29 @@
           padding: 12px 10px 18px;
         }
 
-        .tutorial-grid {
+        .tutorial-card {
           grid-template-columns: 1fr;
-          gap: 12px;
-          margin-top: 14px;
+          gap: 14px;
+          padding: 14px;
+        }
+
+        .tutorial-progress-row {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 8px;
+        }
+
+        .tutorial-visual-panel {
+          min-height: 180px;
+        }
+
+        .tutorial-actions {
+          flex-wrap: wrap;
+        }
+
+        .tutorial-nav-btn,
+        .challenge-btn {
+          width: 100%;
         }
 
         .step-visual {
@@ -2366,56 +2524,34 @@
             without going <span class="highlight underline">BROKE?</span>
           </h2>
 
-          <div class="tutorial-grid">
-            <article class="step-card">
-              <header class="step-head">1. TRAINING PERIOD</header>
-              <div class="step-visual">
-                <img src="assets/robot-money.png" alt="Robot for training step" />
-              </div>
-              <p class="step-copy">Teach it Wants vs. Needs for 5 Days</p>
-              <div class="progress-track" aria-hidden="true">
-                <div class="progress-fill"></div>
-              </div>
-            </article>
-
-            <article class="step-card">
-              <header class="step-head">2. AI SURVIVAL CHALLENGE</header>
-              <div class="step-visual sim">
-                <div class="market-strip">
-                  <span class="market-robot">🤖</span>
-                </div>
-              </div>
-              <p class="step-copy">Let it run for 5 days.<br />See its choices! After that, REPEAT!</p>
-            </article>
-
-            <article class="step-card">
-              <header class="step-head">3. RESULTS + LEADERBOARD</header>
-              <div class="step-visual result">
-                <span class="trophy">🏆</span>
-              </div>
-              <p class="step-copy">Did it go broke? Is it rich?<br />Compare with classmates!</p>
-            </article>
-          </div>
-
-          <div class="definition-box" aria-label="Key definitions">
-            <h3 class="definition-title">Key Concepts</h3>
-            <div class="definition-grid">
-              <div class="definition-card">
-                <strong>Confidence</strong>
-                How sure the AI is about its choice based on training.
-              </div>
-              <div class="definition-card">
-                <strong>Balance</strong>
-                Shows how much money the AI has left to survive the challenge.
-              </div>
-              <div class="definition-card">
-                <strong>Needs Rule</strong>
-                In this challenge, the AI should buy Needs and skip Wants.
+          <div class="tutorial-shell">
+            <div class="tutorial-progress-row" aria-label="Tutorial progress">
+              <span id="tutorialStepCount" class="tutorial-step-count">Step 1 of 6</span>
+              <div class="tutorial-progress-track" aria-hidden="true">
+                <div id="tutorialProgressFill" class="tutorial-progress-fill"></div>
               </div>
             </div>
-          </div>
 
-          <button id="startChallengeBtn" class="challenge-btn" type="button">Start the Challenge</button>
+            <article class="tutorial-card">
+              <div class="tutorial-visual-panel">
+                <img id="tutorialStepImage" src="assets/robot-money.png" alt="Tutorial robot" />
+              </div>
+
+              <div class="tutorial-body-panel">
+                <p id="tutorialKicker" class="tutorial-kicker">How the game works</p>
+                <h3 id="tutorialStepTitle" class="tutorial-step-title">Teach the AI first</h3>
+                <p id="tutorialStepCopy" class="tutorial-step-copy"></p>
+                <ul id="tutorialPoints" class="tutorial-points"></ul>
+                <div id="tutorialCallout" class="tutorial-callout"></div>
+              </div>
+            </article>
+
+            <div class="tutorial-actions">
+              <button id="tutorialBackBtn" class="tutorial-nav-btn" type="button">Back</button>
+              <button id="tutorialNextBtn" class="tutorial-nav-btn" type="button">Next</button>
+              <button id="startChallengeBtn" class="challenge-btn" type="button" hidden>Start the Challenge</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -2630,6 +2766,16 @@
       const startButton = document.querySelector(".start-btn");
       const setupNextButton = document.querySelector(".setup-next-btn");
       const startChallengeBtn = document.querySelector("#startChallengeBtn");
+      const tutorialBackBtn = document.querySelector("#tutorialBackBtn");
+      const tutorialNextBtn = document.querySelector("#tutorialNextBtn");
+      const tutorialStepCount = document.querySelector("#tutorialStepCount");
+      const tutorialProgressFill = document.querySelector("#tutorialProgressFill");
+      const tutorialKicker = document.querySelector("#tutorialKicker");
+      const tutorialStepTitle = document.querySelector("#tutorialStepTitle");
+      const tutorialStepCopy = document.querySelector("#tutorialStepCopy");
+      const tutorialPoints = document.querySelector("#tutorialPoints");
+      const tutorialCallout = document.querySelector("#tutorialCallout");
+      const tutorialStepImage = document.querySelector("#tutorialStepImage");
       const welcomeStatusMessage = document.querySelector("#welcomeStatusMessage");
       const firstNameInput = document.querySelector("#firstNameInput");
       const lastInitialInput = document.querySelector("#lastInitialInput");
@@ -2680,11 +2826,11 @@
       const itemPool = [
         { emoji: "🍩", name: "Donut", category: "treats", trueLabel: "Want", priceValue: 3 },
         { emoji: "🥨", name: "Pretzel", category: "treats", trueLabel: "Want", priceValue: 3 },
-        { emoji: "🧃", name: "Juice Box", category: "drinks", trueLabel: "Want", priceValue: 4 },
+        { emoji: "🧃", name: "Apple Juice", category: "drinks", trueLabel: "Want", priceValue: 4 },
         { emoji: "🧁", name: "Cupcake", category: "treats", trueLabel: "Want", priceValue: 4 },
         { emoji: "🥪", name: "Sandwich", category: "food", trueLabel: "Need", priceValue: 6 },
         { emoji: "🍎", name: "Apple", category: "food", trueLabel: "Need", priceValue: 2 },
-        { emoji: "🧀", name: "Cheese", category: "food", trueLabel: "Need", priceValue: 3 },
+        { emoji: "🧀", name: "Cheese", category: "food", trueLabel: "Need", priceValue: 2 },
         { emoji: "🍱", name: "Lunchbox", category: "food", trueLabel: "Need", priceValue: 12 },
         { emoji: "⚽️", name: "Soccer Ball", category: "activities", trueLabel: "Want", priceValue: 18 },
         { emoji: "🛼", name: "Roller Skates", category: "activities", trueLabel: "Want", priceValue: 45 },
@@ -2694,7 +2840,7 @@
         { emoji: "🥁", name: "Drum Pad", category: "music", trueLabel: "Want", priceValue: 45 },
         { emoji: "🎺", name: "Trumpet", category: "music", trueLabel: "Want", priceValue: 90 },
         { emoji: "🎸", name: "Guitar", category: "music", trueLabel: "Want", priceValue: 130 },
-        { emoji: "🥤", name: "Sports Drink", category: "drinks", trueLabel: "Want", priceValue: 4 },
+        { emoji: "🥤", name: "Sports Drink", category: "drinks", trueLabel: "Want", priceValue: 5 },
         { emoji: "🎷", name: "Saxophone", category: "music", trueLabel: "Want", priceValue: 150 },
         { emoji: "🎧", name: "Headphones", category: "music", trueLabel: "Want", priceValue: 35 },
         { emoji: "🎮", name: "Video Game Console", category: "games", trueLabel: "Want", priceValue: 200 },
@@ -2718,18 +2864,18 @@
         { emoji: "🩹", name: "First Aid Kit", category: "safety", trueLabel: "Need", priceValue: 8 },
         { emoji: "🔒", name: "Padlock", category: "safety", trueLabel: "Need", priceValue: 6 },
         { emoji: "🔋", name: "Battery Pack", category: "safety", trueLabel: "Need", priceValue: 15 },
-        { emoji: "🧪", name: "Science Kit", category: "school", trueLabel: "Want", priceValue: 28 },
+        { emoji: "🧪", name: "Science Class Kit", category: "school", trueLabel: "Want", priceValue: 28 },
         { emoji: "🧮", name: "Calculator", category: "school", trueLabel: "Need", priceValue: 12 },
         { emoji: "🪥", name: "Toothbrush", category: "personal", trueLabel: "Need", priceValue: 4 },
         { emoji: "🪮", name: "Hair Brush", category: "personal", trueLabel: "Need", priceValue: 8 },
-        { emoji: "🧴", name: "Lotion", category: "personal", trueLabel: "Need", priceValue: 7 },
+        { emoji: "🧴", name: "Lotion", category: "personal", trueLabel: "Need", priceValue: 5 },
         { emoji: "🩹", name: "Bandages", category: "personal", trueLabel: "Need", priceValue: 5 },
         { emoji: "🖍️", name: "Crayons", category: "school", trueLabel: "Need", priceValue: 3 },
         { emoji: "🖊️", name: "Pen", category: "school", trueLabel: "Need", priceValue: 3 },
         { emoji: "📎", name: "Paper Clips", category: "school", trueLabel: "Need", priceValue: 6 },
         { emoji: "📿", name: "Jewelry", category: "personal", trueLabel: "Want", priceValue: 20 },
         { emoji: "🧿", name: "Frisbee", category: "activities", trueLabel: "Want", priceValue: 18 },
-        { emoji: "🥤", name: "Iced Coffee", category: "drinks", trueLabel: "Want", priceValue: 5 },
+        { emoji: "🧋", name: "Iced Latte Coffee", category: "drinks", trueLabel: "Want", priceValue: 5 },
         { emoji: "🛏️", name: "Blanket", category: "personal", trueLabel: "Need", priceValue: 25 },
         { emoji: "🛋️", name: "Desk Lamp", category: "personal", trueLabel: "Need", priceValue: 22 },
         { emoji: "🧺", name: "Laundry Basket", category: "personal", trueLabel: "Need", priceValue: 14 },
@@ -2755,11 +2901,11 @@
         },
         {
           id: "reflection_2",
-          prompt: "Why do you think I have still made mistakes?",
+          prompt: "Why do you think I can still made mistakes at this point?",
           triggerDay: 20,
           continueDay: 21,
           choices: [
-            "The rules in the decision tree are incomplete",
+            "The rules in the decision tree may be incomplete",
             "The AI is broken and cannot learn",
             "The AI always makes mistakes",
             "The item cannot be classified",
@@ -2776,6 +2922,99 @@
             "You made completely random decisions",
             "Nothing changed",
           ],
+        },
+      ];
+
+      const tutorialSteps = [
+        {
+          kicker: "How the game works",
+          title: "You will train the AI in rounds",
+          copy:
+            "This game has 3 training periods and 3 testing periods. In training, you teach the AI how to label items. In testing, the AI uses your training on its own.",
+          points: [
+            "Each training period gives you 5 days to teach the AI.",
+            "Each testing period gives the AI 5 days to make its own labels.",
+            "Your goal is to help the AI survive 30 days without wasting money.",
+          ],
+          callout:
+            "Think like the AI's coach. What you teach early affects what it does later.",
+          image: "assets/robot-money.png",
+          imageAlt: "Robot ready to learn",
+        },
+        {
+          kicker: "Categories",
+          title: "The AI learns by category",
+          copy:
+            "Items belong to categories like food, treats, drinks, activities, devices, media, personal, safety, and school. The AI looks for patterns inside those categories.",
+          points: [
+            "If you label school items as Needs, the AI may start expecting other school items to be Needs too.",
+            "If a category has not been trained yet, the AI has to guess using what it learned in other places.",
+            "That is why category patterns matter so much in this game.",
+          ],
+          callout:
+            "Example: teaching a lunchbox as a Need can help with food items, but it should not decide treats like donuts.",
+          image: "assets/robot-money.png",
+          imageAlt: "Robot thinking about categories",
+        },
+        {
+          kicker: "Needs vs wants",
+          title: "Focus on daily necessities first",
+          copy:
+            "When you are choosing Need or Want, think about what someone really needs in daily life. If you are not sure, it is usually safer to treat it as a Want.",
+          points: [
+            "Needs are the obviously necessary items.",
+            "Wants are the items that are nice to have but not truly required.",
+            "Training everything as Need or everything as Want usually teaches the AI the wrong lesson.",
+          ],
+          callout:
+            "A good rule: if you have to argue hard for it, it probably is not a clear Need in this game.",
+          image: "assets/robot-doubt.png",
+          imageAlt: "Robot asking about needs and wants",
+        },
+        {
+          kicker: "Score",
+          title: "Balance still matters",
+          copy:
+            "The score is based on two big things: how accurate the AI becomes and how much balance it keeps. A low balance can pull the score down even if the AI learned some categories well.",
+          points: [
+            "Needs get bought automatically, so wrong Need labels can drain money fast.",
+            "Wants get skipped automatically, so too many Wants can leave important things unbought.",
+            "The best scores usually come from accurate training and smart money protection together.",
+          ],
+          callout:
+            "Only the clearest, obviously necessary items count toward the main training score. Some debatable items still appear, but they are there more for discussion and learning.",
+          image: "assets/robot-money.png",
+          imageAlt: "Robot watching the balance",
+        },
+        {
+          kicker: "When the AI guesses",
+          title: "Untrained categories can still lead to predictions",
+          copy:
+            "Sometimes the AI will see a category it has barely seen before. When that happens, it still has to make a choice. It uses the patterns you taught in other categories and its starter rules.",
+          points: [
+            "Correct play can still look wrong at first if the AI has not learned enough yet.",
+            "Wrong play can also look right at first by accident.",
+            "That is why later rounds matter more than first impressions.",
+          ],
+          callout:
+            "If the current category is not trained yet, ask yourself: what overall pattern did I teach the AI so far?",
+          image: "assets/robot-doubt.png",
+          imageAlt: "Robot making an early guess",
+        },
+        {
+          kicker: "Final tip",
+          title: "Good training should win over time",
+          copy:
+            "At the beginning, the AI may still be shaky. By the last testing period, strong training should make it feel more accurate. If you train it in the wrong direction, the mistakes usually grow later too.",
+          points: [
+            "Do not just try to game the system with all Needs or all Wants.",
+            "Teach the AI what is clearly necessary first.",
+            "Watch the AI Brain View to see how your training is shaping its decisions.",
+          ],
+          callout:
+            "Your best strategy is simple: train clearly, protect the balance, and let the AI learn honest patterns.",
+          image: "assets/robot-money.png",
+          imageAlt: "Robot ready for the challenge",
         },
       ];
 
@@ -2797,6 +3036,14 @@
       const NEED_TO_WANT_PENALTY_POINTS = 3;
       const CLEAR_NEED_TO_WANT_PENALTY_POINTS = 1;
       const WANT_TO_NEED_PENALTY_POINTS = 1;
+      const NEED_COVERAGE_CHECKPOINTS = [
+        { examples: 5, minimumNeeds: 2, penalty: 3 },
+        { examples: 10, minimumNeeds: 4, penalty: 7 },
+        { examples: 15, minimumNeeds: 6, penalty: 20 },
+      ];
+      const SCORE_BASE_POINTS = 40;
+      const SCORE_ACCURACY_MAX_POINTS = 35;
+      const SCORE_BALANCE_MAX_POINTS = 25;
       const CRITICAL_NEED_ITEM_NAMES = new Set([
         "Sandwich",
         "Apple",
@@ -2857,6 +3104,7 @@
       let reflectionReactionTimeouts = [];
       let hasPlayedGameStartHighlight = false;
       let hasShownFirstTestingCutscene = false;
+      let currentTutorialStep = 0;
       let testingCutsceneTimeoutId = null;
       let welcomeStatusTimeoutId = null;
       let resultsScreenMode = "session";
@@ -3308,6 +3556,61 @@
       function clearReflectionReactionTimeouts() {
         reflectionReactionTimeouts.forEach((timeoutId) => window.clearTimeout(timeoutId));
         reflectionReactionTimeouts = [];
+      }
+
+      function renderTutorialStep() {
+        const step = tutorialSteps[currentTutorialStep];
+
+        if (!step) {
+          return;
+        }
+
+        if (tutorialStepCount) {
+          tutorialStepCount.textContent = `Step ${currentTutorialStep + 1} of ${tutorialSteps.length}`;
+        }
+
+        if (tutorialProgressFill) {
+          tutorialProgressFill.style.width = `${((currentTutorialStep + 1) / tutorialSteps.length) * 100}%`;
+        }
+
+        if (tutorialKicker) {
+          tutorialKicker.textContent = step.kicker;
+        }
+
+        if (tutorialStepTitle) {
+          tutorialStepTitle.textContent = step.title;
+        }
+
+        if (tutorialStepCopy) {
+          tutorialStepCopy.textContent = step.copy;
+        }
+
+        if (tutorialPoints) {
+          tutorialPoints.innerHTML = step.points
+            .map((point) => `<li>${point}</li>`)
+            .join("");
+        }
+
+        if (tutorialCallout) {
+          tutorialCallout.textContent = step.callout;
+        }
+
+        if (tutorialStepImage) {
+          tutorialStepImage.src = step.image;
+          tutorialStepImage.alt = step.imageAlt;
+        }
+
+        if (tutorialBackBtn) {
+          tutorialBackBtn.disabled = currentTutorialStep === 0;
+        }
+
+        if (tutorialNextBtn) {
+          tutorialNextBtn.hidden = currentTutorialStep === tutorialSteps.length - 1;
+        }
+
+        if (startChallengeBtn) {
+          startChallengeBtn.hidden = currentTutorialStep !== tutorialSteps.length - 1;
+        }
       }
 
       function resetReflectionReactionState() {
@@ -4115,6 +4418,29 @@
         });
       }
 
+      function calculateNeedCoveragePenalty() {
+        const triggeredCheckpoints = NEED_COVERAGE_CHECKPOINTS.map((checkpoint) => {
+          const seenExamples = trainingExamples.slice(0, checkpoint.examples);
+          const needCount = seenExamples.filter((example) => example.label === "Need").length;
+          const applies =
+            seenExamples.length >= checkpoint.examples && needCount < checkpoint.minimumNeeds;
+
+          return {
+            ...checkpoint,
+            needCount,
+            applies,
+          };
+        }).filter((checkpoint) => checkpoint.applies);
+
+        return {
+          totalPenalty: triggeredCheckpoints.reduce(
+            (sum, checkpoint) => sum + checkpoint.penalty,
+            0
+          ),
+          triggeredCheckpoints,
+        };
+      }
+
       function calculateScoreBreakdown() {
         const sessionSummary = buildStudentSessionSummary();
         const classificationAccuracy = sessionSummary.totalClassificationAccuracy ?? 0;
@@ -4125,18 +4451,23 @@
         const balanceLeft = roundMoney(currentBalance);
         const normalizedBalance = Math.max(balanceLeft, 0) / startingValues.balance;
         const balanceScore = clampPercent(Math.sqrt(normalizedBalance) * 100);
+        const needCoverage = calculateNeedCoveragePenalty();
         const overdraftRatio =
           balanceLeft < 0 ? Math.min(Math.abs(balanceLeft) / startingValues.balance, 1) : 0;
         const overdraftPenalty = Math.round(overdraftRatio * 25);
         const dangerousNeedPenalty = dangerousNeedMistakes * NEED_TO_WANT_PENALTY_POINTS;
         const clearNeedPenalty = clearNeedMistakes * CLEAR_NEED_TO_WANT_PENALTY_POINTS;
         const falseNeedPenalty = falseNeedMistakes * WANT_TO_NEED_PENALTY_POINTS;
-        const accuracyPoints = Math.round(classificationAccuracy * 0.6);
-        const balancePoints = Math.round(balanceScore * 0.4);
-        const rawTotalScore = accuracyPoints + balancePoints;
+        const basePoints = SCORE_BASE_POINTS;
+        const accuracyPoints = Math.round(
+          (classificationAccuracy / 100) * SCORE_ACCURACY_MAX_POINTS
+        );
+        const balancePoints = Math.round((balanceScore / 100) * SCORE_BALANCE_MAX_POINTS);
+        const rawTotalScore = basePoints + accuracyPoints + balancePoints;
         const totalScore = Math.max(
           0,
           rawTotalScore -
+            needCoverage.totalPenalty -
             overdraftPenalty -
             dangerousNeedPenalty -
             clearNeedPenalty -
@@ -4153,8 +4484,11 @@
           clearNeedPenalty,
           falseNeedMistakes,
           falseNeedPenalty,
+          needCoveragePenalty: needCoverage.totalPenalty,
+          needCoverageTriggeredCheckpoints: needCoverage.triggeredCheckpoints,
           overdraftPenalty,
           ambiguousItemsSeen,
+          basePoints,
           accuracyPoints,
           balancePoints,
           rawTotalScore,
@@ -4165,13 +4499,16 @@
 
       function buildDecisionSummaryLines(scoreBreakdown) {
         return [
-          `AI accuracy finished at ${scoreBreakdown.classificationAccuracyPct}%, which gave ${scoreBreakdown.accuracyPoints} of the 60 possible accuracy points. You marked the AI right ${gameplayStats.aiRightCount} time${gameplayStats.aiRightCount === 1 ? "" : "s"} and wrong ${gameplayStats.aiWrongCount} time${gameplayStats.aiWrongCount === 1 ? "" : "s"}.`,
+          `AI accuracy finished at ${scoreBreakdown.classificationAccuracyPct}%, which gave ${scoreBreakdown.accuracyPoints} of the ${SCORE_ACCURACY_MAX_POINTS} possible accuracy points. You marked the AI right ${gameplayStats.aiRightCount} time${gameplayStats.aiRightCount === 1 ? "" : "s"} and wrong ${gameplayStats.aiWrongCount} time${gameplayStats.aiWrongCount === 1 ? "" : "s"}.`,
           scoreBreakdown.overdraftPenalty > 0
-            ? `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the 40 possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)}, so an overdraft penalty of ${scoreBreakdown.overdraftPenalty} points was applied.`
-            : `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the 40 possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)} left.`,
+            ? `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the ${SCORE_BALANCE_MAX_POINTS} possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)}, so an overdraft penalty of ${scoreBreakdown.overdraftPenalty} points was applied.`
+            : `Balance left finished at ${scoreBreakdown.balanceScore}%, which gave ${scoreBreakdown.balancePoints} of the ${SCORE_BALANCE_MAX_POINTS} possible balance points. You spent ${formatCurrency(gameplayStats.totalSpent)} and finished with ${formatCurrency(scoreBreakdown.balanceLeft)} left.`,
           scoreBreakdown.ambiguousItemsSeen > 0
             ? `${scoreBreakdown.ambiguousItemsSeen} debatable item${scoreBreakdown.ambiguousItemsSeen === 1 ? "" : "s"} still appeared during the run for gameplay and discussion, but those items were not counted toward the final training score.`
             : "Only clear teacher-guide items counted toward the final training score in this run.",
+          scoreBreakdown.needCoveragePenalty > 0
+            ? `The AI was trained with too few Need labels across the checkpoints, so an emergency penalty of ${scoreBreakdown.needCoveragePenalty} point${scoreBreakdown.needCoveragePenalty === 1 ? "" : "s"} was applied.`
+            : "The training kept a healthy enough number of Need labels, so no emergency low-need penalty was applied.",
           scoreBreakdown.dangerousNeedPenalty > 0
             ? `The AI mislabeled ${scoreBreakdown.dangerousNeedMistakes} critical Need${scoreBreakdown.dangerousNeedMistakes === 1 ? "" : "s"} as Want, so a safety penalty of ${scoreBreakdown.dangerousNeedPenalty} points was applied.`
             : "The AI avoided critical Need-to-Want mistakes, so no safety penalty was applied.",
@@ -4191,8 +4528,12 @@
         }
 
         const breakdownRows = [
-          ["AI accuracy (60%)", `${currentScoreBreakdown.accuracyPoints} pts`],
-          ["Balance left (40%)", `${currentScoreBreakdown.balancePoints} pts`],
+          ["Base score", `${currentScoreBreakdown.basePoints} pts`],
+          ["AI accuracy", `${currentScoreBreakdown.accuracyPoints} pts`],
+          ["Balance left", `${currentScoreBreakdown.balancePoints} pts`],
+          ...(currentScoreBreakdown.needCoveragePenalty > 0
+            ? [["Low-need emergency penalty", `-${currentScoreBreakdown.needCoveragePenalty} pts`]]
+            : []),
           ...(currentScoreBreakdown.dangerousNeedPenalty > 0
             ? [["Need safety penalty", `-${currentScoreBreakdown.dangerousNeedPenalty} pts`]]
             : []),
@@ -4220,7 +4561,7 @@
           )
           .join("");
         scoreExplainFormula.textContent =
-          "Final score = 60% AI accuracy + 40% balance left score. Balance uses a softer curve near the bottom so low money still hurts without collapsing the whole score. Only clear teacher-guide items count toward AI accuracy, critical Needs trigger the stronger safety penalty, clear non-critical Needs trigger a lighter missed-need penalty, and clear Wants mislabeled as Needs trigger a lighter spending penalty.";
+          "Final score starts with a 40-point base, then adds up to 35 points for AI accuracy and up to 25 points for balance left. Balance uses a softer curve near the bottom so low money still hurts without collapsing the whole score. Training that stays too far away from Need labels across the three checkpoints triggers an emergency penalty. Only clear teacher-guide items count toward AI accuracy, critical Needs trigger the stronger safety penalty, clear non-critical Needs trigger a lighter missed-need penalty, and clear Wants mislabeled as Needs trigger a lighter spending penalty.";
         scoreDecisionList.innerHTML = buildDecisionSummaryLines(currentScoreBreakdown)
           .map((line) => `<div class="score-decision-item">${line}</div>`)
           .join("");
@@ -4805,6 +5146,8 @@
         if (testBrainNote) {
           testBrainNote.textContent = "I am using your training to decide whether this looks like a need or a want.";
         }
+        currentTutorialStep = 0;
+        renderTutorialStep();
         firstNameInput.value = "";
         lastInitialInput.value = "";
         gradeSelect.value = "";
@@ -4877,8 +5220,28 @@
             avatar: selectedAvatar || "",
           });
           updateGameplayHud();
+          currentTutorialStep = 0;
+          renderTutorialStep();
           showScreen("tutorialScreen");
         }
+      });
+
+      tutorialBackBtn?.addEventListener("click", () => {
+        if (currentTutorialStep === 0) {
+          return;
+        }
+
+        currentTutorialStep -= 1;
+        renderTutorialStep();
+      });
+
+      tutorialNextBtn?.addEventListener("click", () => {
+        if (currentTutorialStep >= tutorialSteps.length - 1) {
+          return;
+        }
+
+        currentTutorialStep += 1;
+        renderTutorialStep();
       });
 
       startChallengeBtn?.addEventListener("click", () => {
