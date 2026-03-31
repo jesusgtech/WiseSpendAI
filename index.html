@@ -940,40 +940,6 @@
         letter-spacing: 0.01em;
       }
 
-      .phase-top-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        flex-wrap: wrap;
-      }
-
-      .score-hud {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 12px;
-        padding: 8px 16px;
-        border-radius: 999px;
-        background: linear-gradient(180deg, rgba(255, 244, 200, 0.97) 0%, rgba(255, 232, 154, 0.97) 100%);
-        border: 2px solid rgba(227, 180, 66, 0.95);
-        box-shadow: 0 8px 16px rgba(183, 136, 40, 0.18);
-        color: #6a4914;
-      }
-
-      .score-hud-label {
-        font-size: 0.82rem;
-        font-weight: 800;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-      }
-
-      .score-hud-value {
-        font-size: 1.08rem;
-        font-weight: 900;
-        letter-spacing: 0.01em;
-      }
-
       .phase-header-row {
         display: block;
       }
@@ -1675,20 +1641,6 @@
         font-size: 0.92rem;
       }
 
-      #testScreen .score-hud {
-        gap: 8px;
-        margin-bottom: 10px;
-        padding: 6px 12px;
-      }
-
-      #testScreen .score-hud-label {
-        font-size: 0.72rem;
-      }
-
-      #testScreen .score-hud-value {
-        font-size: 0.96rem;
-      }
-
       #testScreen .phase-card {
         margin-top: 10px;
       }
@@ -1793,20 +1745,6 @@
 
       #trainingScreen .player-hud-name {
         font-size: 0.92rem;
-      }
-
-      #trainingScreen .score-hud {
-        gap: 8px;
-        margin-bottom: 10px;
-        padding: 6px 12px;
-      }
-
-      #trainingScreen .score-hud-label {
-        font-size: 0.72rem;
-      }
-
-      #trainingScreen .score-hud-value {
-        font-size: 0.96rem;
       }
 
       #trainingScreen .phase-card {
@@ -2443,28 +2381,13 @@
           padding: 10px;
         }
 
-        .phase-top-row,
         .phase-header-row {
           flex-direction: column;
-          align-items: flex-start;
         }
 
         .player-hud {
           margin-bottom: 10px;
           padding: 6px 12px 6px 6px;
-        }
-
-        .score-hud {
-          margin-bottom: 10px;
-          padding: 6px 12px;
-        }
-
-        .score-hud-label {
-          font-size: 0.72rem;
-        }
-
-        .score-hud-value {
-          font-size: 0.96rem;
         }
 
         .player-hud-avatar {
@@ -2653,15 +2576,9 @@
 
       <section id="trainingScreen" hidden>
         <div class="phase-wrap">
-          <div class="phase-top-row">
-            <div class="player-hud">
-              <img id="trainingHudAvatar" class="player-hud-avatar" src="assets/avatar1.png" alt="Player avatar" />
-              <span id="trainingHudName" class="player-hud-name">Player</span>
-            </div>
-            <div class="score-hud" aria-live="polite">
-              <span class="score-hud-label">Points So Far</span>
-              <span id="trainingScoreValue" class="score-hud-value">65 pts</span>
-            </div>
+          <div class="player-hud">
+            <img id="trainingHudAvatar" class="player-hud-avatar" src="assets/avatar1.png" alt="Player avatar" />
+            <span id="trainingHudName" class="player-hud-name">Player</span>
           </div>
           <div class="phase-header-row">
             <h2 class="phase-title"><span class="blue">Training</span> Time!</h2>
@@ -2724,15 +2641,9 @@
 
       <section id="testScreen" hidden>
         <div class="phase-wrap">
-          <div class="phase-top-row">
-            <div class="player-hud">
-              <img id="testHudAvatar" class="player-hud-avatar" src="assets/avatar1.png" alt="Player avatar" />
-              <span id="testHudName" class="player-hud-name">Player</span>
-            </div>
-            <div class="score-hud" aria-live="polite">
-              <span class="score-hud-label">Points So Far</span>
-              <span id="testScoreValue" class="score-hud-value">65 pts</span>
-            </div>
+          <div class="player-hud">
+            <img id="testHudAvatar" class="player-hud-avatar" src="assets/avatar1.png" alt="Player avatar" />
+            <span id="testHudName" class="player-hud-name">Player</span>
           </div>
           <div class="phase-header-row">
             <h2 class="phase-title"><span class="blue">Test</span> Time!</h2>
@@ -2899,10 +2810,8 @@
       const testYesBtn = document.querySelector("#testYesBtn");
       const trainingHudAvatar = document.querySelector("#trainingHudAvatar");
       const trainingHudName = document.querySelector("#trainingHudName");
-      const trainingScoreValue = document.querySelector("#trainingScoreValue");
       const testHudAvatar = document.querySelector("#testHudAvatar");
       const testHudName = document.querySelector("#testHudName");
-      const testScoreValue = document.querySelector("#testScoreValue");
       const trainingItemBox = document.querySelector("#trainingItemBox");
       const testItemBox = document.querySelector("#testItemBox");
       const trainingBrainBox = document.querySelector("#trainingBrainBox");
@@ -4035,19 +3944,6 @@
         }
       }
 
-      function updateLiveScoreHud() {
-        const scoreBreakdown = calculateScoreBreakdown();
-        const scoreText = `${scoreBreakdown.totalScore} pts`;
-
-        if (trainingScoreValue) {
-          trainingScoreValue.textContent = scoreText;
-        }
-
-        if (testScoreValue) {
-          testScoreValue.textContent = scoreText;
-        }
-      }
-
       function setBar(id, value) {
         const el = document.querySelector(id);
         if (el) {
@@ -4980,7 +4876,6 @@
       function renderTrainingDay(data) {
         activeDayData = data;
         activeDecision = null;
-        updateLiveScoreHud();
         setPhaseHead("#trainingHead", data);
         setText("#trainingItemEmoji", data.item.emoji);
         setText("#trainingItemName", data.item.name);
@@ -4997,7 +4892,6 @@
 
       function renderTestDay(data) {
         activeDayData = data;
-        updateLiveScoreHud();
         setPhaseHead("#testHead", data);
         setText("#testItemEmoji", data.item.emoji);
         setText("#testItemName", data.item.name);
@@ -5188,7 +5082,6 @@
         currentBalance = startingValues.balance;
         trainingExamples = [];
         gameplayStats = createGameplayStats();
-        updateLiveScoreHud();
         currentScoreBreakdown = null;
         currentSessionRecord = null;
         currentLeaderboardRank = null;
